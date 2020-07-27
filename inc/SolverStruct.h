@@ -32,14 +32,15 @@
 // Turn on/off the counter of boundary calculations
 #define BOUNDCOUNTER
 // Choose the boundary line mode (NOBOUND/NORMALBOUND/CUSTOMBOUND)
-#define CUSTOMBOUND
+#define NOBOUND
 // Turn on/off boundary calibration
 //#define BOUNDCALIBRATION
 // Turn on/off Adaptive grid method
-#define ADAPTIVEGRID
+//#define ADAPTIVEGRID
 
 /*--- External Variables ---*/
-extern real_T Xinitial;
+extern real_T Vinitial;
+extern real_T Tinitial;
 
 #ifdef DYNCOUNTER
 extern uint32_t counterDynamics;
@@ -156,5 +157,23 @@ typedef struct {
 
 }
         SolverOutput;
+
+typedef struct {                                    // x and y coordinate of 2 states
+    uint16_t X;
+    uint16_t Y;
+}
+        Coordinate;
+
+typedef struct {                                    // structure of 2 states
+    real_T V;
+    real_T T;
+}
+        StateTuple;
+
+typedef struct {                                    // structure of 2 control inputs
+    real_T F;
+    real_T Q;
+}
+        ControlTuple;
 
 #endif // !STRUCT

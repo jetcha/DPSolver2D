@@ -7,5 +7,5 @@
 
 /*--- Public Functions ---*/
 // Speed Solver part
-void speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr, real_T X0,
-                 real_T Xfmin, real_T Xfmax);
+void speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr, real_T V0, real_T T0,
+                 real_T Vfmin, real_T Vfmax, real_T Tfmin, real_T Tfmax);

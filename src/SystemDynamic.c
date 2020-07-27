@@ -17,23 +17,13 @@ void PassParameters(SolverInput *InputPtr, DynParameter *ModelParaPtr, EnvFactor
     SolverInputPtr = InputPtr;
 }
 
-void createStateVector(real_T *StateVector, real_T min, real_T max, uint32_t N) {
+void createLineSpace(real_T *Vector, real_T min, real_T max, uint32_t N) {
     real_T delta = (max - min) / (N - 1);
     uint32_t i;
-    StateVector[0] = min;
+    Vector[0] = min;
 
     for (i = 1; i < N; i++) {
-        StateVector[i] = StateVector[i - 1] + delta;
-    }
-}
-
-void createControlVector(real_T *ControlVector, real_T min, real_T max, uint32_t N) {
-    real_T delta = (max - min) / (N - 1);
-    uint32_t i;
-    ControlVector[0] = min;
-
-    for (i = 1; i < N; i++) {
-        ControlVector[i] = ControlVector[i - 1] + delta;
+        Vector[i] = Vector[i - 1] + delta;
     }
 }
 
@@ -325,7 +315,7 @@ void thermalDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*Arc
             }
 
             // ArcCost - added a L2 norm as the penalization
-            ArcCost[i][j] = Pbatt * tDelta+ penalty * (Xnext[i][j] - T_required) * (Xnext[i][j] - T_required);
+            ArcCost[i][j] = Pbatt * tDelta + penalty * (Xnext[i][j] - T_required) * (Xnext[i][j] - T_required);
         }
     }
 
@@ -396,7 +386,7 @@ void bridgeConnection(Bridge *BridgePtr, SolverOutput *OutputPtr, real_T V0) {
     real_T Pbatt;
     real_T Edem = 0;
 
-    for(i = 0; i< HORIZON; i++){
+    for (i = 0; i < HORIZON; i++) {
         Pbatt = (1 - sqrt(1 - 4 * beta0 * BridgePtr->Pdc[i])) / (2 * beta0);
         Edem += Pbatt * BridgePtr->tDelta[i];
     }
@@ -404,4 +394,32 @@ void bridgeConnection(Bridge *BridgePtr, SolverOutput *OutputPtr, real_T V0) {
     printf("\nPower demanding: %f\n", Edem);
     printf("\nTotal duration:%f\n\n", duration);
 
+}
+
+void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][NQ], uint8_t (*InfFlag)[NT][NF][NQ],
+                    real_T const *SpeedVec, real_T const *ForceVec, real_T const *TempVec, real_T const *InletVec,
+                    uint16_t V0_index, uint16_t T0_index, uint16_t N) {
+
+    // Grid sizes
+    uint16_t Nv = SolverInputPtr->GridSize.Nv;
+    uint16_t Nf = SolverInputPtr->GridSize.Nf;
+    uint16_t Nt = SolverInputPtr->GridSize.Nt;
+    uint16_t Nq = SolverInputPtr->GridSize.Nq;
+
+    // Local Copy of the state and control vectors
+    real_T *Vin = (real_T *) malloc(Nv * sizeof(real_T));
+    real_T *Fin = (real_T *) malloc(Nf * sizeof(real_T));
+    real_T *Tin = (real_T *) malloc(Nt * sizeof(real_T));
+    real_T *Qin = (real_T *) malloc(Nq * sizeof(real_T));
+
+    memcpy(Vin, SpeedVec, Nv * sizeof(real_T));
+    memcpy(Fin, ForceVec, Nf * sizeof(real_T));
+    memcpy(Tin, TempVec, Nt * sizeof(real_T));
+    memcpy(Qin, InletVec, Nq * sizeof(real_T));
+
+    // Environmental Factors
+    real_T Vmax_end = EnvironmentalFactor->Vmax_env[N + 1];
+    real_T Vmin_end = EnvironmentalFactor->Vmin_env[N + 1];
+    real_T Tmax_end = EnvironmentalFactor->T_required[N] + 5;
+    real_T Tmin_end = EnvironmentalFactor->T_required[N] - 5;
 }

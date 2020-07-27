@@ -1,7 +1,6 @@
 #include "../inc/PrintResult.h"
 
-void printInputInfo(SolverInput *InputPtr, real_T X0, real_T X0_round, uint16_t startIdx, real_T *StateVec,
-                    real_T *ControlVec, uint16_t Nx, uint16_t Nu) {
+void printInputInfo(real_T *StateVec, real_T *ControlVec, uint16_t Nx, uint16_t Nu) {
 
     uint16_t i;
 
@@ -26,14 +25,6 @@ void printInputInfo(SolverInput *InputPtr, real_T X0, real_T X0_round, uint16_t 
         }
     }
     printf("\n\n");
-
-    printf("The given initial state: %f\n\n", X0);
-
-    printf("The rounded initial state: %f\n\n", X0_round);
-
-    printf("Starting Index: %d\n\n", startIdx);
-
-    printf("Cost of Infeasibility: %f\n\n\n", InputPtr->SolverLimit.infValue);
 }
 
 void printSpeedSolution(SolverInput *InputPtr, real_T X0_round, SolverOutput *OutputPtr) {
