@@ -13,6 +13,7 @@
       <w>dynamicmemo</w>
       <w>dyncounter</w>
       <w>dynmemo</w>
+      <w>edem</w>
       <w>fmax</w>
       <w>fmin</w>
       <w>interpo</w>
@@ -38,12 +39,14 @@
       <w>tamb</w>
       <w>tfmax</w>
       <w>tfmin</w>
+      <w>tinitial</w>
       <w>tinlet</w>
       <w>tmax</w>
       <w>tmin</w>
       <w>tocome</w>
       <w>vfmax</w>
       <w>vfmin</w>
+      <w>vinitial</w>
       <w>vmax</w>
       <w>vmin</w>
       <w>xcurrent</w>

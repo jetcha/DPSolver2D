@@ -9,19 +9,19 @@ MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, Solver
     // Speed Solver part
     speedSolver(InputPtr, ParaPtr, EnvPtr, OutputPtr, V0, Vfmin, Vfmax);
 
-    // Bridge Connection
-    Bridge BridgeStruct;
-    initBridge(&BridgeStruct);
-    bridgeConnection(&BridgeStruct, OutputPtr, V0);
-
-    // Counter Reset
-    counterDynamics = 0;
-    counterInterpo = 0;
-    counterBound = 0;
-
-    // Thermal Solver part
-    thermalSolver(InputPtr, ParaPtr, EnvPtr, OutputPtr, &BridgeStruct, T0, Tfmin, Tfmax);
-
-    // Destruct the Bridge
-    freeBridge(&BridgeStruct);
+//    // Bridge Connection
+//    Bridge BridgeStruct;
+//    initBridge(&BridgeStruct);
+//    bridgeConnection(&BridgeStruct, OutputPtr, V0);
+//
+//    // Counter Reset
+//    counterDynamics = 0;
+//    counterInterpo = 0;
+//    counterBound = 0;
+//
+//    // Thermal Solver part
+//    thermalSolver(InputPtr, ParaPtr, EnvPtr, OutputPtr, &BridgeStruct, T0, Tfmin, Tfmax);
+//
+//    // Destruct the Bridge
+//    freeBridge(&BridgeStruct);
 }
