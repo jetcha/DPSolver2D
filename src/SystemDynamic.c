@@ -27,6 +27,7 @@ void createLineSpace(real_T *Vector, real_T min, real_T max, uint32_t N) {
     }
 }
 
+/*
 void
 speedDynamics(uint16_t Nx, uint16_t Nu, real_T (*Xnext)[Nu], real_T (*ArcCost)[Nu], uint8_t (*InfFlag)[Nu],
               real_T const *StateVec, real_T const *ControlVec, Boundary *BoundaryPtr, uint16_t N, uint16_t X0_index) {
@@ -395,6 +396,7 @@ void bridgeConnection(Bridge *BridgePtr, SolverOutput *OutputPtr, real_T V0) {
     printf("\nTotal duration:%f\n\n", duration);
 
 }
+*/
 
 void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][NQ], uint8_t (*InfFlag)[NT][NF][NQ],
                     real_T const *SpeedVec, real_T const *ForceVec, real_T const *TempVec, real_T const *InletVec,
@@ -420,6 +422,181 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
     // Environmental Factors
     real_T Vmax_end = EnvironmentalFactor->Vmax_env[N + 1];
     real_T Vmin_end = EnvironmentalFactor->Vmin_env[N + 1];
+
     real_T Tmax_end = EnvironmentalFactor->T_required[N] + 5;
     real_T Tmin_end = EnvironmentalFactor->T_required[N] - 5;
+
+    real_T angle = EnvironmentalFactor->Angle_env[N + 1];
+
+    // Intermediate Variables
+    real_T Pwh;
+    real_T Pm;
+    real_T Pinv;
+    real_T Pdc;
+    real_T Ps;
+    real_T Pbatt;
+    real_T Phvac;
+
+    real_T dt;
+
+    real_T Tinlet;
+
+    // Hard Constraints
+    real_T PDmax = SolverInputPtr->Constraint.PDmax;
+    real_T PAmax = SolverInputPtr->Constraint.PAmax;
+
+    real_T PACmax = SolverInputPtr->Constraint.PACmax;
+    real_T Tmax_inlet = SolverInputPtr->Constraint.Tmax_inlet;
+    real_T Tmin_inlet = SolverInputPtr->Constraint.Tmin_inlet;
+
+    // Parameters
+    real_T m = ModelParameter->m;
+    real_T g = ModelParameter->g;
+    real_T crr = ModelParameter->crr;
+    real_T CdA = ModelParameter->CdA;
+
+    real_T ds = ModelParameter->ds;
+    real_T speedPenalty = ModelParameter->speedPenalty;
+
+    real_T eta_trans = ModelParameter->eta_trans;
+    real_T eta_dc = ModelParameter->eta_dc;
+    real_T alpha0 = ModelParameter->alpha0;
+    real_T alpha1 = ModelParameter->alpha1;
+    real_T alpha2 = ModelParameter->alpha2;
+    real_T beta0 = ModelParameter->beta0;
+
+    real_T Cth = ModelParameter->Cth;
+    real_T Rth = ModelParameter->Rth;
+    real_T Qsun = ModelParameter->Qsun;
+    real_T Qpas = ModelParameter->Qpas;
+    real_T Cp = ModelParameter->Cp;
+    real_T rho = ModelParameter->rho;
+    real_T mDot = ModelParameter->mDot;
+    real_T CoP_pos = ModelParameter->CoP_pos;
+    real_T CoP_neg = ModelParameter->CoP_neg;
+    real_T Tamb = ModelParameter->Tamb;
+
+    real_T T_required = EnvironmentalFactor->T_required[N];
+    real_T thermalPenalty = ModelParameter->thermalPenalty;
+
+    // Preserve the initial state accuracy
+    if (N == 0) {
+        Vin[V0_index] = Vinitial;
+        Tin[T0_index] = Tinitial;
+    }
+
+    // Calculations (all the possibilities)
+    uint16_t i, j, k, l;
+
+    for (i = 0; i < Nv; i++) {
+        for (j = 0; j < Nt; j++) {
+            for (k = 0; k < Nf; k++) {
+                for (l = 0; l < Nq; l++) {
+
+                    /// Powertrain ///
+                    // Wheel power
+                    Pwh = Vin[i] * Fin[k];
+
+                    // First determine if the Pwh has already exceeded the limit
+                    // Acceleration
+                    if (Pwh > 0) {
+                        if (Pwh > PAmax)                    // if the wheel power exceeds the limit...
+                        {
+                            InfFlag[i][j][k][l] = 1;                // mark it as 'infeasible'
+                            continue;
+                        }
+
+                        Pm = Pwh / eta_trans;
+                        Pinv = ((1 - alpha1) - sqrt((alpha1 - 1) * (alpha1 - 1) - 4 * alpha2 * (alpha0 + Pm))) /
+                               (2 * alpha2);
+                        Pdc = Pinv / eta_dc;
+                    }
+                        // Deceleration
+                    else {
+                        if (Pwh < PDmax) {
+                            InfFlag[i][j][k][l] = 1;
+                            continue;
+                        }
+                        Pm = Pwh * eta_trans;
+                        Pinv = ((1 - alpha1) - sqrt((alpha1 - 1) * (alpha1 - 1) - 4 * alpha2 * (alpha0 + Pm))) /
+                               (2 * alpha2);
+                        Pdc = Pinv * eta_dc;
+                    }
+
+                    // HVAC power
+                    // Heating or Cooling
+                    if (Qin[l] > 0) {
+                        Phvac = Qin[l] / CoP_pos;
+                    } else if (Qin[l] == 0) {
+                        Phvac = 0;
+                    } else {
+                        Phvac = Qin[l] / CoP_neg;
+                    }
+
+                    // Check if Phvac exceeds the limits
+                    if (Phvac > PACmax) {
+                        InfFlag[i][j][k][l] = 1;
+                        continue;
+                    }
+
+                    // Check if Tinlet exceeds the limits
+                    Tinlet = Tin[j] + Qin[l] / (Cp * rho * mDot);
+                    if (Tinlet > Tmax_inlet || Tinlet < Tmin_inlet) {
+                        InfFlag[i][j][k][l] = 1;
+                        continue;
+                    }
+
+                    // Calculate the power of the battery
+                    Ps = Pdc + Phvac;
+                    Pbatt = (1 - sqrt(1 - 4 * beta0 * Ps)) / (2 * beta0);
+
+                    /// Speed Dynamics ///
+                    // Calculate the speed dynamics
+                    real_T V_squared = (2 * ds / m) * Fin[k] + (1 - 2 * ds * CdA / m) * Vin[i] * Vin[i] -
+                                       2 * ds * g * (sin(angle) + crr * cos(angle));
+
+                    // Check if the speed squared becomes smaller than 0
+                    if (V_squared < 0) {
+                        InfFlag[i][j][k][l] = 1;
+                        continue;
+                    }
+
+                    // Speed at the next step
+                    Xnext[i][j][k][l].V = sqrt(V_squared);
+
+                    // Check if the speed result is inside the legal speed range and physical speed limits
+                    if (Xnext[i][j][k][l].V > Vmax_end || Xnext[i][j][k][l].V > SolverInputPtr->Constraint.Vmax ||
+                        Xnext[i][j][k][l].V < Vmin_end || Xnext[i][j][k][l].V < SolverInputPtr->Constraint.Vmin) {
+                        InfFlag[i][j][k][l] = 1;
+                        continue;
+                    }
+
+                    // Calculate dt
+                    dt = 2 * ds / (Xnext[i][j][k][l].V + Vin[i]);
+
+                    /// Thermal Dynamics ///
+                    // Temperature at the next step
+                    Xnext[i][j][k][l].T = Tin[j] + (dt / Cth) * (Qin[l] + Qsun + Qpas + (Tamb - Tin[j]) / Rth);
+
+                    // Check if it stays in the cabin temperature limit
+                    if (Xnext[i][j][k][l].T > Tmax_end || Xnext[i][j][k][l].T < Tmin_end) {
+                        InfFlag[i][j][k][l] = 1;
+                        continue;
+                    }
+
+                    /// Arc Cost ///
+                    // ArcCost - added a L2 norm as the penalization
+                    ArcCost[i][j][k][l] = (Pbatt + speedPenalty) * dt +
+                                          thermalPenalty * (Xnext[i][j][k][l].T - T_required) *
+                                          (Xnext[i][j][k][l].T - T_required);
+                }
+            }
+        }
+    }
+
+    // Free the local copies
+    free(Vin);
+    free(Tin);
+    free(Fin);
+    free(Qin);
 }

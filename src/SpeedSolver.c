@@ -36,13 +36,13 @@ typedef struct {
     Coordinate (*startIdx)[NT];                     // All the possible starting indexes [NV][NT]
     uint16_t Nstart;                                // Number of possible starting points
     uint16_t (*Xn)[NV][NT];                         // Optimal State Trajectory [Nhrz][NV][NT]
-    real_T (*Un)[NV][NT];                           // Optimal Control Policy [Nhrz][NV][NT]
+    ControlTuple (*Un)[NV][NT];                           // Optimal Control Policy [Nhrz][NV][NT]
 }
         Solution;
 
 typedef struct {
     real_T (*arcCost)[NT][NV][NT];                  // Vector with arc costs from one to another state [NV][NT][NV][NT]
-    real_T (*arcU)[NT][NV][NT];                     // Vector with instant controls from one to another state [NV][NT][NV][NT]
+    ControlTuple (*arcU)[NT][NV][NT];                     // Vector with instant controls from one to another state [NV][NT][NV][NT]
 #ifdef ADAPTIVEGRID
     real_T (*arcX)[NT][NV][NT];                     // (Used in Adaptive Grid) Vector that notes the possible state to state [NV][NT][NV][NT]
 #endif
@@ -212,7 +212,7 @@ static void solutionStruct_init(Solution *SolutionPtr) {
     SolutionPtr->startIdx = malloc(sizeof(Coordinate[Nv][Nt]));
 
     SolutionPtr->Xn = malloc(sizeof(uint16_t[Nhrz][Nv][Nt]));
-    SolutionPtr->Un = malloc(sizeof(real_T[Nhrz][Nv][Nt]));
+    SolutionPtr->Un = malloc(sizeof(ControlTuple[Nhrz][Nv][Nt]));
 
     uint16_t i, j, l;
 
@@ -277,7 +277,7 @@ static void arcStruct_init(ArcProcess *ArcPtr) {
     uint16_t i, j, k, l;
 
     ArcPtr->arcCost = malloc(sizeof(real_T[Nv][Nt][Nv][Nt]));
-    ArcPtr->arcU = malloc(sizeof(real_T[Nv][Nt][Nv][Nt]));
+    ArcPtr->arcU = malloc(sizeof(ControlTuple[Nv][Nt][Nv][Nt]));
 #ifdef ADAPTIVEGRID
     ArcPtr->arcX = malloc(sizeof(real_T[Nx][Nx]));
 #endif
@@ -377,7 +377,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     // Initialize 4-D arrays [Nv][Nt][Nf][Nq]
     StateTuple (*Xnext)[Nt][Nf][Nq] = malloc(sizeof(StateTuple[Nv][Nt][Nf][Nq]));
     ControlTuple (*Control)[Nt][Nf][Nq] = malloc(sizeof(ControlTuple[Nv][Nt][Nf][Nq]));
-    real_T (*ArcCost)[Nt][Nf][Nq]= malloc(sizeof(real_T[Nv][Nt][Nf][Nq]));
+    real_T (*ArcCost)[Nt][Nf][Nq] = malloc(sizeof(real_T[Nv][Nt][Nf][Nq]));
     uint8_t (*InfFlag)[Nt][Nf][Nq] = malloc(sizeof(uint8_t[Nv][Nt][Nf][Nq]));
 
     // Initialize 2-D arrays
@@ -385,8 +385,8 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
     for (i = 0; i < Nv; i++) {
         for (j = 0; j < Nt; j++) {
-            for (i = 0; i < Nf; i++) {
-                for (j = 0; j < Nq; j++) {
+            for (k = 0; k < Nf; k++) {
+                for (l = 0; l < Nq; l++) {
                     Xnext[i][j][k][l].V = 0;
                     Xnext[i][j][k][l].T = 0;
                     Control[i][j][k][l].F = 0;
@@ -405,10 +405,6 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     // Calculate System Dynamics
     systemDynamics(Xnext, ArcCost, InfFlag, SpeedVec, ForceVec, TempVec, InletVec, V0_index, T0_index, N);
 #endif
-
-    // Local Copy the State and Control grids
-    real_T *StateVecCopy = (real_T *) malloc(Nx * sizeof(real_T));
-    memcpy(StateVecCopy, StateVec, Nx * sizeof(real_T));
 
 #ifdef BOUNDCALIBRATION
     // Adjust the state vector to be fit on the boundary lines
@@ -450,27 +446,29 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     // Count the number of feasible control signals per state
     uint32_t counter;
 
-    for (i = 0; i < Nx; i++) {
-        counter = 0;
-        for (j = 0; j < Nu; j++) {
-            if (InfFlag[i][j] == 1) {
-                ArcCost[i][j] = SolverInputPtr->SolverLimit.infValue;
-                Xnext[i][j] = 0.0;
-            } else {
-                Xnext[i][counter] = Xnext[i][j];
-                ArcCost[i][counter] = ArcCost[i][j];
-                InfFlag[i][counter] = InfFlag[i][j];
-                Control[i][counter] = ControlVec[j];
-
-                // Counting the number of feasible inputs
-                counter++;
+    for (i = 0; i < Nv; i++) {
+        for (j = 0; j < Nt; j++) {
+            counter = 0;
+            for (k = 0; k < Nf; k++) {
+                for (l = 0; l < Nq; l++) {
+                    // If the transition is infeasible
+                    if (InfFlag[i][j][k][l] == 1) {
+                        ArcCost[i][j][k][l] = SolverInputPtr->SolverLimit.infValue;
+                        Xnext[i][j][k][l].V = 0.0;
+                        Xnext[i][j][k][l].T = 0.0;
+                    } else {
+                        *(Xnext[i][j][0] + counter) = Xnext[i][j][k][l];
+                        (*(Control[i][j][0] + counter)).F = ForceVec[k];
+                        (*(Control[i][j][0] + counter)).Q = InletVec[l];
+                        // Counting the number of feasible input combos
+                        counter++;
+                    }
+                }
             }
-        }
-        // Store the number of feasible control inputs per starting state
-        FeasibleCounter[i] = counter;
+            FeasibleCounter[i][j] = counter;
 
 #ifdef ADAPTIVEGRID
-        if (FeasibleCounter[i] > 0) {
+            if (FeasibleCounter[i] > 0) {
             // Start and End indexes of the Box of interest (use findMaxLEQ to find endIdx in this case)
             uint16_t startBox = findMaxLEQ(BoxEdgesCopy, Xnext[i][0], (Nx + 1));
             uint16_t endBox = findMaxLEQ(BoxEdgesCopy, Xnext[i][(FeasibleCounter[i] - 1)], (Nx + 1));
@@ -495,68 +493,57 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
             }
         }
 #endif
+        }
     }
 
 #ifndef ADAPTIVEGRID
 
-    // Interpolate the cost-to-come for states that can be reached
-    for (i = 0; i < Nx; i++) {
+    // Grid gaps
+    real_T dV = SpeedVec[1] - SpeedVec[0];
+    real_T dT = TempVec[1] - TempVec[0];
 
-        /*--- Point to the head of each row ---*/
+    for (i = 0; i < Nv; i++) {
+        for (j = 0; j < Nt; j++) {
 
-        // Arc Cost (after interpolation) from one state to another (point-to-point)
-        real_T *p2pCost = ArcPtr->arcCost[i];
+            // Arc Cost (after picking the nearest-neighbor) from one state to another (point-to-point)
+            real_T *p2pCost = ArcPtr->arcCost[i][j][0];
 
-        // Arc Control values (after interpolation) from one state to another (point-to-point)
-        real_T *p2pControl = ArcPtr->arcU[i];
+            // Arc Control values (after picking the nearest-neighbor) from one state to another (point-to-point)
+            ControlTuple *p2pControl = ArcPtr->arcU[i][j][0];
 
-        // Per starting state (on the grid)
-        // All these values are before interpolation
-        // Xnext are not necessarily on the grid, we want them to be on the grid so that we can calculate cost-to-come grid
-        real_T *Xnext_real = Xnext[i];
-        real_T *ArcCost_real = ArcCost[i];
-        real_T *Control_real = Control[i];
+            // Point to each state (head)
+            StateTuple *Xnext_real = Xnext[i][j][0];
+            ControlTuple *Control_real = Control[i][j][0];
+            real_T *ArcCost_real = ArcCost[i][j][0];
 
-        // If there is only one control input possible
-        if (FeasibleCounter[i] == 1) {
+            for (k = 0; k < Nv; k++) {
+                for (l = 0; l < Nt; l++) {
+                    real_T minDistance = FLT_MAX;
+                    real_T vDistance, tDistance, Distance;
 
-            // Find the nearest possible state on the state grid (Since it is not possible to interpolate with only one state)
-            uint16_t idx = (uint16_t) findNearest(StateVecCopy, Xnext_real[0], Nx);
+                    *(p2pCost + k * Nv + l) = SolverInputPtr->SolverLimit.infValue;
+                    (*(p2pControl + k * Nv + l)).F = SolverInputPtr->SolverLimit.infValue;
+                    (*(p2pControl + k * Nv + l)).Q = SolverInputPtr->SolverLimit.infValue;
 
-            // Store the cost and control to come to this point
-            p2pCost[idx] = ArcCost_real[0];
-            p2pControl[idx] = Control_real[0];
-        } else if (FeasibleCounter[i] > 1) {
-            // Sort the idx in the way the Xnext_real[0] to Xnext_real[FeasibleCounter[i]] is monotonically increasing
-            sortIdx(Xnext_real, idxSort, FeasibleCounter[i]);
+                    for (counter = 0; counter < FeasibleCounter[i][j]; counter++) {
+                        vDistance = (*(Xnext_real + counter)).V - SpeedVec[k];
+                        tDistance = (*(Xnext_real + counter)).T - TempVec[l];
 
-            // Reorder the actual vector based on the calculated idxSort
-            reorderVector(Xnext_real, idxSort, FeasibleCounter[i]);
-            reorderVector(ArcCost_real, idxSort, FeasibleCounter[i]);
-            reorderVector(Control_real, idxSort, FeasibleCounter[i]);
-
-            // Find the range of the states (in the StateVector) that can be reached
-            uint16_t idxMax = (uint16_t) findMaxLEQ(StateVecCopy, Xnext_real[FeasibleCounter[i] - 1], Nx);
-            uint16_t idxMin = (uint16_t) findMinGEQ(StateVecCopy, Xnext_real[0], Nx);
-
-
-            // Linear Interpolation
-            if (idxMax >= idxMin) {
-                // Calculate all the possible arc costs to each state (in the State Vector)
-                LookupTable CostComeTable;
-                lookuptable_init(&CostComeTable, Xnext_real, ArcCost_real, FeasibleCounter[i]);
-                interpolation(&CostComeTable, StateVecCopy + idxMin, p2pCost + idxMin, idxMax - idxMin + 1);
-                lookuptable_free(&CostComeTable);
-
-                // Calculate all the possible arc control signals to each state (in the State Vector)
-                LookupTable ControlComeTable;
-                lookuptable_init(&ControlComeTable, Xnext_real, Control_real, FeasibleCounter[i]);
-                interpolation(&ControlComeTable, StateVecCopy + idxMin, p2pControl + idxMin, idxMax - idxMin + 1);
-                lookuptable_free(&ControlComeTable);
+                        if (vDistance < dV && tDistance < dT) {
+                            Distance = vDistance * vDistance + tDistance * tDistance;
+                            if (Distance < minDistance) {
+                                minDistance = Distance;
+                                *(p2pCost + k * Nv + l) = *(ArcCost_real + counter);
+                                (*(p2pControl + k * Nv + l)).F = (*(Control_real + counter)).F;
+                                (*(p2pControl + k * Nv + l)).Q = (*(Control_real + counter)).Q;
+                            }
+                        }
+                    }
+                }
             }
-
         }
     }
+
 #endif
 
     free(Xnext);
@@ -564,8 +551,6 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     free(InfFlag);
     free(Control);
     free(FeasibleCounter);
-    free(idxSort);
-    free(StateVecCopy);
 #ifdef ADAPTIVEGRID
     free(BoxEdgesCopy);
 #endif
