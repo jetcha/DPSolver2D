@@ -16,6 +16,7 @@
       <w>edem</w>
       <w>fmax</w>
       <w>fmin</w>
+      <w>hvac</w>
       <w>interpo</w>
       <w>interpocounter</w>
       <w>lookuptable</w>
@@ -29,6 +30,7 @@
       <w>pbatt</w>
       <w>phvac</w>
       <w>pinv</w>
+      <w>powertrain</w>
       <w>qinlet</w>
       <w>qmax</w>
       <w>qmaxl</w>
