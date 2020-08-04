@@ -33,16 +33,16 @@ static real_T (*StateGrid)[NV];                     // Adaptive State Grid
 /*--- Private Structure ---*/
 typedef struct {
     real_T (*CostToCome)[NT];                       // The most recent cost-to-come vector [NV][NT]
-    Coordinate (*startIdx)[NT];                     // All the possible starting indexes [NV][NT]
+    Coordinate *startIdx;                           // All the possible starting indexes [NV][NT]
     uint16_t Nstart;                                // Number of possible starting points
-    uint16_t (*Xn)[NV][NT];                         // Optimal State Trajectory [Nhrz][NV][NT]
-    ControlTuple (*Un)[NV][NT];                           // Optimal Control Policy [Nhrz][NV][NT]
+    Coordinate (*Xn)[NV][NT];                         // Optimal State Trajectory [Nhrz][NV][NT]
+    ControlTuple (*Un)[NV][NT];                     // Optimal Control Policy [Nhrz][NV][NT]
 }
         Solution;
 
 typedef struct {
     real_T (*arcCost)[NT][NV][NT];                  // Vector with arc costs from one to another state [NV][NT][NV][NT]
-    ControlTuple (*arcU)[NT][NV][NT];                     // Vector with instant controls from one to another state [NV][NT][NV][NT]
+    ControlTuple (*arcU)[NT][NV][NT];               // Vector with instant controls from one to another state [NV][NT][NV][NT]
 #ifdef ADAPTIVEGRID
     real_T (*arcX)[NT][NV][NT];                     // (Used in Adaptive Grid) Vector that notes the possible state to state [NV][NT][NV][NT]
 #endif
@@ -60,13 +60,14 @@ static void solutionStruct_init(Solution *SolutionPtr);
 static void solutionStruct_free(Solution *SolutionPtr);
 
 // Find the optimal trajectory based on the Cost-to-Come Matrix calculated in calculate_min_costTocome function
-static void findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T Xfmin, real_T Xfmax);
+static void
+findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T Vfmin, real_T Vfmax, real_T Tfmin, real_T Tfmax);
 
 // Provide the Initial State to the Solution Pointer
 static void x0_init(Solution *SolutionPtr, real_T V0, real_T T0);
 
 // Update all the feasible starting states at the current step
-static void updateStartX(Solution *SolutionPtr, real_T *CostToCome);
+static void updateStartX(Solution *SolutionPtr, real_T (*CostToCome)[NT]);
 
 // Initialize Arc Process Pointer
 static void arcStruct_init(ArcProcess *ArcPtr);
@@ -132,11 +133,11 @@ void speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr
     // Give the initial state X0 to the solution structure
     x0_init(&SolutionStruct, V0, T0);
 
-    V0_index = SolutionStruct.startIdx[0][0].X;
-    T0_index = SolutionStruct.startIdx[0][0].Y;
+    V0_index = SolutionStruct.startIdx[0].X;
+    T0_index = SolutionStruct.startIdx[0].Y;
 
-    real_T V0_round = SpeedVec[SolutionStruct.startIdx[0][0].X];
-    real_T T0_round = TempVec[SolutionStruct.startIdx[0][0].Y];
+    real_T V0_round = SpeedVec[SolutionStruct.startIdx[0].X];
+    real_T T0_round = TempVec[SolutionStruct.startIdx[0].Y];
 
     // Print Input Info
     printf("The given initial Speed: %f\n", V0);
@@ -169,7 +170,7 @@ void speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr
     }
 
     // Retrieve the optimal solution
-    findSolution(OutputPtr, &SolutionStruct, Xfmin, Xfmax);
+    findSolution(OutputPtr, &SolutionStruct, Vfmin, Vfmax, Tfmin, Tfmax);
 
 #if defined(NORMALBOUND) || defined(CUSTOMBOUND)
     // Get the boundary line to the output pointer
@@ -177,7 +178,11 @@ void speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr
 #endif
 
     // Print Output Solution
-    printSpeedSolution(SolverInputPtr, X0_round, OutputPtr);
+    printf("Initial Speed: %f\n", V0);
+    printSpeedSolution(SolverInputPtr, OutputPtr);
+    printf("Initial Temperature: %f\n", T0);
+    printThermalSolution(SolverInputPtr, OutputPtr);
+    printf("Minimum Total Cost: %f\n", OutputPtr->Cost);
 
 #ifdef DYNCOUNTER
     printf("(Speed) The number of dynamics computation: %d\n", counterDynamics);
@@ -209,9 +214,9 @@ void speedSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr
 
 static void solutionStruct_init(Solution *SolutionPtr) {
     SolutionPtr->CostToCome = malloc(sizeof(real_T[Nv][Nt]));
-    SolutionPtr->startIdx = malloc(sizeof(Coordinate[Nv][Nt]));
+    SolutionPtr->startIdx = (Coordinate *) malloc(Nv * Nt * sizeof(Coordinate));
 
-    SolutionPtr->Xn = malloc(sizeof(uint16_t[Nhrz][Nv][Nt]));
+    SolutionPtr->Xn = malloc(sizeof(Coordinate[Nhrz][Nv][Nt]));
     SolutionPtr->Un = malloc(sizeof(ControlTuple[Nhrz][Nv][Nt]));
 
     uint16_t i, j, l;
@@ -220,8 +225,8 @@ static void solutionStruct_init(Solution *SolutionPtr) {
     for (i = 0; i < Nv; i++) {
         for (j = 0; j < Nt; j++) {
             SolutionPtr->CostToCome[i][j] = SolverInputPtr->SolverLimit.infValue;
-            SolutionPtr->startIdx[i][j].X = 0;
-            SolutionPtr->startIdx[i][j].Y = 0;
+            SolutionPtr->startIdx[i * Nt + j].X = 0;
+            SolutionPtr->startIdx[i * Nt + j].Y = 0;
         }
     }
 
@@ -229,8 +234,10 @@ static void solutionStruct_init(Solution *SolutionPtr) {
     for (l = 0; l < Nhrz; l++) {
         for (i = 0; i < Nv; i++) {
             for (j = 0; j < Nt; j++) {
-                SolutionPtr->Xn[l][i][j] = 0;
-                SolutionPtr->Un[l][i][j] = NAN;
+                SolutionPtr->Xn[l][i][j].X = 0;
+                SolutionPtr->Xn[l][i][j].Y = 0;
+                SolutionPtr->Un[l][i][j].F = NAN;
+                SolutionPtr->Un[l][i][j].Q = NAN;
             }
         }
     }
@@ -253,23 +260,26 @@ static void x0_init(Solution *SolutionPtr, real_T V0, real_T T0) {
     x = (uint16_t) findNearest(SpeedVec, V0, Nv);
     y = (uint16_t) findNearest(TempVec, T0, Nt);
 
-    SolutionPtr->startIdx[0][0].X = x;
-    SolutionPtr->startIdx[0][0].Y = y;
+    SolutionPtr->startIdx[0].X = x;
+    SolutionPtr->startIdx[0].Y = y;
 
     SolutionPtr->Nstart = 1;
 }
 
-static void updateStartX(Solution *SolutionPtr, real_T *CostToCome) {
+static void updateStartX(Solution *SolutionPtr, real_T (*CostToCome)[NT]) {
     uint16_t counter = 0;
-    uint16_t i;
+    uint16_t i, j;
 
-    for (i = 0; i < Nx; i++) {
-        if (CostToCome[i] < SolverInputPtr->SolverLimit.infValue) {
-            SolutionPtr->startIdx[counter] = i;
-            counter++;
+    // Update the possible starting points at the next step
+    for (i = 0; i < Nv; i++) {
+        for (j = 0; j < Nt; j++) {
+            if (CostToCome[i][j] < SolverInputPtr->SolverLimit.infValue) {
+                SolutionPtr->startIdx[counter].X = i;
+                SolutionPtr->startIdx[counter].Y = j;
+                counter++;
+            }
         }
     }
-    // Update the number of possible starting points at the next step
     SolutionPtr->Nstart = counter;
 }
 
@@ -288,7 +298,8 @@ static void arcStruct_init(ArcProcess *ArcPtr) {
             for (k = 0; k < Nv; k++) {
                 for (l = 0; l < Nt; l++) {
                     ArcPtr->arcCost[i][j][k][l] = SolverInputPtr->SolverLimit.infValue;
-                    ArcPtr->arcU[i][j][k][l] = 0;
+                    ArcPtr->arcU[i][j][k][l].F = 0;
+                    ArcPtr->arcU[i][j][k][l].Q = 0;
 #ifdef ADAPTIVEGRID
                     ArcPtr->arcX[i][j] = 0.0;
 #endif
@@ -316,53 +327,62 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
     // Calculate Arc Costs
     calculate_arc_cost(&ArcStruct, N);
 
-    // Initialize cost-to-come vector
-    real_T *CostToCome = malloc(Nx * sizeof(real_T));
+    // Initialize cost-to-come [Nv][Nt]
+    real_T (*CostToCome)[Nt] = malloc(sizeof(real_T[Nv][Nt]));
     // used to store all the possible cost-to-come values to reach each state
-    real_T *CostToBeComp = malloc(Nx * sizeof(real_T));
+    real_T (*CostToBeComp)[Nt] = malloc(sizeof(real_T[Nv][Nt]));
 
-    uint16_t i;
-    uint16_t j;
+    uint16_t i, j, k, l;
 
-    // Initialize the Cost-to-Come Value at the current State Vector
-    for (i = 0; i < Nx; i++) {
-        CostToCome[i] = SolverInputPtr->SolverLimit.infValue;
+    // Initialize the Cost-to-Come Value
+    for (i = 0; i < Nv; i++) {
+        for (j = 0; j < Nt; j++) {
+            CostToCome[i][j] = SolverInputPtr->SolverLimit.infValue;
+        }
     }
 
-    for (i = 0; i < SolutionPtr->Nstart; i++) {
-        uint16_t startIdx = SolutionPtr->startIdx[i];
+    for (int n = 0; n < SolutionPtr->Nstart; n++) {
+        uint16_t startIdxV = SolutionPtr->startIdx[n].X;
+        uint16_t startIdxT = SolutionPtr->startIdx[n].Y;
 
-        // If it is at the initial point
+        // If it is the initial point
         if (N == 0) {
             // Since it is the first step, simply use arc costs as cost-to-come (from the starting index)
-            memcpy(CostToBeComp, ArcStruct.arcCost[startIdx], Nx * sizeof(real_T));
-        }
-            // If it is not the initial state
-        else {
-            // we need to add the cost-to-come values to the arc costs
-            for (j = 0; j < Nx; j++) {
-                CostToBeComp[j] = SolutionPtr->CostToCome[startIdx] + ArcStruct.arcCost[startIdx][j];
+            // TODO: Check if this is the correct way of copying
+            memcpy(CostToBeComp, ArcStruct.arcCost[startIdxV][startIdxT][0], Nv * Nt * sizeof(real_T));
+        } else {
+            // We need to add the cost-to-some values to the arc costs
+            for (i = 0; i < Nv; i++) {
+                for (j = 0; j < Nt; j++) {
+                    CostToBeComp[i][j] = SolutionPtr->CostToCome[startIdxV][startIdxT] +
+                                         ArcStruct.arcCost[startIdxV][startIdxT][i][j];
+                }
             }
         }
 
         // Pick the minimum cost to be the cost-to-come value
-        for (j = 0; j < Nx; j++) {
-            if (CostToBeComp[j] < CostToCome[j]) {
-                SolutionPtr->Xn[N][j] = startIdx;
-                SolutionPtr->Un[N][j] = ArcStruct.arcU[startIdx][j];
-                CostToCome[j] = CostToBeComp[j];
+        for (i = 0; i < Nv; i++) {
+            for (j = 0; j < Nt; j++) {
+                if (CostToBeComp[i][j] < CostToCome[i][j]) {
+                    SolutionPtr->Xn[N][i][j].X = startIdxV;
+                    SolutionPtr->Xn[N][i][j].Y = startIdxT;
+                    SolutionPtr->Un[N][i][j].F = ArcStruct.arcU[startIdxV][startIdxT][i][j].F;
+                    SolutionPtr->Un[N][i][j].F = ArcStruct.arcU[startIdxV][startIdxT][i][j].Q;
+                    CostToCome[i][j] = CostToBeComp[i][j];
 #ifdef ADAPTIVEGRID
-                StateGrid[N + 1][j] = ArcStruct.arcX[startIdx][j];
+                    StateGrid[N + 1][j] = ArcStruct.arcX[startIdx][j];
 #endif
+                }
             }
         }
     }
 
-    // Obtain the number of possible starting points at the next step.
+
+    // Obtain the possible starting points at the next step.
     updateStartX(SolutionPtr, CostToCome);
 
     // Copy the output back
-    memcpy(SolutionPtr->CostToCome, CostToCome, Nx * sizeof(real_T));
+    memcpy(SolutionPtr->CostToCome, CostToCome, Nv * Nt * sizeof(real_T));
 
     // Free the intermediate memory
     free(CostToCome);
@@ -556,23 +576,22 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 #endif
 }
 
-static void findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T Xfmin, real_T Xfmax) {
-
-    // Find the index range within the final state constraints
-    uint16_t minIdx = (uint16_t) findMinGEQ(StateVec, Xfmin, Nx);
-    uint16_t maxIdx = (uint16_t) findMaxLEQ(StateVec, Xfmax, Nx);
+static void
+findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T Vfmin, real_T Vfmax, real_T Tfmin, real_T Tfmax) {
 
     real_T minCost = SolverInputPtr->SolverLimit.infValue;
 
-    uint16_t i;
-    int16_t k;
-    uint16_t finalIdx;
+    uint16_t i, j, k;
+    Coordinate finalIdx;
 
     // Compare all the possible final cost-to-come values, take the minimum one as the minimum total cost
-    for (i = minIdx; i <= maxIdx; i++) {
-        if (SolutionPtr->CostToCome[i] < minCost) {
-            minCost = SolutionPtr->CostToCome[i];
-            finalIdx = i;
+    for (i = 0; i <= Nv; i++) {
+        for (j = 0; j < Nt; j++) {
+            if (SolutionPtr->CostToCome[i][j] < minCost) {
+                minCost = SolutionPtr->CostToCome[i][j];
+                finalIdx.X = i;
+                finalIdx.Y = j;
+            }
         }
     }
 
@@ -580,7 +599,7 @@ static void findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T 
     OutputPtr->Cost = minCost;
 
     // Memory for the optimal state trajectory
-    uint16_t *optimalstateIdx = (uint16_t *) calloc(Nhrz + 1, sizeof(uint16_t));
+    Coordinate *optimalstateIdx = (Coordinate *) calloc(Nhrz + 1, sizeof(Coordinate));
 
     // Load the final state index
     optimalstateIdx[Nhrz] = finalIdx;
@@ -591,7 +610,7 @@ static void findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T 
         k = Nhrz - 1;
 
         while (k >= 0) {
-            optimalstateIdx[k] = SolutionPtr->Xn[k][optimalstateIdx[k + 1]];
+            optimalstateIdx[k] = SolutionPtr->Xn[k][optimalstateIdx[k + 1].X][optimalstateIdx[k + 1].Y];
             k--;
         }
 
@@ -612,9 +631,11 @@ static void findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T 
                 OutputPtr->Vo[i] = StateVec[optimalstateIdx[i + 1]];
             }
 #else
-            OutputPtr->Vo[i] = StateVec[optimalstateIdx[i + 1]];
+            OutputPtr->Vo[i] = SpeedVec[optimalstateIdx[i + 1].X];
+            OutputPtr->To[i] = TempVec[optimalstateIdx[i + 1].Y];
 #endif
-            OutputPtr->Fo[i] = SolutionPtr->Un[i][optimalstateIdx[i + 1]];
+            OutputPtr->Fo[i] = SolutionPtr->Un[i][optimalstateIdx[i + 1].X][optimalstateIdx[i + 1].Y].F;
+            OutputPtr->Qo[i] = SolutionPtr->Un[i][optimalstateIdx[i + 1].X][optimalstateIdx[i + 1].Y].Q;
         }
     }
 

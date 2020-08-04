@@ -7,7 +7,7 @@ MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, Solver
 
     /*--- Cascading DP solver fashion ---*/
     // Speed Solver part
-    speedSolver(InputPtr, ParaPtr, EnvPtr, OutputPtr, V0, Vfmin, Vfmax);
+    speedSolver(InputPtr, ParaPtr, EnvPtr, OutputPtr, V0, T0, Vfmin, Vfmax, Tfmin, Tfmax);
 
 //    // Bridge Connection
 //    Bridge BridgeStruct;

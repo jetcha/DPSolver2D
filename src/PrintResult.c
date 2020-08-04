@@ -27,7 +27,7 @@ void printInputInfo(real_T *StateVec, real_T *ControlVec, uint16_t Nx, uint16_t 
     printf("\n\n");
 }
 
-void printSpeedSolution(SolverInput *InputPtr, real_T X0_round, SolverOutput *OutputPtr) {
+void printSpeedSolution(SolverInput *InputPtr, SolverOutput *OutputPtr) {
     // Make local copies of Grid sizes
     uint16_t Nhrz = HORIZON;
     uint16_t i;
@@ -35,7 +35,6 @@ void printSpeedSolution(SolverInput *InputPtr, real_T X0_round, SolverOutput *Ou
     printf(" -- Output --\n\n");
 
     printf("Optimal Speed Trajectory: \n");
-    printf("Initial Speed: %f \n", X0_round);
     for (i = 0; i < Nhrz; i++) {
         printf("%f ", OutputPtr->Vo[i]);
         if (i % 10 == 9) {
@@ -44,7 +43,7 @@ void printSpeedSolution(SolverInput *InputPtr, real_T X0_round, SolverOutput *Ou
     }
     printf("\n");
 
-    printf("Optimal Control Trajectory: \n");
+    printf("Optimal Force Trajectory: \n");
     for (i = 0; i < Nhrz; i++) {
         printf("%f ", OutputPtr->Fo[i]);
         if (i % 10 == 9) {
@@ -52,19 +51,16 @@ void printSpeedSolution(SolverInput *InputPtr, real_T X0_round, SolverOutput *Ou
         }
     }
     printf("\n");
-
-    printf("Minimum Total Cost: %f\n", OutputPtr->Cost);
 }
 
-void printThermalSolution(SolverInput *InputPtr, real_T X0_round, SolverOutput *OutputPtr) {
+void printThermalSolution(SolverInput *InputPtr, SolverOutput *OutputPtr) {
     // Make local copies of Grid sizes
-    uint16_t Nhrz = RES_THERMAL;
+    uint16_t Nhrz = HORIZON;
     uint16_t i;
 
     printf(" -- Output --\n\n");
 
     printf("Optimal Temperature Trajectory: \n");
-    printf("Initial Temperature: %f \n", X0_round);
     for (i = 0; i < Nhrz; i++) {
         printf("%f ", OutputPtr->To[i]);
         if (i % 10 == 9) {
@@ -73,7 +69,7 @@ void printThermalSolution(SolverInput *InputPtr, real_T X0_round, SolverOutput *
     }
     printf("\n");
 
-    printf("Optimal Control Trajectory: \n");
+    printf("Optimal Temp Inlet Trajectory: \n");
     for (i = 0; i < Nhrz; i++) {
         printf("%f ", OutputPtr->Qo[i]);
         if (i % 10 == 9) {
@@ -81,6 +77,4 @@ void printThermalSolution(SolverInput *InputPtr, real_T X0_round, SolverOutput *
         }
     }
     printf("\n");
-
-    printf("Minimum Total Cost: %f\n", OutputPtr->Cost);
 }

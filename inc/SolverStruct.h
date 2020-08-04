@@ -18,19 +18,19 @@
 #define NF 500
 #define NT 500
 #define NQ 100
-#define HORIZON 1000
-#define RES_THERMAL 100
+#define HORIZON 250
+#define RES_THERMAL 250
 #define BLOCK 5
 
 
 // Choose pre-defined scenario (SCENE1/SCENE2)
 #define SCENE1
 // Turn on/off the counter of dynamics computation
-#define DYNCOUNTER
+//#define DYNCOUNTER
 // Turn on/off the counter of interpolation computation
-#define INTERPOCOUNTER
+//#define INTERPOCOUNTER
 // Turn on/off the counter of boundary calculations
-#define BOUNDCOUNTER
+//#define BOUNDCOUNTER
 // Choose the boundary line mode (NOBOUND/NORMALBOUND/CUSTOMBOUND)
 #define NOBOUND
 // Turn on/off boundary calibration
@@ -138,8 +138,8 @@ typedef struct {
     real_T Cost;                                // Total Cost
     real_T Vo[HORIZON];                         // Optimal Speed Trajectory
     real_T Fo[HORIZON];                         // Optimal Speed Control Policy
-    real_T To[RES_THERMAL];                     // Optimal Thermal Trajectory
-    real_T Qo[RES_THERMAL];                     // Optimal Thermal Control Policy
+    real_T To[HORIZON];                     // Optimal Thermal Trajectory
+    real_T Qo[HORIZON];                     // Optimal Thermal Control Policy
 
 #if defined(NORMALBOUND) || defined(CUSTOMBOUND)
     real_T upperSpeedBound[HORIZON + 1];        // Upper Speed Boundary Line
