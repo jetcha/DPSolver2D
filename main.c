@@ -87,27 +87,27 @@ int main() {
     // Initial Speed
     V0 = 0 / 3.6;
     // Initial Temperature
-    T0 = 30;
+    T0 = 26;
 
     real_T Vmax_GPS_1 = 50 / 3.6;
     real_T Vmin_GPS_1 = 0 / 3.6;
     real_T T_required_1 = 25;
-    uint16_t endBlock_1 = 100;
+    uint16_t endBlock_1 = 50;
 
     real_T Vmax_GPS_2 = 80 / 3.6;
     real_T Vmin_GPS_2 = 30 / 3.6;
     real_T T_required_2 = 25;
-    uint16_t endBlock_2 = 250;
+    uint16_t endBlock_2 = 100;
 
     real_T Vmax_GPS_3 = 130 / 3.6;
     real_T Vmin_GPS_3 = 60 / 3.6;
     real_T T_required_3 = 25;
-    uint16_t endBlock_3 = 750;
+    uint16_t endBlock_3 = 150;
 
     real_T Vmax_GPS_4 = 80 / 3.6;
     real_T Vmin_GPS_4 = 30 / 3.6;
     real_T T_required_4 = 25;
-    uint16_t endBlock_4 = 850;
+    uint16_t endBlock_4 = 200;
 
     real_T Vmax_GPS_5 = 50 / 3.6;
     real_T Vmin_GPS_5 = 0 / 3.6;

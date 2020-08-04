@@ -7,5 +7,5 @@
 
 /*--- Public Functions ---*/
 // Thermal Solver part
-void thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr,
-                   Bridge *BridgePtr, real_T X0, real_T Xfmin, real_T Xfmax);
+//void thermalSolver(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr,
+//                   Bridge *BridgePtr, real_T X0, real_T Xfmin, real_T Xfmax);

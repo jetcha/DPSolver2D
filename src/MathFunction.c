@@ -122,10 +122,6 @@ real_T extrapolation(real_T *XData, real_T *YData, real_T *Xn, real_T *Yn, uint8
     return Yn[0];
 }
 
-Coordinate findNearest2D(real_T *VectorX, real_T *VectorY, real_T ValueX, real_T ValueY, uint32_t length){
-    Coordinate nearestCoordinate;
-}
-
 uint32_t findNearest(real_T *Vector, real_T Value, uint32_t length) {
     real_T minError = FLT_MAX;
     real_T currentError;
