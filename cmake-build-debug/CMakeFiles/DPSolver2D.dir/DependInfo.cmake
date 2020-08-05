@@ -10,9 +10,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "E:/Thesis_Project/DPSolver2D/src/MathFunction.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/MathFunction.c.obj"
   "E:/Thesis_Project/DPSolver2D/src/PrintResult.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/PrintResult.c.obj"
   "E:/Thesis_Project/DPSolver2D/src/SolverAlgorithm.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj"
-  "E:/Thesis_Project/DPSolver2D/src/SpeedSolver.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.obj"
   "E:/Thesis_Project/DPSolver2D/src/SystemDynamic.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/SystemDynamic.c.obj"
-  "E:/Thesis_Project/DPSolver2D/src/ThermalSolver.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/ThermalSolver.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

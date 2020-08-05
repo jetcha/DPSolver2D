@@ -7,9 +7,7 @@ CMakeFiles/DPSolver2D.dir/main.c.obj: ../inc/MathFunction.h
 CMakeFiles/DPSolver2D.dir/main.c.obj: ../inc/PrintResult.h
 CMakeFiles/DPSolver2D.dir/main.c.obj: ../inc/SolverAlgorithm.h
 CMakeFiles/DPSolver2D.dir/main.c.obj: ../inc/SolverStruct.h
-CMakeFiles/DPSolver2D.dir/main.c.obj: ../inc/SpeedSolver.h
 CMakeFiles/DPSolver2D.dir/main.c.obj: ../inc/SystemDynamic.h
-CMakeFiles/DPSolver2D.dir/main.c.obj: ../inc/ThermalSolver.h
 CMakeFiles/DPSolver2D.dir/main.c.obj: ../main.c
 
 CMakeFiles/DPSolver2D.dir/src/AdaptiveGrid.c.obj: ../inc/AdaptiveGrid.h
@@ -34,25 +32,12 @@ CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj: ../inc/MathFunction.h
 CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj: ../inc/PrintResult.h
 CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj: ../inc/SolverAlgorithm.h
 CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj: ../inc/SolverStruct.h
-CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj: ../inc/SpeedSolver.h
 CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj: ../inc/SystemDynamic.h
-CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj: ../inc/ThermalSolver.h
 CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj: ../src/SolverAlgorithm.c
-
-CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.obj: ../inc/AdaptiveGrid.h
-CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.obj: ../inc/BoundaryLine.h
-CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.obj: ../inc/MathFunction.h
-CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.obj: ../inc/PrintResult.h
-CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.obj: ../inc/SolverStruct.h
-CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.obj: ../inc/SpeedSolver.h
-CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.obj: ../inc/SystemDynamic.h
-CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.obj: ../src/SpeedSolver.c
 
 CMakeFiles/DPSolver2D.dir/src/SystemDynamic.c.obj: ../inc/BoundaryLine.h
 CMakeFiles/DPSolver2D.dir/src/SystemDynamic.c.obj: ../inc/MathFunction.h
 CMakeFiles/DPSolver2D.dir/src/SystemDynamic.c.obj: ../inc/SolverStruct.h
 CMakeFiles/DPSolver2D.dir/src/SystemDynamic.c.obj: ../inc/SystemDynamic.h
 CMakeFiles/DPSolver2D.dir/src/SystemDynamic.c.obj: ../src/SystemDynamic.c
-
-CMakeFiles/DPSolver2D.dir/src/ThermalSolver.c.obj: ../src/ThermalSolver.c
 

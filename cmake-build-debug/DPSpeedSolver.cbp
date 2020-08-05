@@ -94,13 +94,7 @@
 		<Unit filename="E:/Thesis_Project/DPSolver2D/inc/SolverStruct.h">
 			<Option target="DPSolver2D"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPSolver2D/inc/SpeedSolver.h">
-			<Option target="DPSolver2D"/>
-		</Unit>
 		<Unit filename="E:/Thesis_Project/DPSolver2D/inc/SystemDynamic.h">
-			<Option target="DPSolver2D"/>
-		</Unit>
-		<Unit filename="E:/Thesis_Project/DPSolver2D/inc/ThermalSolver.h">
 			<Option target="DPSolver2D"/>
 		</Unit>
 		<Unit filename="E:/Thesis_Project/DPSolver2D/main.c">
@@ -121,13 +115,7 @@
 		<Unit filename="E:/Thesis_Project/DPSolver2D/src/SolverAlgorithm.c">
 			<Option target="DPSolver2D"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPSolver2D/src/SpeedSolver.c">
-			<Option target="DPSolver2D"/>
-		</Unit>
 		<Unit filename="E:/Thesis_Project/DPSolver2D/src/SystemDynamic.c">
-			<Option target="DPSolver2D"/>
-		</Unit>
-		<Unit filename="E:/Thesis_Project/DPSolver2D/src/ThermalSolver.c">
 			<Option target="DPSolver2D"/>
 		</Unit>
 		<Unit filename="E:/Thesis_Project/DPSolver2D/CMakeLists.txt">

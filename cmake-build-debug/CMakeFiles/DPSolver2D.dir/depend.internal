@@ -8,9 +8,7 @@ CMakeFiles/DPSolver2D.dir/main.c.obj
  E:/Thesis_Project/DPSolver2D/inc/PrintResult.h
  E:/Thesis_Project/DPSolver2D/inc/SolverAlgorithm.h
  E:/Thesis_Project/DPSolver2D/inc/SolverStruct.h
- E:/Thesis_Project/DPSolver2D/inc/SpeedSolver.h
  E:/Thesis_Project/DPSolver2D/inc/SystemDynamic.h
- E:/Thesis_Project/DPSolver2D/inc/ThermalSolver.h
  E:/Thesis_Project/DPSolver2D/main.c
 CMakeFiles/DPSolver2D.dir/src/AdaptiveGrid.c.obj
  E:/Thesis_Project/DPSolver2D/inc/AdaptiveGrid.h
@@ -35,24 +33,11 @@ CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj
  E:/Thesis_Project/DPSolver2D/inc/PrintResult.h
  E:/Thesis_Project/DPSolver2D/inc/SolverAlgorithm.h
  E:/Thesis_Project/DPSolver2D/inc/SolverStruct.h
- E:/Thesis_Project/DPSolver2D/inc/SpeedSolver.h
  E:/Thesis_Project/DPSolver2D/inc/SystemDynamic.h
- E:/Thesis_Project/DPSolver2D/inc/ThermalSolver.h
  E:/Thesis_Project/DPSolver2D/src/SolverAlgorithm.c
-CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.obj
- E:/Thesis_Project/DPSolver2D/inc/AdaptiveGrid.h
- E:/Thesis_Project/DPSolver2D/inc/BoundaryLine.h
- E:/Thesis_Project/DPSolver2D/inc/MathFunction.h
- E:/Thesis_Project/DPSolver2D/inc/PrintResult.h
- E:/Thesis_Project/DPSolver2D/inc/SolverStruct.h
- E:/Thesis_Project/DPSolver2D/inc/SpeedSolver.h
- E:/Thesis_Project/DPSolver2D/inc/SystemDynamic.h
- E:/Thesis_Project/DPSolver2D/src/SpeedSolver.c
 CMakeFiles/DPSolver2D.dir/src/SystemDynamic.c.obj
  E:/Thesis_Project/DPSolver2D/inc/BoundaryLine.h
  E:/Thesis_Project/DPSolver2D/inc/MathFunction.h
  E:/Thesis_Project/DPSolver2D/inc/SolverStruct.h
  E:/Thesis_Project/DPSolver2D/inc/SystemDynamic.h
  E:/Thesis_Project/DPSolver2D/src/SystemDynamic.c
-CMakeFiles/DPSolver2D.dir/src/ThermalSolver.c.obj
- E:/Thesis_Project/DPSolver2D/src/ThermalSolver.c

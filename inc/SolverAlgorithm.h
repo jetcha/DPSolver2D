@@ -1,7 +1,6 @@
 #include "SolverStruct.h"
 #include "MathFunction.h"
-#include "SpeedSolver.h"
-#include "ThermalSolver.h"
+#include "SystemDynamic.h"
 #include "BoundaryLine.h"
 #include "AdaptiveGrid.h"
 #include "PrintResult.h"
@@ -18,6 +17,5 @@
 // real_T Tfmax:				Upper bound for the final temperature
 // real_T Tfmin:				Lower bound for the final temperature
 
-void
-MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr, real_T V0, real_T T0,
-         real_T Vfmin, real_T Vfmax, real_T Tfmin, real_T Tfmax);
+void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, SolverOutput *OutputPtr, real_T V0, real_T T0,
+                 real_T Vfmin, real_T Vfmax, real_T Tfmin, real_T Tfmax);

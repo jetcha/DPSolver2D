@@ -304,33 +304,6 @@ src/SolverAlgorithm.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.s
 .PHONY : src/SolverAlgorithm.c.s
 
-src/SpeedSolver.obj: src/SpeedSolver.c.obj
-
-.PHONY : src/SpeedSolver.obj
-
-# target to build an object file
-src/SpeedSolver.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.obj
-.PHONY : src/SpeedSolver.c.obj
-
-src/SpeedSolver.i: src/SpeedSolver.c.i
-
-.PHONY : src/SpeedSolver.i
-
-# target to preprocess a source file
-src/SpeedSolver.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.i
-.PHONY : src/SpeedSolver.c.i
-
-src/SpeedSolver.s: src/SpeedSolver.c.s
-
-.PHONY : src/SpeedSolver.s
-
-# target to generate assembly for a file
-src/SpeedSolver.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.s
-.PHONY : src/SpeedSolver.c.s
-
 src/SystemDynamic.obj: src/SystemDynamic.c.obj
 
 .PHONY : src/SystemDynamic.obj
@@ -357,33 +330,6 @@ src/SystemDynamic.s: src/SystemDynamic.c.s
 src/SystemDynamic.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/SystemDynamic.c.s
 .PHONY : src/SystemDynamic.c.s
-
-src/ThermalSolver.obj: src/ThermalSolver.c.obj
-
-.PHONY : src/ThermalSolver.obj
-
-# target to build an object file
-src/ThermalSolver.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/ThermalSolver.c.obj
-.PHONY : src/ThermalSolver.c.obj
-
-src/ThermalSolver.i: src/ThermalSolver.c.i
-
-.PHONY : src/ThermalSolver.i
-
-# target to preprocess a source file
-src/ThermalSolver.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/ThermalSolver.c.i
-.PHONY : src/ThermalSolver.c.i
-
-src/ThermalSolver.s: src/ThermalSolver.c.s
-
-.PHONY : src/ThermalSolver.s
-
-# target to generate assembly for a file
-src/ThermalSolver.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/ThermalSolver.c.s
-.PHONY : src/ThermalSolver.c.s
 
 # Help Target
 help:
@@ -412,15 +358,9 @@ help:
 	@echo ... src/SolverAlgorithm.obj
 	@echo ... src/SolverAlgorithm.i
 	@echo ... src/SolverAlgorithm.s
-	@echo ... src/SpeedSolver.obj
-	@echo ... src/SpeedSolver.i
-	@echo ... src/SpeedSolver.s
 	@echo ... src/SystemDynamic.obj
 	@echo ... src/SystemDynamic.i
 	@echo ... src/SystemDynamic.s
-	@echo ... src/ThermalSolver.obj
-	@echo ... src/ThermalSolver.i
-	@echo ... src/ThermalSolver.s
 .PHONY : help
 
 
