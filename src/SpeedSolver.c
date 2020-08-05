@@ -298,6 +298,7 @@ static void arcStruct_init(ArcProcess *ArcPtr) {
             for (k = 0; k < Nv; k++) {
                 for (l = 0; l < Nt; l++) {
                     ArcPtr->arcCost[i][j][k][l] = SolverInputPtr->SolverLimit.infValue;
+                    //real_T a = ArcPtr->arcCost[i * Nt + j * Nv + k * Nt + l][0][0][0];
                     ArcPtr->arcU[i][j][k][l].F = 0;
                     ArcPtr->arcU[i][j][k][l].Q = 0;
 #ifdef ADAPTIVEGRID
@@ -367,7 +368,7 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
                     SolutionPtr->Xn[N][i][j].X = startIdxV;
                     SolutionPtr->Xn[N][i][j].Y = startIdxT;
                     SolutionPtr->Un[N][i][j].F = ArcStruct.arcU[startIdxV][startIdxT][i][j].F;
-                    SolutionPtr->Un[N][i][j].F = ArcStruct.arcU[startIdxV][startIdxT][i][j].Q;
+                    SolutionPtr->Un[N][i][j].Q = ArcStruct.arcU[startIdxV][startIdxT][i][j].Q;
                     CostToCome[i][j] = CostToBeComp[i][j];
 #ifdef ADAPTIVEGRID
                     StateGrid[N + 1][j] = ArcStruct.arcX[startIdx][j];
@@ -556,6 +557,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
                                 *(p2pCost + k * Nv + l) = *(ArcCost_real + counter);
                                 (*(p2pControl + k * Nv + l)).F = (*(Control_real + counter)).F;
                                 (*(p2pControl + k * Nv + l)).Q = (*(Control_real + counter)).Q;
+                                //printf("Arc Q: %f\n", (*(p2pControl + k * Nv + l)).Q);
                             }
                         }
                     }
@@ -563,6 +565,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
             }
         }
     }
+
 
 #endif
 
@@ -581,11 +584,12 @@ findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T Vfmin, real_
 
     real_T minCost = SolverInputPtr->SolverLimit.infValue;
 
-    uint16_t i, j, k;
+    uint16_t i, j;
+    int16_t k;
     Coordinate finalIdx;
 
     // Compare all the possible final cost-to-come values, take the minimum one as the minimum total cost
-    for (i = 0; i <= Nv; i++) {
+    for (i = 0; i < Nv; i++) {
         for (j = 0; j < Nt; j++) {
             if (SolutionPtr->CostToCome[i][j] < minCost) {
                 minCost = SolutionPtr->CostToCome[i][j];

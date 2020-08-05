@@ -14,10 +14,10 @@
 
 // Problem sizes
 // TODO: These values require to be the same as defined in MatLab
-#define NV 200
-#define NF 500
-#define NT 500
-#define NQ 100
+#define NV 30
+#define NF 30
+#define NT 30
+#define NQ 30
 #define HORIZON 250
 #define RES_THERMAL 250
 #define BLOCK 5
