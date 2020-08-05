@@ -85,9 +85,9 @@ int main() {
 
 #ifdef SCENE1
     // Initial Speed
-    V0 = 0 / 3.6;
+    V0 = 40 / 3.6;
     // Initial Temperature
-    T0 = 26;
+    T0 = 25;
 
     real_T Vmax_GPS_1 = 50 / 3.6;
     real_T Vmin_GPS_1 = 0 / 3.6;
