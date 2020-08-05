@@ -1,5 +1,5 @@
 #include "./inc/SolverStruct.h"
-#include "./inc/BasicAlgorithm.h"
+#include "./inc/SolverAlgorithm.h"
 
 int main() {
     /*----------------------*/

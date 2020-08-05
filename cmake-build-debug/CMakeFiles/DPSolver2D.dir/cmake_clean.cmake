@@ -1,10 +1,10 @@
 file(REMOVE_RECURSE
   "CMakeFiles/DPSolver2D.dir/main.c.obj"
   "CMakeFiles/DPSolver2D.dir/src/AdaptiveGrid.c.obj"
-  "CMakeFiles/DPSolver2D.dir/src/BasicAlgorithm.c.obj"
   "CMakeFiles/DPSolver2D.dir/src/BoundaryLine.c.obj"
   "CMakeFiles/DPSolver2D.dir/src/MathFunction.c.obj"
   "CMakeFiles/DPSolver2D.dir/src/PrintResult.c.obj"
+  "CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj"
   "CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.obj"
   "CMakeFiles/DPSolver2D.dir/src/SystemDynamic.c.obj"
   "CMakeFiles/DPSolver2D.dir/src/ThermalSolver.c.obj"

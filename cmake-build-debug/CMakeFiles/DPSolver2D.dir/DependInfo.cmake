@@ -6,10 +6,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_C
   "E:/Thesis_Project/DPSolver2D/main.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/main.c.obj"
   "E:/Thesis_Project/DPSolver2D/src/AdaptiveGrid.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/AdaptiveGrid.c.obj"
-  "E:/Thesis_Project/DPSolver2D/src/BasicAlgorithm.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/BasicAlgorithm.c.obj"
   "E:/Thesis_Project/DPSolver2D/src/BoundaryLine.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/BoundaryLine.c.obj"
   "E:/Thesis_Project/DPSolver2D/src/MathFunction.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/MathFunction.c.obj"
   "E:/Thesis_Project/DPSolver2D/src/PrintResult.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/PrintResult.c.obj"
+  "E:/Thesis_Project/DPSolver2D/src/SolverAlgorithm.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj"
   "E:/Thesis_Project/DPSolver2D/src/SpeedSolver.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/SpeedSolver.c.obj"
   "E:/Thesis_Project/DPSolver2D/src/SystemDynamic.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/SystemDynamic.c.obj"
   "E:/Thesis_Project/DPSolver2D/src/ThermalSolver.c" "E:/Thesis_Project/DPSolver2D/cmake-build-debug/CMakeFiles/DPSolver2D.dir/src/ThermalSolver.c.obj"

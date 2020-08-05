@@ -1,4 +1,4 @@
-#include "../inc/BasicAlgorithm.h"
+#include "../inc/SolverAlgorithm.h"
 
 /*--- Pubic Function Definition ---*/
 void

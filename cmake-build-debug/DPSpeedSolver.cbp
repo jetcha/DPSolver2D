@@ -79,9 +79,6 @@
 		<Unit filename="E:/Thesis_Project/DPSolver2D/inc/AdaptiveGrid.h">
 			<Option target="DPSolver2D"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPSolver2D/inc/BasicAlgorithm.h">
-			<Option target="DPSolver2D"/>
-		</Unit>
 		<Unit filename="E:/Thesis_Project/DPSolver2D/inc/BoundaryLine.h">
 			<Option target="DPSolver2D"/>
 		</Unit>
@@ -89,6 +86,9 @@
 			<Option target="DPSolver2D"/>
 		</Unit>
 		<Unit filename="E:/Thesis_Project/DPSolver2D/inc/PrintResult.h">
+			<Option target="DPSolver2D"/>
+		</Unit>
+		<Unit filename="E:/Thesis_Project/DPSolver2D/inc/SolverAlgorithm.h">
 			<Option target="DPSolver2D"/>
 		</Unit>
 		<Unit filename="E:/Thesis_Project/DPSolver2D/inc/SolverStruct.h">
@@ -109,9 +109,6 @@
 		<Unit filename="E:/Thesis_Project/DPSolver2D/src/AdaptiveGrid.c">
 			<Option target="DPSolver2D"/>
 		</Unit>
-		<Unit filename="E:/Thesis_Project/DPSolver2D/src/BasicAlgorithm.c">
-			<Option target="DPSolver2D"/>
-		</Unit>
 		<Unit filename="E:/Thesis_Project/DPSolver2D/src/BoundaryLine.c">
 			<Option target="DPSolver2D"/>
 		</Unit>
@@ -119,6 +116,9 @@
 			<Option target="DPSolver2D"/>
 		</Unit>
 		<Unit filename="E:/Thesis_Project/DPSolver2D/src/PrintResult.c">
+			<Option target="DPSolver2D"/>
+		</Unit>
+		<Unit filename="E:/Thesis_Project/DPSolver2D/src/SolverAlgorithm.c">
 			<Option target="DPSolver2D"/>
 		</Unit>
 		<Unit filename="E:/Thesis_Project/DPSolver2D/src/SpeedSolver.c">

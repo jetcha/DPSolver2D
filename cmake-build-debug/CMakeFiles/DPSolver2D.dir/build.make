@@ -89,18 +89,18 @@ CMakeFiles/DPSolver2D.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DPSolver2D.dir/main.c.s"
 	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\DPSolver2D\main.c -o CMakeFiles\DPSolver2D.dir\main.c.s
 
-CMakeFiles/DPSolver2D.dir/src/BasicAlgorithm.c.obj: CMakeFiles/DPSolver2D.dir/flags.make
-CMakeFiles/DPSolver2D.dir/src/BasicAlgorithm.c.obj: ../src/BasicAlgorithm.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\DPSolver2D\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/DPSolver2D.dir/src/BasicAlgorithm.c.obj"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPSolver2D.dir\src\BasicAlgorithm.c.obj   -c E:\Thesis_Project\DPSolver2D\src\BasicAlgorithm.c
+CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj: CMakeFiles/DPSolver2D.dir/flags.make
+CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj: ../src/SolverAlgorithm.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Thesis_Project\DPSolver2D\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\DPSolver2D.dir\src\SolverAlgorithm.c.obj   -c E:\Thesis_Project\DPSolver2D\src\SolverAlgorithm.c
 
-CMakeFiles/DPSolver2D.dir/src/BasicAlgorithm.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/DPSolver2D.dir/src/BasicAlgorithm.c.i"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\DPSolver2D\src\BasicAlgorithm.c > CMakeFiles\DPSolver2D.dir\src\BasicAlgorithm.c.i
+CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.i"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E E:\Thesis_Project\DPSolver2D\src\SolverAlgorithm.c > CMakeFiles\DPSolver2D.dir\src\SolverAlgorithm.c.i
 
-CMakeFiles/DPSolver2D.dir/src/BasicAlgorithm.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DPSolver2D.dir/src/BasicAlgorithm.c.s"
-	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\DPSolver2D\src\BasicAlgorithm.c -o CMakeFiles\DPSolver2D.dir\src\BasicAlgorithm.c.s
+CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.s"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S E:\Thesis_Project\DPSolver2D\src\SolverAlgorithm.c -o CMakeFiles\DPSolver2D.dir\src\SolverAlgorithm.c.s
 
 CMakeFiles/DPSolver2D.dir/src/BoundaryLine.c.obj: CMakeFiles/DPSolver2D.dir/flags.make
 CMakeFiles/DPSolver2D.dir/src/BoundaryLine.c.obj: ../src/BoundaryLine.c
@@ -196,7 +196,7 @@ CMakeFiles/DPSolver2D.dir/src/ThermalSolver.c.s: cmake_force
 # Object files for target DPSolver2D
 DPSolver2D_OBJECTS = \
 "CMakeFiles/DPSolver2D.dir/main.c.obj" \
-"CMakeFiles/DPSolver2D.dir/src/BasicAlgorithm.c.obj" \
+"CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj" \
 "CMakeFiles/DPSolver2D.dir/src/BoundaryLine.c.obj" \
 "CMakeFiles/DPSolver2D.dir/src/MathFunction.c.obj" \
 "CMakeFiles/DPSolver2D.dir/src/PrintResult.c.obj" \
@@ -209,7 +209,7 @@ DPSolver2D_OBJECTS = \
 DPSolver2D_EXTERNAL_OBJECTS =
 
 DPSolver2D.exe: CMakeFiles/DPSolver2D.dir/main.c.obj
-DPSolver2D.exe: CMakeFiles/DPSolver2D.dir/src/BasicAlgorithm.c.obj
+DPSolver2D.exe: CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj
 DPSolver2D.exe: CMakeFiles/DPSolver2D.dir/src/BoundaryLine.c.obj
 DPSolver2D.exe: CMakeFiles/DPSolver2D.dir/src/MathFunction.c.obj
 DPSolver2D.exe: CMakeFiles/DPSolver2D.dir/src/PrintResult.c.obj

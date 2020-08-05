@@ -26,6 +26,22 @@ E:/Thesis_Project/DPSolver2D/inc/stdio.h
 SolverStruct.h
 E:/Thesis_Project/DPSolver2D/inc/SolverStruct.h
 
+E:/Thesis_Project/DPSolver2D/inc/SolverAlgorithm.h
+SolverStruct.h
+E:/Thesis_Project/DPSolver2D/inc/SolverStruct.h
+MathFunction.h
+E:/Thesis_Project/DPSolver2D/inc/MathFunction.h
+SpeedSolver.h
+E:/Thesis_Project/DPSolver2D/inc/SpeedSolver.h
+ThermalSolver.h
+E:/Thesis_Project/DPSolver2D/inc/ThermalSolver.h
+BoundaryLine.h
+E:/Thesis_Project/DPSolver2D/inc/BoundaryLine.h
+AdaptiveGrid.h
+E:/Thesis_Project/DPSolver2D/inc/AdaptiveGrid.h
+PrintResult.h
+E:/Thesis_Project/DPSolver2D/inc/PrintResult.h
+
 E:/Thesis_Project/DPSolver2D/inc/SolverStruct.h
 stdlib.h
 E:/Thesis_Project/DPSolver2D/inc/stdlib.h
@@ -60,7 +76,21 @@ E:/Thesis_Project/DPSolver2D/inc/SolverStruct.h
 BoundaryLine.h
 E:/Thesis_Project/DPSolver2D/inc/BoundaryLine.h
 
-E:/Thesis_Project/DPSolver2D/src/SpeedSolver.c
-../inc/SpeedSolver.h
-E:/Thesis_Project/DPSolver2D/inc/SpeedSolver.h
+E:/Thesis_Project/DPSolver2D/inc/ThermalSolver.h
+SolverStruct.h
+E:/Thesis_Project/DPSolver2D/inc/SolverStruct.h
+MathFunction.h
+E:/Thesis_Project/DPSolver2D/inc/MathFunction.h
+SystemDynamic.h
+E:/Thesis_Project/DPSolver2D/inc/SystemDynamic.h
+BoundaryLine.h
+E:/Thesis_Project/DPSolver2D/inc/BoundaryLine.h
+AdaptiveGrid.h
+E:/Thesis_Project/DPSolver2D/inc/AdaptiveGrid.h
+PrintResult.h
+E:/Thesis_Project/DPSolver2D/inc/PrintResult.h
+
+E:/Thesis_Project/DPSolver2D/src/SolverAlgorithm.c
+../inc/SolverAlgorithm.h
+E:/Thesis_Project/DPSolver2D/inc/SolverAlgorithm.h
 

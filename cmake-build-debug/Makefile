@@ -196,33 +196,6 @@ src/AdaptiveGrid.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/AdaptiveGrid.c.s
 .PHONY : src/AdaptiveGrid.c.s
 
-src/BasicAlgorithm.obj: src/BasicAlgorithm.c.obj
-
-.PHONY : src/BasicAlgorithm.obj
-
-# target to build an object file
-src/BasicAlgorithm.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/BasicAlgorithm.c.obj
-.PHONY : src/BasicAlgorithm.c.obj
-
-src/BasicAlgorithm.i: src/BasicAlgorithm.c.i
-
-.PHONY : src/BasicAlgorithm.i
-
-# target to preprocess a source file
-src/BasicAlgorithm.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/BasicAlgorithm.c.i
-.PHONY : src/BasicAlgorithm.c.i
-
-src/BasicAlgorithm.s: src/BasicAlgorithm.c.s
-
-.PHONY : src/BasicAlgorithm.s
-
-# target to generate assembly for a file
-src/BasicAlgorithm.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/BasicAlgorithm.c.s
-.PHONY : src/BasicAlgorithm.c.s
-
 src/BoundaryLine.obj: src/BoundaryLine.c.obj
 
 .PHONY : src/BoundaryLine.obj
@@ -303,6 +276,33 @@ src/PrintResult.s: src/PrintResult.c.s
 src/PrintResult.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/PrintResult.c.s
 .PHONY : src/PrintResult.c.s
+
+src/SolverAlgorithm.obj: src/SolverAlgorithm.c.obj
+
+.PHONY : src/SolverAlgorithm.obj
+
+# target to build an object file
+src/SolverAlgorithm.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.obj
+.PHONY : src/SolverAlgorithm.c.obj
+
+src/SolverAlgorithm.i: src/SolverAlgorithm.c.i
+
+.PHONY : src/SolverAlgorithm.i
+
+# target to preprocess a source file
+src/SolverAlgorithm.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.i
+.PHONY : src/SolverAlgorithm.c.i
+
+src/SolverAlgorithm.s: src/SolverAlgorithm.c.s
+
+.PHONY : src/SolverAlgorithm.s
+
+# target to generate assembly for a file
+src/SolverAlgorithm.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\DPSolver2D.dir\build.make CMakeFiles/DPSolver2D.dir/src/SolverAlgorithm.c.s
+.PHONY : src/SolverAlgorithm.c.s
 
 src/SpeedSolver.obj: src/SpeedSolver.c.obj
 
@@ -400,9 +400,6 @@ help:
 	@echo ... src/AdaptiveGrid.obj
 	@echo ... src/AdaptiveGrid.i
 	@echo ... src/AdaptiveGrid.s
-	@echo ... src/BasicAlgorithm.obj
-	@echo ... src/BasicAlgorithm.i
-	@echo ... src/BasicAlgorithm.s
 	@echo ... src/BoundaryLine.obj
 	@echo ... src/BoundaryLine.i
 	@echo ... src/BoundaryLine.s
@@ -412,6 +409,9 @@ help:
 	@echo ... src/PrintResult.obj
 	@echo ... src/PrintResult.i
 	@echo ... src/PrintResult.s
+	@echo ... src/SolverAlgorithm.obj
+	@echo ... src/SolverAlgorithm.i
+	@echo ... src/SolverAlgorithm.s
 	@echo ... src/SpeedSolver.obj
 	@echo ... src/SpeedSolver.i
 	@echo ... src/SpeedSolver.s
