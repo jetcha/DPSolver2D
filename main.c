@@ -172,12 +172,34 @@ int main() {
     MagicBox(&SolverInputPtr, &ModelParaPtr, &EnvFactorPtr, &SolverOutputPtr, V0, T0, Vfmin, Vfmax, Tfmin, Tfmax);
 
 
+    /*------------------------------*/
+    /*--- Write to the text file ---*/
+    /*------------------------------*/
+    FILE *fp;
+    fp = fopen("../txtResult/speedResult.txt", "w");
+    for(int i = 0; i < Nhrz; i++){
+        fprintf(fp, "%f ", SolverOutputPtr.Vo[i]);
+    }
+    fclose(fp);
 
-//    for(i = 0; i<=RES_THERMAL;i++)
-//    {
-//        printf("Upper Thermal bound: %f, Lower Thermal bound: %f\n", SolverOutputPtr.upperTempBound[i], SolverOutputPtr.lowerTempBound[i]);
-//    }
+    fp = fopen("../txtResult/tempResult.txt", "w");
+    for(int i = 0; i < Nhrz; i++){
+        fprintf(fp, "%f ", SolverOutputPtr.To[i]);
+    }
+    fclose(fp);
 
-    // Fix
+    fp = fopen("../txtResult/forceResult.txt", "w");
+    for(int i = 0; i < Nhrz; i++){
+        fprintf(fp, "%f ", SolverOutputPtr.Fo[i]);
+    }
+    fclose(fp);
+
+    fp = fopen("../txtResult/inletResult.txt", "w");
+    for(int i = 0; i < Nhrz; i++){
+        fprintf(fp, "%f ", SolverOutputPtr.Qo[i]);
+    }
+    fclose(fp);
+
+
     return 0;
 }

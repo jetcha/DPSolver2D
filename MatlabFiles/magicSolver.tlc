@@ -1,25 +1,25 @@
-%% file : speedSolver.tlc
+%% file : magicSolver.tlc
 %% 
 %% Description:
-%%   Simulink Coder TLC Code Generation file for speedSolver
+%%   Simulink Coder TLC Code Generation file for magicSolver
 %% 
 %% Simulink version      : 10.0 (R2019b) 18-Jul-2019
-%% TLC file generated on : 25-Jun-2020 16:18:01
+%% TLC file generated on : 06-Aug-2020 14:36:59
 
 /%
      %%%-MATLAB_Construction_Commands_Start
      def = legacy_code('initialize');
-     def.SFunctionName = 'speedSolver';
-     def.OutputFcnSpec = 'void MagicBox(SolverInput u1[1], SpeedDynParameter u2[1], EnvFactor u3[1], SolverOutput y1[1], double u4, double u5, double u6)';
-     def.HeaderFiles = {'BasicAlgorithm.h', 'MathFunction.h', 'SystemDynamic.h', 'SolverStruct.h', 'PrintResult.h', 'BoundaryLine.h', 'AdaptiveGrid.h'};
-     def.SourceFiles = {'BasicAlgorithm.c', 'MathFunction.c', 'SystemDynamic.c', 'PrintResult.c', 'BoundaryLine.c', 'AdaptiveGrid.c'};
+     def.SFunctionName = 'magicSolver';
+     def.OutputFcnSpec = 'void MagicBox(SolverInput u1[1], DynParameter u2[1], EnvFactor u3[1], SolverOutput y1[1], double u4, double u5, double u6, double u7, double u8, double u9)';
+     def.HeaderFiles = {'SolverAlgorithm.h', 'MathFunction.h', 'SystemDynamic.h', 'SolverStruct.h', 'PrintResult.h', 'BoundaryLine.h', 'AdaptiveGrid.h'};
+     def.SourceFiles = {'SolverAlgorithm.c', 'MathFunction.c', 'SystemDynamic.c', 'PrintResult.c', 'BoundaryLine.c', 'AdaptiveGrid.c'};
      def.IncPaths = {'../inc/'};
      def.SrcPaths = {'../src'};
      legacy_code('sfcn_tlc_generate', def);
      %%%-MATLAB_Construction_Commands_End
 %/
 
-%implements speedSolver "C"
+%implements magicSolver "C"
 
 %% Function: FcnGenerateUniqueFileName ====================================
 %function FcnGenerateUniqueFileName (filename, type) void
@@ -46,7 +46,7 @@
     %endif
 
     %if IsModelReferenceSimTarget() || CodeFormat=="S-Function" || ::isRAccel
-        %assign hFileName = FcnGenerateUniqueFileName("speedSolver_wrapper", "header")
+        %assign hFileName = FcnGenerateUniqueFileName("magicSolver_wrapper", "header")
         %assign hFileNameMacro = FEVAL("upper", hFileName)
         %openfile hFile = "%<hFileName>.h"
         %selectfile hFile
@@ -59,16 +59,16 @@
         #include "rtwtypes.h"
         #endif
         
-        extern int speedSolver_wrapper_allocmem(void** y1BUS, int_T y1BUSWidth, void** u1BUS, int_T u1BUSWidth, void** u2BUS, int_T u2BUSWidth, void** u3BUS, int_T u3BUSWidth);
-        extern int speedSolver_wrapper_freemem(void** y1BUS, void** u1BUS, void** u2BUS, void** u3BUS);
+        extern int magicSolver_wrapper_allocmem(void** y1BUS, int_T y1BUSWidth, void** u1BUS, int_T u1BUSWidth, void** u2BUS, int_T u2BUSWidth, void** u3BUS, int_T u3BUSWidth);
+        extern int magicSolver_wrapper_freemem(void** y1BUS, void** u1BUS, void** u2BUS, void** u3BUS);
 
-        extern void speedSolver_wrapper_Output(const void* u1, void* u1BUS, const void* u2, void* u2BUS, const void* u3, void* u3BUS,  void* y1, void* y1BUS, const real_T u4, const real_T u5, const real_T u6);
+        extern void magicSolver_wrapper_Output(const void* u1, void* u1BUS, const void* u2, void* u2BUS, const void* u3, void* u3BUS,  void* y1, void* y1BUS, const real_T u4, const real_T u5, const real_T u6, const real_T u7, const real_T u8, const real_T u9);
         
         #endif
         
         %closefile hFile
         
-        %assign cFileName = FcnGenerateUniqueFileName("speedSolver_wrapper", "source")
+        %assign cFileName = FcnGenerateUniqueFileName("magicSolver_wrapper", "source")
         %openfile cFile = "%<cFileName>.c"
         %selectfile cFile
         #include <stdlib.h>
@@ -79,7 +79,7 @@
         #include "rtwtypes.h"
         #endif
 
-        #include "BasicAlgorithm.h"
+        #include "SolverAlgorithm.h"
         #include "MathFunction.h"
         #include "SystemDynamic.h"
         #include "SolverStruct.h"
@@ -87,19 +87,19 @@
         #include "BoundaryLine.h"
         #include "AdaptiveGrid.h"
 
-        int speedSolver_wrapper_allocmem(void** y1BUS, int_T y1BUSWidth, void** u1BUS, int_T u1BUSWidth, void** u2BUS, int_T u2BUSWidth, void** u3BUS, int_T u3BUSWidth) {
+        int magicSolver_wrapper_allocmem(void** y1BUS, int_T y1BUSWidth, void** u1BUS, int_T u1BUSWidth, void** u2BUS, int_T u2BUSWidth, void** u3BUS, int_T u3BUSWidth) {
             *y1BUS = calloc(sizeof(SolverOutput), y1BUSWidth);
             if (*y1BUS==NULL) return -1;
             *u1BUS = calloc(sizeof(SolverInput), u1BUSWidth);
             if (*u1BUS==NULL) return -1;
-            *u2BUS = calloc(sizeof(SpeedDynParameter), u2BUSWidth);
+            *u2BUS = calloc(sizeof(DynParameter), u2BUSWidth);
             if (*u2BUS==NULL) return -1;
             *u3BUS = calloc(sizeof(EnvFactor), u3BUSWidth);
             if (*u3BUS==NULL) return -1;
             return 0;
         }
         
-        int speedSolver_wrapper_freemem(void** y1BUS, void** u1BUS, void** u2BUS, void** u3BUS) {
+        int magicSolver_wrapper_freemem(void** y1BUS, void** u1BUS, void** u2BUS, void** u3BUS) {
             if (*y1BUS!=NULL) free(*y1BUS);
             *y1BUS = NULL;
             if (*u1BUS!=NULL) free(*u1BUS);
@@ -111,7 +111,7 @@
             return 0;
         }
 
-        void speedSolver_wrapper_Output(const void* u1, void* u1BUS, const void* u2, void* u2BUS, const void* u3, void* u3BUS,  void* y1, void* y1BUS, const real_T u4, const real_T u5, const real_T u6) {
+        void magicSolver_wrapper_Output(const void* u1, void* u1BUS, const void* u2, void* u2BUS, const void* u3, void* u3BUS,  void* y1, void* y1BUS, const real_T u4, const real_T u5, const real_T u6, const real_T u7, const real_T u8, const real_T u9) {
 
             /* Assign the Simulink structure u1 to user structure u1BUS */
             %assign dTypeId = LibBlockInputSignalDataTypeId(0)
@@ -120,14 +120,14 @@
 
             /* Assign the Simulink structure u2 to user structure u2BUS */
             %assign dTypeId = LibBlockInputSignalDataTypeId(1)
-            %<SLibAssignSLStructToUserStruct(dTypeId, "(*(SpeedDynParameter *)u2BUS)", "(char *)u2", 0)>
+            %<SLibAssignSLStructToUserStruct(dTypeId, "(*(DynParameter *)u2BUS)", "(char *)u2", 0)>
 
 
             /* Assign the Simulink structure u3 to user structure u3BUS */
             %assign dTypeId = LibBlockInputSignalDataTypeId(2)
             %<SLibAssignSLStructToUserStruct(dTypeId, "(*(EnvFactor *)u3BUS)", "(char *)u3", 0)>
 
-            MagicBox((SolverInput *) u1BUS, (SpeedDynParameter *) u2BUS, (EnvFactor *) u3BUS, (SolverOutput *) y1BUS, (real_T)(u4), (real_T)(u5), (real_T)(u6));
+            MagicBox((SolverInput *) u1BUS, (DynParameter *) u2BUS, (EnvFactor *) u3BUS, (SolverOutput *) y1BUS, (real_T)(u4), (real_T)(u5), (real_T)(u6), (real_T)(u7), (real_T)(u8), (real_T)(u9));
 
             /* Assign the user structure y1BUS to the Simulink structure y1 */
             %assign dTypeId = LibBlockOutputSignalDataTypeId(0)
@@ -139,7 +139,7 @@
         %<LibAddToCommonIncludes("%<hFileName>.h")>
         %<LibAddToModelSources("%<cFileName>")>
     %else
-        %<LibAddToCommonIncludes("BasicAlgorithm.h")>
+        %<LibAddToCommonIncludes("SolverAlgorithm.h")>
         %<LibAddToCommonIncludes("MathFunction.h")>
         %<LibAddToCommonIncludes("SystemDynamic.h")>
         %<LibAddToCommonIncludes("SolverStruct.h")>
@@ -147,7 +147,7 @@
         %<LibAddToCommonIncludes("BoundaryLine.h")>
         %<LibAddToCommonIncludes("AdaptiveGrid.h")>
     %endif
-    %<SLibAddToStaticSources("BasicAlgorithm.c")>
+    %<SLibAddToStaticSources("SolverAlgorithm.c")>
     %<SLibAddToStaticSources("MathFunction.c")>
     %<SLibAddToStaticSources("SystemDynamic.c")>
     %<SLibAddToStaticSources("PrintResult.c")>
@@ -171,7 +171,7 @@
         %assign u2BUS_addr = "&" + LibBlockPWork("", "", "", 2)
         %assign u3BUS_addr = "&" + LibBlockPWork("", "", "", 3)
         %assign blockPath = STRING(LibGetBlockPath(block))
-        if (speedSolver_wrapper_allocmem(%<y1BUS_addr>, %<LibBlockOutputSignalWidth(0)>, %<u1BUS_addr>, %<LibBlockInputSignalWidth(0)>, %<u2BUS_addr>, %<LibBlockInputSignalWidth(1)>, %<u3BUS_addr>, %<LibBlockInputSignalWidth(2)>)!=0) %<LibSetRTModelErrorStatus("\"Memory allocation failure for %<blockPath>\"")>;
+        if (magicSolver_wrapper_allocmem(%<y1BUS_addr>, %<LibBlockOutputSignalWidth(0)>, %<u1BUS_addr>, %<LibBlockInputSignalWidth(0)>, %<u2BUS_addr>, %<LibBlockInputSignalWidth(1)>, %<u3BUS_addr>, %<LibBlockInputSignalWidth(2)>)!=0) %<LibSetRTModelErrorStatus("\"Memory allocation failure for %<blockPath>\"")>;
     %else
     %endif
 %endfunction
@@ -190,9 +190,12 @@
         %assign u4_val = LibBlockInputSignal(3, "", "", 0)
         %assign u5_val = LibBlockInputSignal(4, "", "", 0)
         %assign u6_val = LibBlockInputSignal(5, "", "", 0)
+        %assign u7_val = LibBlockInputSignal(6, "", "", 0)
+        %assign u8_val = LibBlockInputSignal(7, "", "", 0)
+        %assign u9_val = LibBlockInputSignal(8, "", "", 0)
         %% 
         /* %<Type> (%<ParamSettings.FunctionName>): %<Name> */
-        speedSolver_wrapper_Output(%<u1_ptr>, %<u1BUS_ptr>, %<u2_ptr>, %<u2BUS_ptr>, %<u3_ptr>, %<u3BUS_ptr>, %<y1_ptr>, %<y1BUS_ptr>, %<u4_val>, %<u5_val>, %<u6_val>);
+        magicSolver_wrapper_Output(%<u1_ptr>, %<u1BUS_ptr>, %<u2_ptr>, %<u2BUS_ptr>, %<u3_ptr>, %<u3BUS_ptr>, %<y1_ptr>, %<y1BUS_ptr>, %<u4_val>, %<u5_val>, %<u6_val>, %<u7_val>, %<u8_val>, %<u9_val>);
     %else
         %assign u1_ptr = LibBlockInputSignalAddr(0, "", "", 0)
         %assign u2_ptr = LibBlockInputSignalAddr(1, "", "", 0)
@@ -201,8 +204,11 @@
         %assign u4_val = LibBlockInputSignal(3, "", "", 0)
         %assign u5_val = LibBlockInputSignal(4, "", "", 0)
         %assign u6_val = LibBlockInputSignal(5, "", "", 0)
+        %assign u7_val = LibBlockInputSignal(6, "", "", 0)
+        %assign u8_val = LibBlockInputSignal(7, "", "", 0)
+        %assign u9_val = LibBlockInputSignal(8, "", "", 0)
         %% 
-        MagicBox((SolverInput*)%<u1_ptr>, (SpeedDynParameter*)%<u2_ptr>, (EnvFactor*)%<u3_ptr>, %<y1_ptr>, %<u4_val>, %<u5_val>, %<u6_val>);
+        MagicBox((SolverInput*)%<u1_ptr>, (DynParameter*)%<u2_ptr>, (EnvFactor*)%<u3_ptr>, %<y1_ptr>, %<u4_val>, %<u5_val>, %<u6_val>, %<u7_val>, %<u8_val>, %<u9_val>);
     %endif
 %endfunction
 
@@ -214,7 +220,7 @@
         %assign u2BUSBUS_addr = "&" + LibBlockPWork("", "", "", 2)
         %assign u3BUSBUS_addr = "&" + LibBlockPWork("", "", "", 3)
         %assign blockPath = STRING(LibGetBlockPath(block))
-        if (speedSolver_wrapper_freemem(%<y1BUSBUS_addr>, %<u1BUSBUS_addr>, %<u2BUSBUS_addr>, %<u3BUSBUS_addr>)!=0) %<LibSetRTModelErrorStatus("\"Memory free failure for %<blockPath>\"")>;
+        if (magicSolver_wrapper_freemem(%<y1BUSBUS_addr>, %<u1BUSBUS_addr>, %<u2BUSBUS_addr>, %<u3BUSBUS_addr>)!=0) %<LibSetRTModelErrorStatus("\"Memory free failure for %<blockPath>\"")>;
     %else
     %endif
 %endfunction
