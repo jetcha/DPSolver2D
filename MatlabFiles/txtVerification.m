@@ -104,6 +104,12 @@ for i = 1:Nhrz
     P_s = P_dc + P_hvac;
     P_batt = (1 - sqrt(1-4*beta0*P_s))/(2*beta0);
     
+    disp(i)
+    disp(P_dc)
+    disp(P_s)
+    disp(4*beta0*P_s)
+    disp(P_batt)
+    
     totalCost = totalCost + (P_batt + speedPenalty)*dt + thermalPenalty * (To(i+1) - envFactor.T_required(i+1))^2;
 end
 

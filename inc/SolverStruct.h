@@ -14,13 +14,13 @@
 
 // Problem sizes
 // TODO: These values require to be the same as defined in MatLab
-#define NV 60
-#define NF 60
-#define NT 60
-#define NQ 60
-#define HORIZON 250
-#define RES_THERMAL 250
-#define BLOCK 5
+#define NV 30
+#define NF 30
+#define NT 30
+#define NQ 30
+#define HORIZON 150
+#define RES_THERMAL 150
+#define BLOCK 3
 
 
 // Choose pre-defined scenario (SCENE1/SCENE2)

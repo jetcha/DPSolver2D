@@ -21,7 +21,7 @@ int main() {
     // Final states constraint
     Vfmin = 0 / 3.6;
     Vfmax = 400 / 3.6;
-    Tfmin = 18;
+    Tfmin = 10;
     Tfmax = 30;
 
     // Input Settings
@@ -32,7 +32,7 @@ int main() {
     SolverInputPtr.GridSize.Nhrz = HORIZON;
     SolverInputPtr.GridSize.ResThermal = RES_THERMAL;
 
-    SolverInputPtr.Constraint.Vmax = 200 / 3.6;        // Physical Speed limits
+    SolverInputPtr.Constraint.Vmax = 100 / 3.6;        // Physical Speed limits
     SolverInputPtr.Constraint.Vmin = 0.0;
     SolverInputPtr.Constraint.Fmax = 3e3;
     SolverInputPtr.Constraint.Fmin = -3e3;
@@ -74,12 +74,13 @@ int main() {
     ModelParaPtr.Tamb = 30;
 
     // Tuning Parameter
-    ModelParaPtr.ds = 30;
+    ModelParaPtr.ds = 20;
     ModelParaPtr.speedPenalty = 11e4;
-    ModelParaPtr.thermalPenalty = 10e4;
+    ModelParaPtr.thermalPenalty = 10e3;
+    //ModelParaPtr.thermalPenalty = 0;
 
     // Environmental Information
-    uint8_t numFactors = 3;
+    //uint8_t numFactors = 3;
     uint16_t Nhrz = HORIZON;
     uint16_t i;
 
@@ -90,7 +91,7 @@ int main() {
     T0 = 25;
 
     real_T Vmax_GPS_1 = 50 / 3.6;
-    real_T Vmin_GPS_1 = 0 / 3.6;
+    real_T Vmin_GPS_1 = 10 / 3.6;
     real_T T_required_1 = 25;
     uint16_t endBlock_1 = 50;
 
@@ -99,53 +100,32 @@ int main() {
     real_T T_required_2 = 25;
     uint16_t endBlock_2 = 100;
 
-    real_T Vmax_GPS_3 = 130 / 3.6;
-    real_T Vmin_GPS_3 = 60 / 3.6;
+    real_T Vmax_GPS_3 = 50 / 3.6;
+    real_T Vmin_GPS_3 = 10 / 3.6;
     real_T T_required_3 = 25;
-    uint16_t endBlock_3 = 150;
-
-    real_T Vmax_GPS_4 = 80 / 3.6;
-    real_T Vmin_GPS_4 = 30 / 3.6;
-    real_T T_required_4 = 25;
-    uint16_t endBlock_4 = 200;
-
-    real_T Vmax_GPS_5 = 50 / 3.6;
-    real_T Vmin_GPS_5 = 0 / 3.6;
-    real_T T_required_5 = 25;
-    uint16_t endBlock_5 = Nhrz;
+    uint16_t endBlock_3 = Nhrz;
 
     EnvFactorPtr.endBlock[0] = endBlock_1;
     EnvFactorPtr.endBlock[1] = endBlock_2;
     EnvFactorPtr.endBlock[2] = endBlock_3;
-    EnvFactorPtr.endBlock[3] = endBlock_4;
-    EnvFactorPtr.endBlock[4] = endBlock_5;
+
 
     for (i = 0; i <= Nhrz; i++) {
         if (i < endBlock_1) {
-            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_1;                    // Legal Vmax
-            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_1;                    // Legal Vmin
+            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_1;                  // Legal Vmax
+            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_1;                  // Legal Vmin
             EnvFactorPtr.Angle_env[i] = 0.0;                        // Road slops
             EnvFactorPtr.T_required[i] = T_required_1;              // Required Temp
         } else if (i < endBlock_2) {
-            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_2;                    // Legal Vmax
-            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_2;                    // Legal Vmin
+            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_2;                  // Legal Vmax
+            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_2;                  // Legal Vmin
             EnvFactorPtr.Angle_env[i] = 0.0;                        // Road slops
             EnvFactorPtr.T_required[i] = T_required_2;              // Required Temp
-        } else if (i < endBlock_3) {
-            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_3;                    // Legal Vmax
-            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_3;                    // Legal Vmin
+        } else {
+            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_3;                  // Legal Vmax
+            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_3;                  // Legal Vmin
             EnvFactorPtr.Angle_env[i] = 0.0;                        // Road slops
             EnvFactorPtr.T_required[i] = T_required_3;              // Required Temp
-        } else if (i < endBlock_4) {
-            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_4;                    // Legal Vmax
-            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_4;                    // Legal Vmin
-            EnvFactorPtr.Angle_env[i] = 0.0;                        // Road slops
-            EnvFactorPtr.T_required[i] = T_required_4;              // Required Temp
-        } else {
-            EnvFactorPtr.Vmax_env[i] = Vmax_GPS_5;                    // Legal Vmax
-            EnvFactorPtr.Vmin_env[i] = Vmin_GPS_5;                    // Legal Vmin
-            EnvFactorPtr.Angle_env[i] = 0.0;                        // Road slops
-            EnvFactorPtr.T_required[i] = T_required_5;              // Required Temp
         }
     }
 #elif defined(SCENE2)
@@ -177,25 +157,25 @@ int main() {
     /*------------------------------*/
     FILE *fp;
     fp = fopen("../txtResult/speedResult.txt", "w");
-    for(int i = 0; i < Nhrz; i++){
+    for(i = 0; i < Nhrz; i++){
         fprintf(fp, "%f ", SolverOutputPtr.Vo[i]);
     }
     fclose(fp);
 
     fp = fopen("../txtResult/tempResult.txt", "w");
-    for(int i = 0; i < Nhrz; i++){
+    for(i = 0; i < Nhrz; i++){
         fprintf(fp, "%f ", SolverOutputPtr.To[i]);
     }
     fclose(fp);
 
     fp = fopen("../txtResult/forceResult.txt", "w");
-    for(int i = 0; i < Nhrz; i++){
+    for(i = 0; i < Nhrz; i++){
         fprintf(fp, "%f ", SolverOutputPtr.Fo[i]);
     }
     fclose(fp);
 
     fp = fopen("../txtResult/inletResult.txt", "w");
-    for(int i = 0; i < Nhrz; i++){
+    for(i = 0; i < Nhrz; i++){
         fprintf(fp, "%f ", SolverOutputPtr.Qo[i]);
     }
     fclose(fp);

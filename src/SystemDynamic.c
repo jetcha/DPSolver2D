@@ -490,38 +490,59 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
 
     for (i = 0; i < Nv; i++) {
         for (j = 0; j < Nt; j++) {
+
+            // Try all the possible force inputs
             for (k = 0; k < Nf; k++) {
+
+                /// Powertrain ///
+                // Wheel power
+                Pwh = Vin[i] * Fin[k];
+
+                // First determine if the Pwh has already exceeded the limit
+                // Acceleration
+                if (Pwh > 0) {
+                    // if the wheel power exceeds the limit, leave it as 'infeasible'
+                    if (Pwh > PAmax) {
+                        continue;
+                    }
+
+                    Pm = Pwh / eta_trans;
+                    Pinv = ((1 - alpha1) - sqrt((alpha1 - 1) * (alpha1 - 1) - 4 * alpha2 * (alpha0 + Pm))) /
+                           (2 * alpha2);
+                    Pdc = Pinv / eta_dc;
+                }
+                    // Deceleration
+                else {
+                    if (Pwh < PDmax) {
+                        continue;
+                    }
+                    Pm = Pwh * eta_trans;
+                    Pinv = ((1 - alpha1) - sqrt((alpha1 - 1) * (alpha1 - 1) - 4 * alpha2 * (alpha0 + Pm))) /
+                           (2 * alpha2);
+                    Pdc = Pinv * eta_dc;
+                }
+
+                /// Speed Dynamics ///
+                // Calculate the speed dynamics
+                real_T V_squared = (2 * ds / m) * Fin[k] + (1 - 2 * ds * CdA / m) * Vin[i] * Vin[i] -
+                                   2 * ds * g * (sin(angle) + crr * cos(angle));
+
+                // Check if the speed squared becomes smaller than 0
+                if (V_squared < 0) {
+                    continue;
+                }
+
+                // Speed at the next step
+                real_T Vnext = sqrt(V_squared);
+
+                // Check if the speed result is inside the legal speed range and physical speed limits
+                if (Vnext > Vmax_end || Vnext > SolverInputPtr->Constraint.Vmax || Vnext < Vmin_end ||
+                    Vnext < SolverInputPtr->Constraint.Vmin) {
+                    continue;
+                }
+
+                // Try all the possible heat inlet inputs
                 for (l = 0; l < Nq; l++) {
-
-                    /// Powertrain ///
-                    // Wheel power
-                    Pwh = Vin[i] * Fin[k];
-
-                    // First determine if the Pwh has already exceeded the limit
-                    // Acceleration
-                    if (Pwh > 0) {
-                        if (Pwh > PAmax)                    // if the wheel power exceeds the limit...
-                        {
-                            InfFlag[i][j][k][l] = 1;                // mark it as 'infeasible'
-                            continue;
-                        }
-
-                        Pm = Pwh / eta_trans;
-                        Pinv = ((1 - alpha1) - sqrt((alpha1 - 1) * (alpha1 - 1) - 4 * alpha2 * (alpha0 + Pm))) /
-                               (2 * alpha2);
-                        Pdc = Pinv / eta_dc;
-                    }
-                        // Deceleration
-                    else {
-                        if (Pwh < PDmax) {
-                            InfFlag[i][j][k][l] = 1;
-                            continue;
-                        }
-                        Pm = Pwh * eta_trans;
-                        Pinv = ((1 - alpha1) - sqrt((alpha1 - 1) * (alpha1 - 1) - 4 * alpha2 * (alpha0 + Pm))) /
-                               (2 * alpha2);
-                        Pdc = Pinv * eta_dc;
-                    }
 
                     // HVAC power
                     // Heating or Cooling
@@ -535,14 +556,12 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
 
                     // Check if Phvac exceeds the limits
                     if (Phvac > PACmax) {
-                        InfFlag[i][j][k][l] = 1;
                         continue;
                     }
 
                     // Check if Tinlet exceeds the limits
                     Tinlet = Tin[j] + Qin[l] / (Cp * rho * mDot);
                     if (Tinlet > Tmax_inlet || Tinlet < Tmin_inlet) {
-                        InfFlag[i][j][k][l] = 1;
                         continue;
                     }
 
@@ -550,26 +569,8 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
                     Ps = Pdc + Phvac;
                     Pbatt = (1 - sqrt(1 - 4 * beta0 * Ps)) / (2 * beta0);
 
-                    /// Speed Dynamics ///
-                    // Calculate the speed dynamics
-                    real_T V_squared = (2 * ds / m) * Fin[k] + (1 - 2 * ds * CdA / m) * Vin[i] * Vin[i] -
-                                       2 * ds * g * (sin(angle) + crr * cos(angle));
-
-                    // Check if the speed squared becomes smaller than 0
-                    if (V_squared < 0) {
-                        InfFlag[i][j][k][l] = 1;
-                        continue;
-                    }
-
                     // Speed at the next step
-                    Xnext[i][j][k][l].V = sqrt(V_squared);
-
-                    // Check if the speed result is inside the legal speed range and physical speed limits
-                    if (Xnext[i][j][k][l].V > Vmax_end || Xnext[i][j][k][l].V > SolverInputPtr->Constraint.Vmax ||
-                        Xnext[i][j][k][l].V < Vmin_end || Xnext[i][j][k][l].V < SolverInputPtr->Constraint.Vmin) {
-                        InfFlag[i][j][k][l] = 1;
-                        continue;
-                    }
+                    Xnext[i][j][k][l].V = Vnext;
 
                     // Calculate dt
                     dt = 2 * ds / (Xnext[i][j][k][l].V + Vin[i]);
@@ -580,7 +581,6 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
 
                     // Check if it stays in the cabin temperature limit
                     if (Xnext[i][j][k][l].T > Tmax_end || Xnext[i][j][k][l].T < Tmin_end) {
-                        InfFlag[i][j][k][l] = 1;
                         continue;
                     }
 
@@ -589,6 +589,9 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
                     ArcCost[i][j][k][l] = (Pbatt + speedPenalty) * dt +
                                           thermalPenalty * (Xnext[i][j][k][l].T - T_required) *
                                           (Xnext[i][j][k][l].T - T_required);
+
+                    // When all the constraints are required, mark it as feasible
+                    InfFlag[i][j][k][l] = 0;
                 }
             }
         }

@@ -4,7 +4,7 @@ void printInputInfo(real_T *StateVec, real_T *ControlVec, uint16_t Nx, uint16_t 
 
     uint16_t i;
 
-    printf(" -- Successfully Initialized -- \n\n");
+    printf(" -- Successfully Initialized -- \n");
 
     printf("State grid:\n");
     for (i = 0; i < Nx; i++) {

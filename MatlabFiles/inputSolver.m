@@ -2,7 +2,7 @@
 Vfmax = 400/3.6;
 Vfmin = 0/3.6;
 Tfmax = 30;
-Tfmin = 18;
+Tfmin = 10;
 
 %% Gird Settings
 % <<IMPORTANT!>> Nx, Nu, Nhrz has to be the same as NX, NU, HORIZON in SolverStruct.h
@@ -10,8 +10,8 @@ solverinput.GridSize.Nv = 30;
 solverinput.GridSize.Nf = 30;
 solverinput.GridSize.Nt = 30;
 solverinput.GridSize.Nq = 30;
-solverinput.GridSize.Nhrz = 250;
-solverinput.GridSize.ResThermal = 250;
+solverinput.GridSize.Nhrz = 150;
+solverinput.GridSize.ResThermal = 150;
 
 %% Limit Settings
 solverinput.Constraint.Vmax = 200/3.6;
@@ -61,6 +61,7 @@ modelPara.Tamb = 30;
 % Penalty Parameters
 modelPara.speedPenalty = 11e4;
 modelPara.thermalPenalty = 10e4;
+%modelPara.thermalPenalty = 0;
 
 
 %% Scenario 1
@@ -69,7 +70,7 @@ modelPara.thermalPenalty = 10e4;
 V0 = 40/3.6;
 
 % Horizon
-solverinput.GridSize.Nhrz = 250;
+solverinput.GridSize.Nhrz = 150;
 
 % GPS info
 envFactor = struct;
@@ -77,10 +78,10 @@ envFactor.Vmax_env = zeros((solverinput.GridSize.Nhrz+1), 1);
 envFactor.Vmin_env = zeros((solverinput.GridSize.Nhrz+1), 1);
 envFactor.Angle_env = zeros((solverinput.GridSize.Nhrz+1), 1);
 
-Vmax_GPS = [50/3.6 80/3.6 130/3.6 80/3.6 50/3.6];
-Vmin_GPS = [0/3.6 30/3.6 60/3.6 30/3.6 0/3.6];
-Angle_GPS = [0.0 0.0 0.0 0.0 0.0];
-changePoint = [50 100 150 200];
+Vmax_GPS = [50/3.6 80/3.6 50/3.6];
+Vmin_GPS = [10/3.6 30/3.6 10/3.6];
+Angle_GPS = [0.0 0.0 0.0];
+changePoint = [50 100];
 
 envFactor.endBlock = [changePoint solverinput.GridSize.Nhrz];
 
@@ -93,19 +94,11 @@ for i = 1:(solverinput.GridSize.Nhrz+1)
         envFactor.Vmax_env(i) = Vmax_GPS(2);
         envFactor.Vmin_env(i) = Vmin_GPS(2);
         envFactor.Angle_env(i) = Angle_GPS(2);
-    elseif i<=changePoint(3)
+    else
         envFactor.Vmax_env(i) = Vmax_GPS(3);
         envFactor.Vmin_env(i) = Vmin_GPS(3);
         envFactor.Angle_env(i) = Angle_GPS(3);
-    elseif i<=changePoint(4)
-        envFactor.Vmax_env(i) = Vmax_GPS(4);
-        envFactor.Vmin_env(i) = Vmin_GPS(4);
-        envFactor.Angle_env(i) = Angle_GPS(4);
-    else
-        envFactor.Vmax_env(i) = Vmax_GPS(5);
-        envFactor.Vmin_env(i) = Vmin_GPS(5);
-        envFactor.Angle_env(i) = Angle_GPS(5);
-    end 
+    end
 end
 
 % --- Thermal ---
@@ -113,19 +106,15 @@ T0 = 25;
 
 envFactor.T_required = zeros((solverinput.GridSize.Nhrz+1), 1);
 
-T_required = [25, 25, 25, 25, 25];
+T_required = [25, 25, 25];
 
 for i = 1:(solverinput.GridSize.Nhrz+1)
     if i<=changePoint(1)
         envFactor.T_required(i) = T_required(1);
     elseif i<=changePoint(2)
         envFactor.T_required(i) = T_required(2);
-    elseif i<=changePoint(3)
-        envFactor.T_required(i) = T_required(3);
-    elseif i<=changePoint(4)
-        envFactor.T_required(i) = T_required(4);
     else
-        envFactor.T_required(i) = T_required(5);
+        envFactor.T_required(i) = T_required(3);
     end 
 end
 
