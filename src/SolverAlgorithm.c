@@ -547,12 +547,8 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
                 for(l = 0; l < Nt; l++){
 
-                    real_T *minDistance = (real_T *) malloc(FeasibleCounter[i][j] * sizeof(real_T));
-                    StateTuple *nearestStates = (StateTuple *) malloc(FeasibleCounter[i][j] *sizeof(StateTuple));
-                    ControlTuple *nearestControls = (ControlTuple *) malloc(FeasibleCounter[i][j] * sizeof(ControlTuple));
-                    real_T *nearestCosts = (real_T *) malloc(FeasibleCounter[i][j] * sizeof(real_T));
-
-                    real_T vDistance, tDistance, Distance;
+                    real_T *Distance = (real_T *) malloc(FeasibleCounter[i][j] * sizeof(real_T));
+                    real_T vDistance, tDistance;
 
                     *(p2pCost + k * Nv + l) = SolverInputPtr->SolverLimit.infValue;
                     (*(p2pControl + k * Nv + l)).F = SolverInputPtr->SolverLimit.infValue;
@@ -560,37 +556,39 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
                     for (counter = 0; counter < FeasibleCounter[i][j]; counter++) {
 
-
-
                         // The distance from the grid point to the real point
                         vDistance = fabs((*(Xnext_real + counter)).V - SpeedVec[k]);
                         tDistance = fabs((*(Xnext_real + counter)).T - TempVec[l]);
 
-                        minDistance[counter] = vDistance * vDistance + tDistance * tDistance;
-                        nearestStates[counter] = Xnext_real[counter];
-                        nearestControls[counter] = Control_real[counter];
-                        nearestCosts[counter] = ArcCost_real[counter];
-
-
-
                         if (vDistance < dV && tDistance < dT) {
-
-                            Distance = vDistance * vDistance + tDistance * tDistance;
-
-                            // Update 3 minimum distances
-                            for(int n = 0; n < 3; n++){
-                                if(minDistance[n] == FLT_MAX){
-                                    minDistance[n] = Distance;
-                                    nearest3states[n].V = (*(Xnext_real + counter)).V;
-                                    nearest3states[n].T = (*(Xnext_real + counter)).T;
-                                    nearest3controls[n].F = (*(Control_real + counter)).F;
-                                    nearest3controls[n].Q = (*(Control_real + counter)).Q;
-                                    nearest3costs[n] = *(ArcCost_real + counter);
-                                    break;
-                                } else if(minDistance[n] > )
-                            }
+                            Distance[counter] = vDistance * vDistance + tDistance * tDistance;
+                        } else {
+                            Distance[counter] = FLT_MAX;
                         }
                     }
+
+                    // Sort the distances so that we can find the 3 nearest points
+                    uint32_t *idxSort = (uint32_t *) malloc(FeasibleCounter[i][j] * sizeof(uint32_t));
+                    sortIdx(Distance, idxSort, FeasibleCounter[i][j]);
+
+                    if(Distance[idxSort[2]] == FLT_MAX){
+
+                        // If there are less than 3 usable points, pick the nearest one
+                        if(Distance[idxSort[0]] < FLT_MAX){
+                            *(p2pCost + k * Nv + l) = ArcCost_real[idxSort[0]];
+                            (*(p2pControl + k * Nv + l)).F = Control_real[0].F;
+                            (*(p2pControl + k * Nv + l)).Q = Control_real[0].Q;
+                        }
+
+                    } else {
+
+                        // If there are more or equal to 3 usable points, do the multi linear interpolation
+                        StateTuple nearest3states[3] = {Xnext_real[idxSort[0]], Xnext_real[idxSort[1]], Xnext_real[idxSort[2]]};
+                        ControlTuple nearest3controls[3] = {Control_real[idxSort[0]], Control_real[idxSort[1]], Control_real[idxSort[2]]};
+                        real_T nearest3Costs[3] = {ArcCost_real[0], ArcCost_real[1], ArcCost_real[2]};
+                    }
+
+
 
                 }
 
