@@ -32,7 +32,7 @@ int main() {
     SolverInputPtr.GridSize.Nhrz = HORIZON;
     SolverInputPtr.GridSize.ResThermal = RES_THERMAL;
 
-    SolverInputPtr.Constraint.Vmax = 100 / 3.6;        // Physical Speed limits
+    SolverInputPtr.Constraint.Vmax = 130 / 3.6;        // Physical Speed limits
     SolverInputPtr.Constraint.Vmin = 0.0;
     SolverInputPtr.Constraint.Fmax = 3e3;
     SolverInputPtr.Constraint.Fmin = -3e3;
@@ -76,7 +76,7 @@ int main() {
     // Tuning Parameter
     ModelParaPtr.ds = 20;
     ModelParaPtr.speedPenalty = 11e4;
-    ModelParaPtr.thermalPenalty = 10e3;
+    ModelParaPtr.thermalPenalty = 11e4;
     //ModelParaPtr.thermalPenalty = 0;
 
     // Environmental Information
@@ -86,17 +86,17 @@ int main() {
 
 #ifdef SCENE1
     // Initial Speed
-    V0 = 40 / 3.6;
+    V0 = 50 / 3.6;
     // Initial Temperature
     T0 = 25;
 
-    real_T Vmax_GPS_1 = 50 / 3.6;
-    real_T Vmin_GPS_1 = 10 / 3.6;
+    real_T Vmax_GPS_1 = 80 / 3.6;
+    real_T Vmin_GPS_1 = 30 / 3.6;
     real_T T_required_1 = 25;
     uint16_t endBlock_1 = 50;
 
-    real_T Vmax_GPS_2 = 80 / 3.6;
-    real_T Vmin_GPS_2 = 30 / 3.6;
+    real_T Vmax_GPS_2 = 130 / 3.6;
+    real_T Vmin_GPS_2 = 60 / 3.6;
     real_T T_required_2 = 25;
     uint16_t endBlock_2 = 100;
 

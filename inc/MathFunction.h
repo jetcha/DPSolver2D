@@ -27,6 +27,9 @@ real_T interpolation(LookupTable *TableData, real_T *Xn, real_T *Yn, uint32_t le
 // Perform extrapolation
 real_T extrapolation(real_T *XData, real_T *YData, real_T *Xn, real_T *Yn, uint8_t Flag);
 
+// Multi linear interpolation
+real_T multiInterp(StateTuple *States, real_T *Outputs, real_T Vk, real_T Tl);
+
 // Find the index with the nearest value in the Vector (based on the given Value)
 uint32_t findNearest(real_T *Vector, real_T Value, uint32_t length);
 

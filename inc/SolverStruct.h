@@ -25,16 +25,24 @@
 
 // Choose pre-defined scenario (SCENE1/SCENE2)
 #define SCENE1
+
 // Turn on/off the counter of dynamics computation
 //#define DYNCOUNTER
 // Turn on/off the counter of interpolation computation
 //#define INTERPOCOUNTER
 // Turn on/off the counter of boundary calculations
 //#define BOUNDCOUNTER
+
+// Choose between nearest neighbor (NEARESTNEIGHBOR) / multi linear interpolation (MULTILINEAR)
+#define NEARESTNEIGHBOR
+
+
 // Choose the boundary line mode (NOBOUND/NORMALBOUND/CUSTOMBOUND)
 #define NOBOUND
+
 // Turn on/off boundary calibration
 //#define BOUNDCALIBRATION
+
 // Turn on/off Adaptive grid method
 //#define ADAPTIVEGRID
 

@@ -60,9 +60,7 @@ E:/Thesis_Project/DPSolver2D/inc/SolverStruct.h
 BoundaryLine.h
 E:/Thesis_Project/DPSolver2D/inc/BoundaryLine.h
 
-E:/Thesis_Project/DPSolver2D/main.c
-./inc/SolverStruct.h
-E:/Thesis_Project/DPSolver2D/inc/SolverStruct.h
-./inc/SolverAlgorithm.h
+E:/Thesis_Project/DPSolver2D/src/SolverAlgorithm.c
+../inc/SolverAlgorithm.h
 E:/Thesis_Project/DPSolver2D/inc/SolverAlgorithm.h
 
