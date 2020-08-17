@@ -400,7 +400,7 @@ void bridgeConnection(Bridge *BridgePtr, SolverOutput *OutputPtr, real_T V0) {
 
 void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][NQ], uint8_t (*InfFlag)[NT][NF][NQ],
                     real_T const *SpeedVec, real_T const *ForceVec, real_T const *TempVec, real_T const *InletVec,
-                    uint16_t V0_index, uint16_t T0_index, uint16_t N) {
+                    uint16_t V0_index, uint16_t T0_index, Boundary *BoundaryPtr, uint16_t N) {
 
     // Grid sizes
     uint16_t Nv = SolverInputPtr->GridSize.Nv;
@@ -420,8 +420,16 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
     memcpy(Qin, InletVec, Nq * sizeof(real_T));
 
     // Environmental Factors
+#if defined(CUSTOMBOUND)
+    // Copy the boundary lines
+    real_T Vmax_start = BoundaryPtr->upperBound[N];
+    real_T Vmin_start = BoundaryPtr->lowerBound[N];
+    real_T Vmax_end = BoundaryPtr->upperBound[N + 1];
+    real_T Vmin_end = BoundaryPtr->lowerBound[N + 1];
+#elif defined(NOBOUND)
     real_T Vmax_end = EnvironmentalFactor->Vmax_env[N + 1];
     real_T Vmin_end = EnvironmentalFactor->Vmin_env[N + 1];
+#endif
 
     real_T Tmax_end = EnvironmentalFactor->T_required[N] + 5;
     real_T Tmin_end = EnvironmentalFactor->T_required[N] - 5;
@@ -494,9 +502,21 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
             // Try all the possible force inputs
             for (k = 0; k < Nf; k++) {
 
+#if defined(CUSTOMBOUND)
+                // Only calculate the states within the boundaries
+                if (Vin[i] > Vmax_start || Vin[i] > SolverInputPtr->Constraint.Vmax || Vin[i] < Vmin_start ||
+                    Vin[i] < SolverInputPtr->Constraint.Vmin) {
+                    continue;
+                }
+#endif
+
                 /// Powertrain ///
                 // Wheel power
                 Pwh = Vin[i] * Fin[k];
+
+#ifdef DYNCOUNTER
+                counterDynamics++;
+#endif // DYNCOUNTER
 
                 // First determine if the Pwh has already exceeded the limit
                 // Acceleration
@@ -553,6 +573,10 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
                     } else {
                         Phvac = Qin[l] / CoP_neg;
                     }
+
+#ifdef DYNCOUNTER
+                    counterDynamics++;
+#endif // DYNCOUNTER
 
                     // Check if Phvac exceeds the limits
                     if (Phvac > PACmax) {

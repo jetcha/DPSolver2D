@@ -142,6 +142,10 @@ real_T multiInterp(StateTuple *States, real_T *Outputs, real_T Vk, real_T Tl) {
     real_T b = (o1-o2) / (n1-n2) - ((m1-m2) / (n1-n2)) * c;
     real_T a = o1 - n1 * b - m1 * c;
 
+#ifdef INTERPOCOUNTER
+    counterInterpo++;
+#endif // INTERPOCOUNTER
+
     // Then we can have the output = aVk + bTk + c
     return (a * Vk + b * Tl + c);
 
