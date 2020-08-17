@@ -21,6 +21,7 @@
 #define HORIZON 150
 #define RES_THERMAL 150
 #define BLOCK 3
+#define NUM_IDP 4
 
 
 // Choose pre-defined scenario (SCENE1/SCENE2)
@@ -34,13 +35,16 @@
 #define BOUNDCOUNTER
 
 // Choose the approximation mode (NEARESTNEIGHBOR/MULTILINEAR)
-#define MULTILINEAR
+#define NEARESTNEIGHBOR
 
 // Choose the boundary line mode (NOBOUND/CUSTOMBOUND)
 #define CUSTOMBOUND
 
-// Turn on/off boundary calibration
+// Turn on/off the boundary calibration
 #define BOUNDCALIBRATION
+
+// Turn on/off the iterative DP
+#define ITERATIVEDP
 
 // Turn on/off Adaptive grid method
 //#define ADAPTIVEGRID
