@@ -98,7 +98,7 @@ real_T interpolation(LookupTable *TableData, real_T *Xn, real_T *Yn, uint32_t le
                 // Interpolate Cost-to-come value
                 Yn[i] = TableData->YData[resultIdx] + \
                     (TableData->YData[resultIdx + 1] - TableData->YData[resultIdx]) /
-                                                      (TableData->XData[resultIdx + 1] - TableData->XData[resultIdx]) * \
+                    (TableData->XData[resultIdx + 1] - TableData->XData[resultIdx]) * \
                     (Xcurrent - TableData->XData[resultIdx]);
 
 #ifdef INTERPOCOUNTER
@@ -120,6 +120,35 @@ real_T extrapolation(real_T *XData, real_T *YData, real_T *Xn, real_T *Yn, uint8
         Yn[0] = YData[0] + ((YData[1] - YData[0]) / (XData[1] - XData[0])) * (Xn[0] - XData[0]);
     }
     return Yn[0];
+}
+
+real_T multiInterp(StateTuple *States, real_T *Outputs, real_T Vk, real_T Tl) {
+
+    // Linear equations with 3 variables - ax + by + c = P
+
+    // Calculate the coefficients
+    real_T m1 = 1 / States[0].V;
+    real_T m2 = 1 / States[1].V;
+    real_T m3 = 1 / States[2].V;
+    real_T n1 = States[0].T / States[0].V;
+    real_T n2 = States[1].T / States[1].V;
+    real_T n3 = States[2].T / States[2].V;
+    real_T o1 = Outputs[0] / States[0].V;
+    real_T o2 = Outputs[1] / States[1].V;
+    real_T o3 = Outputs[2] / States[2].V;
+
+    // Use the above coefficients to find a, b, c
+    real_T c = ((o1 - o2) / (n1 - n2) - (o2 - o3) / (n2 - n3)) / ((m1 - m2) / (n1 - n2) - (m2 - m3) / (n2 - n3));
+    real_T b = (o1-o2) / (n1-n2) - ((m1-m2) / (n1-n2)) * c;
+    real_T a = o1 - n1 * b - m1 * c;
+
+#ifdef INTERPOCOUNTER
+    counterInterpo++;
+#endif // INTERPOCOUNTER
+
+    // Then we can have the output = aVk + bTk + c
+    return (a * Vk + b * Tl + c);
+
 }
 
 uint32_t findNearest(real_T *Vector, real_T Value, uint32_t length) {

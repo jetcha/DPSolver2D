@@ -156,7 +156,7 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     // Obtain the Boundary Line
 #ifdef CUSTOMBOUND
     initSpeedBoundary(&BoundaryStruct);
-    customSpeedBoundary(&BoundaryStruct, SolverInputPtr, ParameterPtr, EnvFactorPtr, X0);
+    customSpeedBoundary(&BoundaryStruct, SolverInputPtr, ParameterPtr, EnvFactorPtr, V0);
 #elif defined NORMALBOUND
     initSpeedBoundary(&BoundaryStruct);
     normalSpeedBoundary(&BoundaryStruct, EnvFactorPtr);
@@ -173,7 +173,7 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     // Retrieve the optimal solution
     findSolution(OutputPtr, &SolutionStruct, Vfmin, Vfmax, Tfmin, Tfmax);
 
-#if defined(NORMALBOUND) || defined(CUSTOMBOUND)
+#if defined(CUSTOMBOUND)
     // Get the boundary line to the output pointer
     copySpeedBoundary(&BoundaryStruct, OutputPtr);
 #endif
@@ -186,15 +186,15 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     printf("Minimum Total Cost: %f\n", OutputPtr->Cost);
 
 #ifdef DYNCOUNTER
-    printf("(Speed) The number of dynamics computation: %d\n", counterDynamics);
+    printf("The number of dynamics computation: %d\n", counterDynamics);
 #endif // DYNCOUNTER
 
 #ifdef INTERPOCOUNTER
-    printf("(Speed) The number of interpolation computation: %d\n", counterInterpo);
+    printf("The number of interpolation computation: %d\n", counterInterpo);
 #endif // INTERPOCOUNTER
 
 #ifdef BOUNDCOUNTER
-    printf("(Speed) The number of boundary computation: %d\n", counterBound);
+    printf("The number of boundary computation: %d\n", counterBound);
 #endif // BOUNDCOUNTER
 
     // Free the memory
@@ -343,9 +343,12 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
         }
     }
 
+
     for (int n = 0; n < SolutionPtr->Nstart; n++) {
         uint16_t startIdxV = SolutionPtr->startIdx[n].X;
         uint16_t startIdxT = SolutionPtr->startIdx[n].Y;
+
+        //printf("#%d - Start index: %d %d\n", N, startIdxV, startIdxT);
 
         // If it is the initial point
         if (N == 0) {
@@ -354,6 +357,7 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
             memcpy(CostToBeComp, ArcStruct.arcCost[startIdxV][startIdxT][0], Nv * Nt * sizeof(real_T));
         } else {
             // We need to add the cost-to-some values to the arc costs
+
             for (i = 0; i < Nv; i++) {
                 for (j = 0; j < Nt; j++) {
                     CostToBeComp[i][j] = SolutionPtr->CostToCome[startIdxV][startIdxT] +
@@ -361,6 +365,9 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
                 }
             }
         }
+
+
+
 
         // Pick the minimum cost to be the cost-to-come value
         for (i = 0; i < Nv; i++) {
@@ -382,6 +389,13 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
 
     // Obtain the possible starting points at the next step.
     updateStartX(SolutionPtr, CostToCome);
+
+    // Check the number of possible steps
+    if (SolutionPtr->Nstart == 0) {
+        printf("Loop #%d has problem\n", N);
+    } else {
+        printf("Loop #%d is fine\n", N);
+    }
 
     // Copy the output back
     memcpy(SolutionPtr->CostToCome, CostToCome, Nv * Nt * sizeof(real_T));
@@ -425,7 +439,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     speedDynamics(Nx, Nu, Xnext, ArcCost, InfFlag, StateGrid[N], ControlVec, &BoundaryStruct, N, X0_index);
 #else
     // Calculate System Dynamics
-    systemDynamics(Xnext, ArcCost, InfFlag, SpeedVec, ForceVec, TempVec, InletVec, V0_index, T0_index, N);
+    systemDynamics(Xnext, ArcCost, InfFlag, SpeedVec, ForceVec, TempVec, InletVec, V0_index, T0_index, &BoundaryStruct, N);
 #endif
 
 #ifdef BOUNDCALIBRATION
@@ -482,6 +496,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
                         *(Xnext[i][j][0] + counter) = Xnext[i][j][k][l];
                         (*(Control[i][j][0] + counter)).F = ForceVec[k];
                         (*(Control[i][j][0] + counter)).Q = InletVec[l];
+                        *(ArcCost[i][j][0] + counter) = ArcCost[i][j][k][l];
                         // Counting the number of feasible input combos
                         counter++;
                     }
@@ -518,6 +533,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
         }
     }
 
+
 #ifndef ADAPTIVEGRID
 
     // Grid gaps
@@ -540,60 +556,117 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
             for (k = 0; k < Nv; k++) {
 
-                // Only Find the arc costs if the speed is within the legal range
-                if (SpeedVec[k] > EnvFactorPtr->Vmax_env[N + 1] || SpeedVec[k] < EnvFactorPtr->Vmin_env[N + 1]) {
-                    continue;
-                }
-
-                for(l = 0; l < Nt; l++){
-
-                    real_T *minDistance = (real_T *) malloc(FeasibleCounter[i][j] * sizeof(real_T));
-                    StateTuple *nearestStates = (StateTuple *) malloc(FeasibleCounter[i][j] *sizeof(StateTuple));
-                    ControlTuple *nearestControls = (ControlTuple *) malloc(FeasibleCounter[i][j] * sizeof(ControlTuple));
-                    real_T *nearestCosts = (real_T *) malloc(FeasibleCounter[i][j] * sizeof(real_T));
-
-                    real_T vDistance, tDistance, Distance;
+#ifdef MULTILINEAR
+                for (l = 0; l < Nt; l++) {
 
                     *(p2pCost + k * Nv + l) = SolverInputPtr->SolverLimit.infValue;
                     (*(p2pControl + k * Nv + l)).F = SolverInputPtr->SolverLimit.infValue;
                     (*(p2pControl + k * Nv + l)).Q = SolverInputPtr->SolverLimit.infValue;
 
+                    // Only Find the arc costs if the speed is within the legal range
+                    if (SpeedVec[k] > EnvFactorPtr->Vmax_env[N + 1] || SpeedVec[k] < EnvFactorPtr->Vmin_env[N + 1]) {
+                        continue;
+                    }
+
+                    // If there is no feasible transition
+                    if (FeasibleCounter[i][j] == 0) {
+                        continue;
+                    }
+
+                    real_T Distance;
+                    real_T vDistance, tDistance;
+
+                    real_T minDistance1 = FLT_MAX;
+                    real_T minDistance2 = FLT_MAX;
+                    real_T minDistance3 = FLT_MAX;
+
+                    StateTuple nearestState1, nearestState2, nearestState3;
+                    ControlTuple nearestControl1, nearestControl2, nearestControl3;
+                    real_T nearestCost1, nearestCost2, nearestCost3;
+
                     for (counter = 0; counter < FeasibleCounter[i][j]; counter++) {
+                        // The distance from the grid point to the real point
+                        vDistance = fabs((*(Xnext_real + counter)).V - SpeedVec[k]);
+                        tDistance = fabs((*(Xnext_real + counter)).T - TempVec[l]);
+
+                        if (vDistance < dV && tDistance < dT) {
+                            Distance = vDistance * vDistance + tDistance * tDistance;
+                            if (Distance < minDistance1) {
+                                minDistance1 = Distance;
+                                nearestState1 = *(Xnext_real + counter);
+                                nearestControl1 = *(Control_real + counter);
+                                nearestCost1 = *(ArcCost_real + counter);
+                            }
+                        }
+                    }
+
+                    for (counter = 0; counter < FeasibleCounter[i][j]; counter++) {
+                        // The distance from the grid point to the real point
+                        vDistance = fabs((*(Xnext_real + counter)).V - SpeedVec[k]);
+                        tDistance = fabs((*(Xnext_real + counter)).T - TempVec[l]);
+
+                        if (vDistance < dV && tDistance < dT) {
+                            Distance = vDistance * vDistance + tDistance * tDistance;
+                            if (Distance < minDistance2 && Distance > minDistance1) {
+                                minDistance2 = Distance;
+                                nearestState2 = *(Xnext_real + counter);
+                                nearestControl2 = *(Control_real + counter);
+                                nearestCost2 = *(ArcCost_real + counter);
+                            }
+                        }
+                    }
 
 
+                    for (counter = 0; counter < FeasibleCounter[i][j]; counter++) {
 
                         // The distance from the grid point to the real point
                         vDistance = fabs((*(Xnext_real + counter)).V - SpeedVec[k]);
                         tDistance = fabs((*(Xnext_real + counter)).T - TempVec[l]);
 
-                        minDistance[counter] = vDistance * vDistance + tDistance * tDistance;
-                        nearestStates[counter] = Xnext_real[counter];
-                        nearestControls[counter] = Control_real[counter];
-                        nearestCosts[counter] = ArcCost_real[counter];
-
-
-
                         if (vDistance < dV && tDistance < dT) {
-
                             Distance = vDistance * vDistance + tDistance * tDistance;
-
-                            // Update 3 minimum distances
-                            for(int n = 0; n < 3; n++){
-                                if(minDistance[n] == FLT_MAX){
-                                    minDistance[n] = Distance;
-                                    nearest3states[n].V = (*(Xnext_real + counter)).V;
-                                    nearest3states[n].T = (*(Xnext_real + counter)).T;
-                                    nearest3controls[n].F = (*(Control_real + counter)).F;
-                                    nearest3controls[n].Q = (*(Control_real + counter)).Q;
-                                    nearest3costs[n] = *(ArcCost_real + counter);
-                                    break;
-                                } else if(minDistance[n] > )
+                            if (Distance < minDistance3 && Distance > minDistance2 && ((*(Xnext_real + counter)).V != nearestState1.V && (*(Xnext_real + counter)).T != nearestState1.T)) {
+                                minDistance3 = Distance;
+                                nearestState3 = *(Xnext_real + counter);
+                                nearestControl3 = *(Control_real + counter);
+                                nearestCost3 = *(ArcCost_real + counter);
                             }
                         }
                     }
 
-                }
 
+                    if (minDistance3 >= (dV * dT)) {
+
+                        // If there are less than 3 usable points, pick the nearest one
+                        if (minDistance1  < (dV * dT)) {
+                            *(p2pCost + k * Nv + l) = nearestCost1;
+                            (*(p2pControl + k * Nv + l)).F = nearestControl1.F;
+                            (*(p2pControl + k * Nv + l)).Q = nearestControl1.Q;
+                        }
+                    } else {
+
+                        // If there are more or equal to 3 usable points, do the multi linear interpolation
+                        // Pick the nearest 3 points
+                        StateTuple nearest3states[3] = {nearestState1, nearestState2, nearestState3};
+                        real_T nearest3forces[3] = {nearestControl1.F, nearestControl2.F, nearestControl3.F};
+                        real_T nearest3inlets[3] = {nearestControl1.Q, nearestControl2.Q, nearestControl3.Q};
+                        real_T nearest3Costs[3] = {nearestCost1, nearestCost2, nearestCost3};
+
+//                        real_T costInspect = multiInterp(nearest3states, nearest3Costs, SpeedVec[k], TempVec[l]);
+//                        real_T forceInspect = multiInterp(nearest3states, nearest3forces, SpeedVec[k],
+//                                                          TempVec[l]);
+//                        real_T inletInspect = multiInterp(nearest3states, nearest3inlets, SpeedVec[k],
+//                                                          TempVec[l]);
+
+                        *(p2pCost + k * Nv + l) = multiInterp(nearest3states, nearest3Costs, SpeedVec[k], TempVec[l]);
+                        (*(p2pControl + k * Nv + l)).F = multiInterp(nearest3states, nearest3forces, SpeedVec[k],
+                                                                     TempVec[l]);
+                        (*(p2pControl + k * Nv + l)).Q = multiInterp(nearest3states, nearest3inlets, SpeedVec[k],
+                                                                     TempVec[l]);
+                    }
+                }
+#endif
+#ifdef NEARESTNEIGHBOR
                 for (l = 0; l < Nt; l++) {
                     real_T minDistance = FLT_MAX;
                     real_T vDistance, tDistance, Distance;
@@ -601,6 +674,11 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
                     *(p2pCost + k * Nv + l) = SolverInputPtr->SolverLimit.infValue;
                     (*(p2pControl + k * Nv + l)).F = SolverInputPtr->SolverLimit.infValue;
                     (*(p2pControl + k * Nv + l)).Q = SolverInputPtr->SolverLimit.infValue;
+
+                    // Only Find the arc costs if the speed is within the legal range
+                    if (SpeedVec[k] > EnvFactorPtr->Vmax_env[N + 1] || SpeedVec[k] < EnvFactorPtr->Vmin_env[N + 1]) {
+                        continue;
+                    }
 
                     for (counter = 0; counter < FeasibleCounter[i][j]; counter++) {
 
@@ -619,6 +697,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
                         }
                     }
                 }
+#endif
             }
         }
     }

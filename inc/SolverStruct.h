@@ -25,16 +25,23 @@
 
 // Choose pre-defined scenario (SCENE1/SCENE2)
 #define SCENE1
+
 // Turn on/off the counter of dynamics computation
-//#define DYNCOUNTER
+#define DYNCOUNTER
 // Turn on/off the counter of interpolation computation
-//#define INTERPOCOUNTER
+#define INTERPOCOUNTER
 // Turn on/off the counter of boundary calculations
-//#define BOUNDCOUNTER
-// Choose the boundary line mode (NOBOUND/NORMALBOUND/CUSTOMBOUND)
-#define NOBOUND
+#define BOUNDCOUNTER
+
+// Choose between nearest neighbor (NEARESTNEIGHBOR) / multi linear interpolation (MULTILINEAR)
+#define NEARESTNEIGHBOR
+
+// Choose the boundary line mode (NOBOUND/CUSTOMBOUND)
+#define CUSTOMBOUND
+
 // Turn on/off boundary calibration
 //#define BOUNDCALIBRATION
+
 // Turn on/off Adaptive grid method
 //#define ADAPTIVEGRID
 
@@ -141,11 +148,9 @@ typedef struct {
     real_T To[HORIZON];                     // Optimal Thermal Trajectory
     real_T Qo[HORIZON];                     // Optimal Thermal Control Policy
 
-#if defined(NORMALBOUND) || defined(CUSTOMBOUND)
+#if defined(CUSTOMBOUND)
     real_T upperSpeedBound[HORIZON + 1];        // Upper Speed Boundary Line
     real_T lowerSpeedBound[HORIZON + 1];        // Lower Speed Boundary Line
-    real_T upperTempBound[RES_THERMAL + 1];         // Upper Temp Boundary Line
-    real_T lowerTempBound[RES_THERMAL + 1];         // Lower Temp Boundary Line
 #endif
 
 #ifdef BOUNDCALIBRATION

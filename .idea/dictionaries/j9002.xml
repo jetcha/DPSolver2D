@@ -21,6 +21,8 @@
       <w>interpocounter</w>
       <w>lookuptable</w>
       <w>mathfunc</w>
+      <w>multilinear</w>
+      <w>nearestneighbor</w>
       <w>nhrz</w>
       <w>nobound</w>
       <w>normalbound</w>

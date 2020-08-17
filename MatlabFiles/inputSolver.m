@@ -38,7 +38,7 @@ modelPara.m = 2000;
 modelPara.g = 9.81;
 modelPara.crr = 0.006;
 modelPara.CdA = 0.6;
-modelPara.ds = 20;
+modelPara.ds = 60;
 modelPara.eta_trans = 0.98;
 modelPara.eta_dc = 0.99;
 modelPara.alpha0 = 785.0;
@@ -60,14 +60,14 @@ modelPara.Tamb = 30;
 
 % Penalty Parameters
 modelPara.speedPenalty = 11e4;
-modelPara.thermalPenalty = 10e4;
+modelPara.thermalPenalty = 11e4;
 %modelPara.thermalPenalty = 0;
 
 
 %% Scenario 1
 % --- Speed ---
 % Initial Speed
-V0 = 40/3.6;
+V0 = 0/3.6;
 
 % Horizon
 solverinput.GridSize.Nhrz = 150;
@@ -78,8 +78,8 @@ envFactor.Vmax_env = zeros((solverinput.GridSize.Nhrz+1), 1);
 envFactor.Vmin_env = zeros((solverinput.GridSize.Nhrz+1), 1);
 envFactor.Angle_env = zeros((solverinput.GridSize.Nhrz+1), 1);
 
-Vmax_GPS = [50/3.6 80/3.6 50/3.6];
-Vmin_GPS = [10/3.6 30/3.6 10/3.6];
+Vmax_GPS = [50/3.6 80/3.6 130/3.6];
+Vmin_GPS = [10/3.6 30/3.6 60/3.6];
 Angle_GPS = [0.0 0.0 0.0];
 changePoint = [50 100];
 

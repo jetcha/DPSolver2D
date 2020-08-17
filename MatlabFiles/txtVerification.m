@@ -115,3 +115,60 @@ end
 
 disp('Actual Cost:')
 disp(totalCost)
+
+%% Plot the Speed Tracjectory and Thermal Trajectory
+figure(1)
+hold on
+
+grid on;
+% The speed tracjectory from the solver
+line(1) = plot((0:Nhrz)*ds, Vo(1:Nhrz+1)*3.6,'-','LineWidth',1.2, 'Color', [0, 0.4470, 0.7410]);
+% The verification speed trajectory
+line(2) = plot((0:Nhrz)*ds, Vactual(1:Nhrz+1)*3.6,'-', 'LineWidth',1.2, 'Color', 	[0.8500, 0.3250, 0.0980]);
+
+[a, N] = size(envFactor.endBlock);
+endBlock = envFactor.endBlock;
+endBlock(end) = endBlock(end) + 1;
+turningPoint = [1 endBlock];
+for i = 1:N
+    yUpper = [Vmax_GPS(i), Vmax_GPS(i)];
+    yLower = [Vmin_GPS(i), Vmin_GPS(i)];
+    xIndex = [turningPoint(i), (turningPoint(i+1) - 1)];
+    line(3) = plot(xIndex*ds, yUpper*3.6, 'LineWidth',2, 'Color', [0.25, 0.25, 0.25]);
+    line(4) = plot(xIndex*ds, yLower*3.6, 'LineWidth',2, 'Color', [0.25, 0.25, 0.25]);
+end
+
+title('Optimal Speed Trajectory - Nearest Neighbor')
+xlabel('Distance (m)');
+ylabel('Speed (km/h)');
+
+legend(line([1 2 3]),  'Result from the solver', 'Result based on the control sequence', 'Legal speed limits')
+
+hold off;
+
+figure(2)
+hold on
+
+grid on;
+% The thermal tracjectory from the solver
+line(1) = plot((0:Nhrz)*ds, To(1:Nhrz+1),'-','LineWidth',1.2, 'Color', [0, 0.4470, 0.7410]);
+% The verification thermal trajectory
+line(2) = plot((0:Nhrz)*ds, Tactual(1:Nhrz+1),'-','LineWidth',1.2, 'Color', [0.8500, 0.3250, 0.0980]);
+
+for i = 1:N
+    yRequired = [T_required(i), T_required(i)];
+    xIndex = [turningPoint(i), (turningPoint(i+1) - 1)];
+    line(3) = plot(xIndex*ds, yRequired, '-', 'LineWidth',2, 'Color', [0.25, 0.25, 0.25]);
+end
+
+title('Optimal Temperature Trajectory - Nearest Neighbor')
+xlabel('Distance (m)');
+ylabel('Cabin Temperature (celsius)');
+
+legend(line([1 2 3]),  'Result from the solver', 'Result based on the control sequence', 'Required temperature')
+
+hold off;
+
+
+
+
