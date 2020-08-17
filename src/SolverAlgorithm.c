@@ -419,6 +419,10 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     // Initialize 2-D arrays
     uint16_t (*FeasibleCounter)[Nt] = malloc(sizeof(uint16_t[Nv][Nt]));
 
+    // The copy of the speed vector
+    real_T *SpeedVecCopy = (real_T *) malloc(Nv * sizeof(real_T));
+    memcpy(SpeedVecCopy, SpeedVec, Nv * sizeof(real_T));
+
     for (i = 0; i < Nv; i++) {
         for (j = 0; j < Nt; j++) {
             for (k = 0; k < Nf; k++) {
@@ -439,7 +443,8 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     speedDynamics(Nx, Nu, Xnext, ArcCost, InfFlag, StateGrid[N], ControlVec, &BoundaryStruct, N, X0_index);
 #else
     // Calculate System Dynamics
-    systemDynamics(Xnext, ArcCost, InfFlag, SpeedVec, ForceVec, TempVec, InletVec, V0_index, T0_index, &BoundaryStruct, N);
+    systemDynamics(Xnext, ArcCost, InfFlag, SpeedVec, ForceVec, TempVec, InletVec, V0_index, T0_index, &BoundaryStruct,
+                   N);
 #endif
 
 #ifdef BOUNDCALIBRATION
@@ -449,20 +454,17 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     real_T Vmin_end = BoundaryStruct.lowerBound[N + 1];
 
     // 2, Get the index of state vector that just exceeds the bounds
-    uint16_t minIdx = (uint16_t) findMaxLEQ(StateVecCopy, Vmin_end, Nx);
-    uint16_t maxIdx = (uint16_t) findMinGEQ(StateVecCopy, Vmax_end, Nx);
+    uint16_t minIdx = (uint16_t) findMaxLEQ(SpeedVecCopy, Vmin_end, Nv);
+    uint16_t maxIdx = (uint16_t) findMinGEQ(SpeedVecCopy, Vmax_end, Nv);
 
     // 3, Get the actual upper and lower bound within Xnext
-    uint16_t minIdxReal = (uint16_t) findMinGEQ(Xnext[0], Vmin_end, Nx * Nu);
-    uint16_t maxIdxReal = (uint16_t) findMaxLEQ(Xnext[0], Vmax_end, Nx * Nu);
-
     // 4, Shift the upper and lower points on the state vector
-    StateVecCopy[minIdx] = *(Xnext[0] + minIdxReal);
-    StateVecCopy[maxIdx] = *(Xnext[0] + maxIdxReal);
+    SpeedVecCopy[minIdx] = findMinGEQ_speed(Xnext, Vmin_end, Nv, Nt, Nf, Nq);
+    SpeedVecCopy[maxIdx] = findMaxLEQ_speed(Xnext, Vmax_end, Nv, Nt, Nf, Nq);
 
     // 5, Update the boundary memory
-    BoundaryStruct.boundMemo[N][0] = StateVecCopy[minIdx];                 // Actual lower bound at step N+1
-    BoundaryStruct.boundMemo[N][1] = StateVecCopy[maxIdx];                 // Actual upper bound at step N+1
+    BoundaryStruct.boundMemo[N][0] = SpeedVecCopy[minIdx];                 // Actual lower bound at step N+1
+    BoundaryStruct.boundMemo[N][1] = SpeedVecCopy[maxIdx];                 // Actual upper bound at step N+1
     BoundaryStruct.boundMemo[N][2] = minIdx;                               // The index of the lower bound in the vector
     BoundaryStruct.boundMemo[N][3] = maxIdx;                               // The index of the upper bound in the vector
 #endif
@@ -564,9 +566,16 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
                     (*(p2pControl + k * Nv + l)).Q = SolverInputPtr->SolverLimit.infValue;
 
                     // Only Find the arc costs if the speed is within the legal range
-                    if (SpeedVec[k] > EnvFactorPtr->Vmax_env[N + 1] || SpeedVec[k] < EnvFactorPtr->Vmin_env[N + 1]) {
+#ifdef CUSTOMBOUND
+                    if (SpeedVecCopy[k] > BoundaryStruct.upperBound[N + 1] ||
+                        SpeedVecCopy[k] < BoundaryStruct.lowerBound[N + 1]) {
                         continue;
                     }
+#elif defined(NOBOUND)
+                    if (SpeedVecCopy[k] > EnvFactorPtr->Vmax_env[N + 1] || SpeedVecCopy[k] < EnvFactorPtr->Vmin_env[N + 1]) {
+                        continue;
+                    }
+#endif
 
                     // If there is no feasible transition
                     if (FeasibleCounter[i][j] == 0) {
@@ -586,7 +595,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
                     for (counter = 0; counter < FeasibleCounter[i][j]; counter++) {
                         // The distance from the grid point to the real point
-                        vDistance = fabs((*(Xnext_real + counter)).V - SpeedVec[k]);
+                        vDistance = fabs((*(Xnext_real + counter)).V - SpeedVecCopy[k]);
                         tDistance = fabs((*(Xnext_real + counter)).T - TempVec[l]);
 
                         if (vDistance < dV && tDistance < dT) {
@@ -602,7 +611,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
                     for (counter = 0; counter < FeasibleCounter[i][j]; counter++) {
                         // The distance from the grid point to the real point
-                        vDistance = fabs((*(Xnext_real + counter)).V - SpeedVec[k]);
+                        vDistance = fabs((*(Xnext_real + counter)).V - SpeedVecCopy[k]);
                         tDistance = fabs((*(Xnext_real + counter)).T - TempVec[l]);
 
                         if (vDistance < dV && tDistance < dT) {
@@ -620,7 +629,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
                     for (counter = 0; counter < FeasibleCounter[i][j]; counter++) {
 
                         // The distance from the grid point to the real point
-                        vDistance = fabs((*(Xnext_real + counter)).V - SpeedVec[k]);
+                        vDistance = fabs((*(Xnext_real + counter)).V - SpeedVecCopy[k]);
                         tDistance = fabs((*(Xnext_real + counter)).T - TempVec[l]);
 
                         if (vDistance < dV && tDistance < dT) {
@@ -652,16 +661,16 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
                         real_T nearest3inlets[3] = {nearestControl1.Q, nearestControl2.Q, nearestControl3.Q};
                         real_T nearest3Costs[3] = {nearestCost1, nearestCost2, nearestCost3};
 
-//                        real_T costInspect = multiInterp(nearest3states, nearest3Costs, SpeedVec[k], TempVec[l]);
-//                        real_T forceInspect = multiInterp(nearest3states, nearest3forces, SpeedVec[k],
+//                        real_T costInspect = multiInterp(nearest3states, nearest3Costs, SpeedVecCopy[k], TempVec[l]);
+//                        real_T forceInspect = multiInterp(nearest3states, nearest3forces, SpeedVecCopy[k],
 //                                                          TempVec[l]);
-//                        real_T inletInspect = multiInterp(nearest3states, nearest3inlets, SpeedVec[k],
+//                        real_T inletInspect = multiInterp(nearest3states, nearest3inlets, SpeedVecCopy[k],
 //                                                          TempVec[l]);
 
-                        *(p2pCost + k * Nv + l) = multiInterp(nearest3states, nearest3Costs, SpeedVec[k], TempVec[l]);
-                        (*(p2pControl + k * Nv + l)).F = multiInterp(nearest3states, nearest3forces, SpeedVec[k],
+                        *(p2pCost + k * Nv + l) = multiInterp(nearest3states, nearest3Costs, SpeedVecCopy[k], TempVec[l]);
+                        (*(p2pControl + k * Nv + l)).F = multiInterp(nearest3states, nearest3forces, SpeedVecCopy[k],
                                                                      TempVec[l]);
-                        (*(p2pControl + k * Nv + l)).Q = multiInterp(nearest3states, nearest3inlets, SpeedVec[k],
+                        (*(p2pControl + k * Nv + l)).Q = multiInterp(nearest3states, nearest3inlets, SpeedVecCopy[k],
                                                                      TempVec[l]);
                     }
                 }
@@ -676,14 +685,20 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
                     (*(p2pControl + k * Nv + l)).Q = SolverInputPtr->SolverLimit.infValue;
 
                     // Only Find the arc costs if the speed is within the legal range
-                    if (SpeedVec[k] > EnvFactorPtr->Vmax_env[N + 1] || SpeedVec[k] < EnvFactorPtr->Vmin_env[N + 1]) {
+#ifdef CUSTOMBOUND
+                    if (SpeedVecCopy[k] > BoundaryStruct.upperBound[N + 1] ||
+                        SpeedVecCopy[k] < BoundaryStruct.lowerBound[N + 1]) {
                         continue;
                     }
-
+#elif defined(NOBOUND)
+                    if (SpeedVecCopy[k] > EnvFactorPtr->Vmax_env[N + 1] || SpeedVecCopy[k] < EnvFactorPtr->Vmin_env[N + 1]) {
+                        continue;
+                    }
+#endif
                     for (counter = 0; counter < FeasibleCounter[i][j]; counter++) {
 
                         // The distance from the grid point to the real point
-                        vDistance = fabs((*(Xnext_real + counter)).V - SpeedVec[k]);
+                        vDistance = fabs((*(Xnext_real + counter)).V - SpeedVecCopy[k]);
                         tDistance = fabs((*(Xnext_real + counter)).T - TempVec[l]);
 
                         if (vDistance < dV && tDistance < dT) {
@@ -710,6 +725,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     free(InfFlag);
     free(Control);
     free(FeasibleCounter);
+    free(SpeedVecCopy);
 #ifdef ADAPTIVEGRID
     free(BoxEdgesCopy);
 #endif
@@ -759,17 +775,19 @@ findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T Vfmin, real_
 #ifdef ADAPTIVEGRID
             OutputPtr->Vo[i] = StateGrid[i + 1][optimalstateIdx[i + 1]];
 #elif defined(BOUNDCALIBRATION)
-            if (optimalstateIdx[i + 1] == BoundaryStruct.boundMemo[i][2]) {
+            if (optimalstateIdx[i + 1].X == BoundaryStruct.boundMemo[i][2]) {
                 OutputPtr->Vo[i] = BoundaryStruct.boundMemo[i][0];
                 printf("Hit!!!!\n");
                 printf("%d\n", i);
-            } else if (optimalstateIdx[i + 1] == BoundaryStruct.boundMemo[i][3]) {
+            } else if (optimalstateIdx[i + 1].X == BoundaryStruct.boundMemo[i][3]) {
                 OutputPtr->Vo[i] = BoundaryStruct.boundMemo[i][1];
                 printf("Hit!!!!\n");
                 printf("%d\n", i);
             } else {
-                OutputPtr->Vo[i] = StateVec[optimalstateIdx[i + 1]];
+                OutputPtr->Vo[i] = SpeedVec[optimalstateIdx[i + 1].X];
             }
+
+            OutputPtr->To[i] = TempVec[optimalstateIdx[i + 1].Y];
 #else
             OutputPtr->Vo[i] = SpeedVec[optimalstateIdx[i + 1].X];
             OutputPtr->To[i] = TempVec[optimalstateIdx[i + 1].Y];

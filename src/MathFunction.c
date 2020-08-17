@@ -139,7 +139,7 @@ real_T multiInterp(StateTuple *States, real_T *Outputs, real_T Vk, real_T Tl) {
 
     // Use the above coefficients to find a, b, c
     real_T c = ((o1 - o2) / (n1 - n2) - (o2 - o3) / (n2 - n3)) / ((m1 - m2) / (n1 - n2) - (m2 - m3) / (n2 - n3));
-    real_T b = (o1-o2) / (n1-n2) - ((m1-m2) / (n1-n2)) * c;
+    real_T b = (o1 - o2) / (n1 - n2) - ((m1 - m2) / (n1 - n2)) * c;
     real_T a = o1 - n1 * b - m1 * c;
 
 #ifdef INTERPOCOUNTER
@@ -201,6 +201,58 @@ uint32_t findMinGEQ(real_T *Vector, real_T Value, uint32_t length) {
         }
     }
     return minIdx;
+}
+
+real_T findMaxLEQ_speed(StateTuple (*Xnext)[NT][NF][NQ], real_T Value, uint16_t Nv, uint16_t Nt, uint16_t Nf, uint16_t Nq) {
+    real_T minError = FLT_MAX;
+    real_T currentError;
+
+    real_T maxSpeed;
+
+    uint16_t i, j, k, l;
+
+    for (i = 0; i < Nv; i++) {
+        for (j = 0; j < Nt; j++) {
+            for (k = 0; k < Nf; k++) {
+                for (l = 0; l < Nq; l++) {
+                    currentError = fabs(Xnext[i][j][k][l].V - Value);
+
+                    if ((currentError < minError) && ((Value - Xnext[i][j][k][l].V) >= 0)) {
+                        minError = currentError;
+                        maxSpeed = Xnext[i][j][k][l].V;
+                    }
+                }
+            }
+        }
+    }
+
+    return maxSpeed;
+}
+
+real_T findMinGEQ_speed(StateTuple (*Xnext)[NT][NF][NQ], real_T Value, uint16_t Nv, uint16_t Nt, uint16_t Nf, uint16_t Nq) {
+    real_T minError = FLT_MAX;
+    real_T currentError;
+
+    real_T minSpeed = 0;
+
+    uint16_t i, j, k, l;
+
+    for (i = 0; i < Nv; i++) {
+        for (j = 0; j < Nt; j++) {
+            for (k = 0; k < Nf; k++) {
+                for (l = 0; l < Nq; l++) {
+                    currentError = fabs(Xnext[i][j][k][l].V - Value);
+
+                    if ((currentError < minError) && ((Value - Xnext[i][j][k][l].V) <= 0)) {
+                        minError = currentError;
+                        minSpeed = Xnext[i][j][k][l].V;
+                    }
+                }
+            }
+        }
+    }
+
+    return minSpeed;
 }
 
 uint32_t findUnique(real_T *Vector, real_T *Output, uint32_t length) {

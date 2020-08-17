@@ -33,14 +33,14 @@
 // Turn on/off the counter of boundary calculations
 #define BOUNDCOUNTER
 
-// Choose between nearest neighbor (NEARESTNEIGHBOR) / multi linear interpolation (MULTILINEAR)
-#define NEARESTNEIGHBOR
+// Choose the approximation mode (NEARESTNEIGHBOR/MULTILINEAR)
+#define MULTILINEAR
 
 // Choose the boundary line mode (NOBOUND/CUSTOMBOUND)
 #define CUSTOMBOUND
 
 // Turn on/off boundary calibration
-//#define BOUNDCALIBRATION
+#define BOUNDCALIBRATION
 
 // Turn on/off Adaptive grid method
 //#define ADAPTIVEGRID
