@@ -38,7 +38,7 @@ modelPara.m = 2000;
 modelPara.g = 9.81;
 modelPara.crr = 0.006;
 modelPara.CdA = 0.6;
-modelPara.ds = 60;
+modelPara.ds = 30;
 modelPara.eta_trans = 0.98;
 modelPara.eta_dc = 0.99;
 modelPara.alpha0 = 785.0;
@@ -67,7 +67,7 @@ modelPara.thermalPenalty = 11e4;
 %% Scenario 1
 % --- Speed ---
 % Initial Speed
-V0 = 0/3.6;
+V0 = 20/3.6;
 
 % Horizon
 solverinput.GridSize.Nhrz = 150;

@@ -39,6 +39,12 @@ uint32_t findMaxLEQ(real_T *Vector, real_T Value, uint32_t length);
 // Find the Minimum value in the Vector that is Greater or Equal to the given Value
 uint32_t findMinGEQ(real_T *Vector, real_T Value, uint32_t length);
 
+// Find the Maximum value in the Vector that is Less or Equal to the given Value
+real_T findMaxLEQ_speed(StateTuple (*Xnext)[NT][NF][NQ], real_T Value, uint16_t Nv, uint16_t Nt, uint16_t Nf, uint16_t Nq);
+
+// Find the Minimum value in the Vector that is Greater or Equal to the given Value
+real_T findMinGEQ_speed(StateTuple (*Xnext)[NT][NF][NQ], real_T Value, uint16_t Nv, uint16_t Nt, uint16_t Nf, uint16_t Nq);
+
 // Find the number of unique elements (remove those duplicated elements)
 uint32_t findUnique(real_T *Vector, real_T *Output, uint32_t length);
 
