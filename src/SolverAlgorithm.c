@@ -156,7 +156,7 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     // Obtain the Boundary Line
 #ifdef CUSTOMBOUND
     initSpeedBoundary(&BoundaryStruct);
-    customSpeedBoundary(&BoundaryStruct, SolverInputPtr, ParameterPtr, EnvFactorPtr, X0);
+    customSpeedBoundary(&BoundaryStruct, SolverInputPtr, ParameterPtr, EnvFactorPtr, V0);
 #elif defined NORMALBOUND
     initSpeedBoundary(&BoundaryStruct);
     normalSpeedBoundary(&BoundaryStruct, EnvFactorPtr);
@@ -173,7 +173,7 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     // Retrieve the optimal solution
     findSolution(OutputPtr, &SolutionStruct, Vfmin, Vfmax, Tfmin, Tfmax);
 
-#if defined(NORMALBOUND) || defined(CUSTOMBOUND)
+#if defined(CUSTOMBOUND)
     // Get the boundary line to the output pointer
     copySpeedBoundary(&BoundaryStruct, OutputPtr);
 #endif
@@ -186,15 +186,15 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     printf("Minimum Total Cost: %f\n", OutputPtr->Cost);
 
 #ifdef DYNCOUNTER
-    printf("(Speed) The number of dynamics computation: %d\n", counterDynamics);
+    printf("The number of dynamics computation: %d\n", counterDynamics);
 #endif // DYNCOUNTER
 
 #ifdef INTERPOCOUNTER
-    printf("(Speed) The number of interpolation computation: %d\n", counterInterpo);
+    printf("The number of interpolation computation: %d\n", counterInterpo);
 #endif // INTERPOCOUNTER
 
 #ifdef BOUNDCOUNTER
-    printf("(Speed) The number of boundary computation: %d\n", counterBound);
+    printf("The number of boundary computation: %d\n", counterBound);
 #endif // BOUNDCOUNTER
 
     // Free the memory
@@ -344,12 +344,11 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
     }
 
 
-
     for (int n = 0; n < SolutionPtr->Nstart; n++) {
         uint16_t startIdxV = SolutionPtr->startIdx[n].X;
         uint16_t startIdxT = SolutionPtr->startIdx[n].Y;
 
-        printf("#%d - Start index: %d %d\n", N, startIdxV, startIdxT);
+        //printf("#%d - Start index: %d %d\n", N, startIdxV, startIdxT);
 
         // If it is the initial point
         if (N == 0) {
@@ -390,8 +389,12 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
 
     // Obtain the possible starting points at the next step.
     updateStartX(SolutionPtr, CostToCome);
-    if(SolutionPtr->Nstart == 0){
-        printf("Loop: %d\n", N);
+
+    // Check the number of possible steps
+    if (SolutionPtr->Nstart == 0) {
+        printf("Loop #%d has problem\n", N);
+    } else {
+        printf("Loop #%d is fine\n", N);
     }
 
     // Copy the output back
@@ -436,7 +439,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     speedDynamics(Nx, Nu, Xnext, ArcCost, InfFlag, StateGrid[N], ControlVec, &BoundaryStruct, N, X0_index);
 #else
     // Calculate System Dynamics
-    systemDynamics(Xnext, ArcCost, InfFlag, SpeedVec, ForceVec, TempVec, InletVec, V0_index, T0_index, N);
+    systemDynamics(Xnext, ArcCost, InfFlag, SpeedVec, ForceVec, TempVec, InletVec, V0_index, T0_index, &BoundaryStruct, N);
 #endif
 
 #ifdef BOUNDCALIBRATION
@@ -530,31 +533,13 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
         }
     }
 
-//    uint8_t flag = 0;
-//    for (i = 0; i < Nv; i++) {
-//        for (j = 0; j < Nt; j++) {
-//            for (k = 0; k < Nf; k++) {
-//                for (l = 0; l < Nq; l++) {
-//                    if(ArcCost[i][j][k][l] < SolverInputPtr->SolverLimit.infValue){
-//                        printf("Cost: %f at loop %d\n", ArcCost[i][j][k][l], N);
-//                        flag = 1;
-//                    }
-//                    if(flag) break;
-//                }
-//                if(flag) break;
-//            }
-//            if(flag) break;
-//        }
-//        if(flag) break;
-//    }
-
 
 #ifndef ADAPTIVEGRID
 
     // Grid gaps
     real_T dV = SpeedVec[1] - SpeedVec[0];
     real_T dT = TempVec[1] - TempVec[0];
-    uint8_t flag2 = 0;
+
     for (i = 0; i < Nv; i++) {
         for (j = 0; j < Nt; j++) {
 
@@ -667,11 +652,11 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
                         real_T nearest3inlets[3] = {nearestControl1.Q, nearestControl2.Q, nearestControl3.Q};
                         real_T nearest3Costs[3] = {nearestCost1, nearestCost2, nearestCost3};
 
-                        real_T costInspect = multiInterp(nearest3states, nearest3Costs, SpeedVec[k], TempVec[l]);
-                        real_T forceInspect = multiInterp(nearest3states, nearest3forces, SpeedVec[k],
-                                                          TempVec[l]);
-                        real_T inletInspect = multiInterp(nearest3states, nearest3inlets, SpeedVec[k],
-                                                          TempVec[l]);
+//                        real_T costInspect = multiInterp(nearest3states, nearest3Costs, SpeedVec[k], TempVec[l]);
+//                        real_T forceInspect = multiInterp(nearest3states, nearest3forces, SpeedVec[k],
+//                                                          TempVec[l]);
+//                        real_T inletInspect = multiInterp(nearest3states, nearest3inlets, SpeedVec[k],
+//                                                          TempVec[l]);
 
                         *(p2pCost + k * Nv + l) = multiInterp(nearest3states, nearest3Costs, SpeedVec[k], TempVec[l]);
                         (*(p2pControl + k * Nv + l)).F = multiInterp(nearest3states, nearest3forces, SpeedVec[k],
@@ -703,10 +688,6 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
                         if (vDistance < dV && tDistance < dT) {
                             Distance = vDistance * vDistance + tDistance * tDistance;
-                            if(flag2 == 0){
-                                flag2 = 1;
-                                printf("Loop #%d is fine\n", N);
-                            }
                             if (Distance < minDistance) {
                                 minDistance = Distance;
                                 *(p2pCost + k * Nv + l) = *(ArcCost_real + counter);
@@ -723,22 +704,6 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
 
 #endif
-
-    if(N == 99)
-    {
-        for (i = 0; i < Nv; i++) {
-            for (j = 0; j < Nt; j++) {
-                for (k = 0; k < Nv; k++) {
-                    for (l = 0; l < Nt; l++) {
-                        if(ArcPtr->arcCost[i][j][k][l] < SolverInputPtr->SolverLimit.infValue){
-                            printf("Arc Cost at #99: %f\n", ArcPtr->arcCost[i][j][k][l]);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
 
     free(Xnext);
     free(ArcCost);

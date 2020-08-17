@@ -1,4 +1,10 @@
-fileID = fopen('../speedResult.txt','r');
-formatSpec = '%f';
-A = fscanf(fileID,formatSpec);
-Vo = A';
+syms x y z
+eqn1 = 3.8168936221850496*x + 20.289499728610984*y + z == -974.35897435897459;
+eqn2 = 3.8168936221850496*x + 20.298972220990176*y + z == -871.79487179487205;
+eqn3 = 3.3899489444759832*x + 20.293667158349809*y + z == -974.35897435897459;
+
+[A,B] = equationsToMatrix([eqn1, eqn2, eqn3], [x, y, z])
+
+X = linsolve(A,B)
+
+X(1) * 3.703704 + X(2) * 20.256410 + X(3)

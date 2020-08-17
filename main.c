@@ -86,22 +86,22 @@ int main() {
 
 #ifdef SCENE1
     // Initial Speed
-    V0 = 50 / 3.6;
+    V0 = 0 / 3.6;
     // Initial Temperature
-    T0 = 25;
+    T0 = 26;
 
-    real_T Vmax_GPS_1 = 80 / 3.6;
-    real_T Vmin_GPS_1 = 30 / 3.6;
+    real_T Vmax_GPS_1 = 50 / 3.6;
+    real_T Vmin_GPS_1 = 10 / 3.6;
     real_T T_required_1 = 25;
     uint16_t endBlock_1 = 50;
 
-    real_T Vmax_GPS_2 = 130 / 3.6;
-    real_T Vmin_GPS_2 = 60 / 3.6;
+    real_T Vmax_GPS_2 = 80 / 3.6;
+    real_T Vmin_GPS_2 = 30 / 3.6;
     real_T T_required_2 = 25;
     uint16_t endBlock_2 = 100;
 
-    real_T Vmax_GPS_3 = 50 / 3.6;
-    real_T Vmin_GPS_3 = 10 / 3.6;
+    real_T Vmax_GPS_3 = 130 / 3.6;
+    real_T Vmin_GPS_3 = 60 / 3.6;
     real_T T_required_3 = 25;
     uint16_t endBlock_3 = Nhrz;
 
