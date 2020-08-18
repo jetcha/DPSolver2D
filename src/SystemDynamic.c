@@ -620,7 +620,7 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
 
                     /// Arc Cost ///
                     // ArcCost - added a L2 norm as the penalization
-                    ArcCost[i][j][k][l] = (0 * Pbatt + speedPenalty) * dt +
+                    ArcCost[i][j][k][l] = (Pbatt + speedPenalty) * dt +
                                           thermalPenalty * (Xnext[i][j][k][l].T - T_required) *
                                           (Xnext[i][j][k][l].T - T_required);
 

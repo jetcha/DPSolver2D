@@ -183,6 +183,12 @@ uint32_t findMaxLEQ(real_T *Vector, real_T Value, uint32_t length) {
             maxIdx = i;
         }
     }
+
+    // If there is no answer
+    if(minError == FLT_MAX){
+        maxIdx = length;
+    }
+
     return maxIdx;
 }
 
@@ -200,6 +206,12 @@ uint32_t findMinGEQ(real_T *Vector, real_T Value, uint32_t length) {
             minIdx = i;
         }
     }
+
+    // If there is no answer
+    if(minError == FLT_MAX){
+        minIdx = length;
+    }
+
     return minIdx;
 }
 

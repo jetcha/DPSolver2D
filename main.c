@@ -76,8 +76,8 @@ int main() {
     // Tuning Parameter
     ModelParaPtr.ds = 30;
     ModelParaPtr.speedPenalty = 11e4;
-    //ModelParaPtr.thermalPenalty = 11e4;
-    ModelParaPtr.thermalPenalty = 0;
+    ModelParaPtr.thermalPenalty = 10e4;
+    //ModelParaPtr.thermalPenalty = 0;
 
     // Environmental Information
     //uint8_t numFactors = 3;

@@ -14,14 +14,14 @@
 
 // Problem sizes
 // TODO: These values require to be the same as defined in MatLab
-#define NV 30
-#define NF 30
-#define NT 30
-#define NQ 30
+#define NV 20
+#define NF 20
+#define NT 20
+#define NQ 20
 #define HORIZON 150
 #define RES_THERMAL 150
 #define BLOCK 3
-#define NUM_IDP 4
+#define NUM_IDP 5
 
 
 // Choose pre-defined scenario (SCENE1/SCENE2)
@@ -35,13 +35,13 @@
 #define BOUNDCOUNTER
 
 // Choose the approximation mode (NEARESTNEIGHBOR/MULTILINEAR)
-#define NEARESTNEIGHBOR
+#define MULTILINEAR
 
 // Choose the boundary line mode (NOBOUND/CUSTOMBOUND)
 #define CUSTOMBOUND
 
 // Turn on/off the boundary calibration
-#define BOUNDCALIBRATION
+//#define BOUNDCALIBRATION
 
 // Turn on/off the iterative DP
 #define ITERATIVEDP

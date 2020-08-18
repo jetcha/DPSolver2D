@@ -6,7 +6,13 @@ uint16_t Nf;
 uint16_t Nt;
 uint16_t Nq;
 uint16_t Nhrz;
+
 Boundary BoundaryStruct;                            // boundary line structure
+
+real_T dV = 0;                                      // grid resolution
+real_T dT = 0;
+real_T dF = 0;
+real_T dQ = 0;
 
 /*--- External Variables ---*/
 real_T Vinitial;                                    // The initial state
@@ -28,6 +34,8 @@ static uint16_t T0_index;
 #ifdef ITERATIVEDP
 static real_T (*SpeedGrid)[NV];                     // Speed grid for IDP
 static real_T (*TempGrid)[NT];                      // Temp grid for IDP
+static real_T (*ForceGrid)[NF];                     // Force Grid for IDP
+static  real_T (*InletGrid)[NQ];                    // Inlet Grid for IDP
 #endif
 
 #ifdef ADAPTIVEGRID
@@ -145,11 +153,15 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     // Allocate memory to State Grid
     SpeedGrid = malloc(sizeof(real_T[Nhrz + 1][Nv]));
     TempGrid = malloc(sizeof(real_T[Nhrz + 1][Nt]));
+    ForceGrid = malloc(sizeof(real_T[Nhrz + 1][Nf]));
+    InletGrid = malloc(sizeof(real_T[Nhrz + 1][Nf]));
 
     // Initialize the State Grid
     for (i = 0; i <= Nhrz; i++) {
         memcpy(SpeedGrid[i], SpeedVec, Nv * sizeof(real_T));
         memcpy(TempGrid[i], TempVec, Nt * sizeof(real_T));
+        memcpy(ForceGrid[i], ForceVec, Nf * sizeof(real_T));
+        memcpy(InletGrid[i], ForceVec, Nq * sizeof(real_T));
     }
 
     // Iterative DP with NUM_IDP loops
@@ -165,8 +177,8 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
         V0_index = SolutionStruct.startIdx[0].X;
         T0_index = SolutionStruct.startIdx[0].Y;
 
-        real_T V0_round = SpeedVec[SolutionStruct.startIdx[0].X];
-        real_T T0_round = TempVec[SolutionStruct.startIdx[0].Y];
+        real_T V0_round = SpeedGrid[0][SolutionStruct.startIdx[0].X];
+        real_T T0_round = TempGrid[0][SolutionStruct.startIdx[0].Y];
 
         // Print Input Info
         printf("The given initial Speed: %f\n", V0);
@@ -178,9 +190,9 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
         printf("\n");
 
         printf(" (Speed Part) \n");
-        printInputInfo(SpeedGrid[0], ForceVec, Nv, Nf);
+        printInputInfo(SpeedGrid[0], ForceGrid[0], Nv, Nf);
         printf(" (Thermal Part) \n");
-        printInputInfo(TempGrid[0], InletVec, Nt, Nq);
+        printInputInfo(TempGrid[0], InletGrid[0], Nt, Nq);
 
         // Find the minimum Cost-to-come value step by step
         for (i = 0; i < Nhrz; i++) {
@@ -194,10 +206,12 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
         solutionStruct_free(&SolutionStruct);
 
         // New step size of the state grid, shrinking by half
-        real_T dV = (SpeedGrid[0][1] - SpeedGrid[0][0]) / 2;
-        real_T dT = (TempGrid[0][1] - TempGrid[0][0]) / 2;
+        dV = (SpeedGrid[0][1] - SpeedGrid[0][0]) / 2;
+        dT = (TempGrid[0][1] - TempGrid[0][0]) / 2;
+        dF = (ForceGrid[0][1] - ForceGrid[0][0]) / 2;
+        dQ = (InletGrid[0][1] - InletGrid[0][0]) / 2;
 
-        real_T Vmax, Vmin, Tmax, Tmin;
+        real_T Vmax, Vmin, Tmax, Tmin, Fmax, Fmin, Qmax, Qmin;
 
         // state grid at the initial step (not necessary)
         Vmax = V0 + dV * Nv / 2;
@@ -216,10 +230,16 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
             Vmin = OutputPtr->Vo[i] - dV * Nv / 2;
             Tmax = OutputPtr->To[i] + dT * Nt / 2;
             Tmin = OutputPtr->To[i] - dT * Nt / 2;
+            Fmax = OutputPtr->Fo[i] + dF * Nf / 2;
+            Fmin = OutputPtr->Fo[i] - dF * Nf / 2;
+            Qmax = OutputPtr->Qo[i] + dQ * Nq / 2;
+            Qmin = OutputPtr->Qo[i] - dQ * Nq / 2;
 
             // Create the new state grids
             createLineSpace(SpeedGrid[i + 1], Vmin, Vmax, Nv);
             createLineSpace(TempGrid[i + 1], Tmin, Tmax, Nt);
+            createLineSpace(ForceGrid[i], Fmin, Fmax, Nf);
+            createLineSpace(InletGrid[i], Qmin, Qmax, Nq);
         }
     }
 
@@ -347,8 +367,13 @@ static void x0_init(Solution *SolutionPtr, real_T V0, real_T T0) {
     // Round the initial state to the closet point in the state vector
     uint16_t x, y;
 
+#ifdef ITERATIVEDP
+    x = (uint16_t) findNearest(SpeedGrid[0], V0, Nv);
+    y = (uint16_t) findNearest(TempGrid[0], T0, Nt);
+#else
     x = (uint16_t) findNearest(SpeedVec, V0, Nv);
     y = (uint16_t) findNearest(TempVec, T0, Nt);
+#endif
 
     SolutionPtr->startIdx[0].X = x;
     SolutionPtr->startIdx[0].Y = y;
@@ -423,7 +448,7 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
     // used to store all the possible cost-to-come values to reach each state
     real_T (*CostToBeComp)[Nt] = malloc(sizeof(real_T[Nv][Nt]));
 
-    uint16_t i, j, k, l;
+    uint16_t i, j;
 
     // Initialize the Cost-to-Come Value
     for (i = 0; i < Nv; i++) {
@@ -431,7 +456,6 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
             CostToCome[i][j] = SolverInputPtr->SolverLimit.infValue;
         }
     }
-
 
     for (int n = 0; n < SolutionPtr->Nstart; n++) {
         uint16_t startIdxV = SolutionPtr->startIdx[n].X;
@@ -454,9 +478,6 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
                 }
             }
         }
-
-
-
 
         // Pick the minimum cost to be the cost-to-come value
         for (i = 0; i < Nv; i++) {
@@ -508,17 +529,21 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     // Initialize 2-D arrays
     uint16_t (*FeasibleCounter)[Nt] = malloc(sizeof(uint16_t[Nv][Nt]));
 
-    // The copy of the speed vector
+    // The copy of the speed vector and temp vector
     real_T *SpeedVecCopy = (real_T *) malloc(Nv * sizeof(real_T));
+    real_T * TempVecCopy = (real_T *) malloc(Nt * sizeof(real_T));
 
 #ifdef ITERATIVEDP
     memcpy(SpeedVecCopy, SpeedGrid[N + 1], Nv * sizeof(real_T));
+    memcpy(TempVecCopy, TempGrid[N + 1], Nt * sizeof(real_T));
 #else
     memcpy(SpeedVecCopy, SpeedVec, Nv * sizeof(real_T));
+    memcpy(TempVecCopy, TempVec, Nt * sizeof(real_T));
 #endif
 
 
-    for (i = 0; i < Nv; i++) {
+    for (i = 0; i < Nv; i++)
+    {
         for (j = 0; j < Nt; j++) {
             for (k = 0; k < Nf; k++) {
                 for (l = 0; l < Nq; l++) {
@@ -538,7 +563,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     speedDynamics(Nx, Nu, Xnext, ArcCost, InfFlag, StateGrid[N], ControlVec, &BoundaryStruct, N, X0_index);
 #elif defined(ITERATIVEDP)
     // Calculate System Dynamics
-    systemDynamics(Xnext, ArcCost, InfFlag, SpeedGrid[N], ForceVec, TempGrid[N], InletVec, V0_index, T0_index, &BoundaryStruct, N);
+    systemDynamics(Xnext, ArcCost, InfFlag, SpeedGrid[N], ForceGrid[N], TempGrid[N], InletGrid[N], V0_index, T0_index, &BoundaryStruct, N);
 #else
     // Calculate System Dynamics
     systemDynamics(Xnext, ArcCost, InfFlag, SpeedVec, ForceVec, TempVec, InletVec, V0_index, T0_index, &BoundaryStruct,
@@ -594,9 +619,15 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
                         Xnext[i][j][k][l].T = 0.0;
                     } else {
                         *(Xnext[i][j][0] + counter) = Xnext[i][j][k][l];
+                        *(ArcCost[i][j][0] + counter) = ArcCost[i][j][k][l];
+#ifdef ITERATIVEDP
+                        (*(Control[i][j][0] + counter)).F = ForceGrid[N][k];
+                        (*(Control[i][j][0] + counter)).Q = InletGrid[N][l];
+#else
                         (*(Control[i][j][0] + counter)).F = ForceVec[k];
                         (*(Control[i][j][0] + counter)).Q = InletVec[l];
-                        *(ArcCost[i][j][0] + counter) = ArcCost[i][j][k][l];
+#endif
+
                         // Counting the number of feasible input combos
                         counter++;
                     }
@@ -636,9 +667,11 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
 #ifndef ADAPTIVEGRID
 
-    // Grid gaps
-    real_T dV = SpeedVec[1] - SpeedVec[0];
-    real_T dT = TempVec[1] - TempVec[0];
+    // Grid gaps (only initialize in the first run)
+    if(dV == 0 && dT == 0){
+        dV = SpeedVec[1] - SpeedVec[0];
+        dT = TempVec[1] - TempVec[0];
+    }
 
     for (i = 0; i < Nv; i++) {
         for (j = 0; j < Nt; j++) {
@@ -801,7 +834,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
                         // The distance from the grid point to the real point
                         vDistance = fabs((*(Xnext_real + counter)).V - SpeedVecCopy[k]);
-                        tDistance = fabs((*(Xnext_real + counter)).T - TempVec[l]);
+                        tDistance = fabs((*(Xnext_real + counter)).T - TempVecCopy[l]);
 
                         if (vDistance < dV && tDistance < dT) {
                             Distance = vDistance * vDistance + tDistance * tDistance;
@@ -828,6 +861,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     free(Control);
     free(FeasibleCounter);
     free(SpeedVecCopy);
+    free(TempVecCopy);
 #ifdef ADAPTIVEGRID
     free(BoxEdgesCopy);
 #endif
@@ -876,7 +910,29 @@ findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T Vfmin, real_
         for (i = 0; i < Nhrz; i++) {
 #ifdef ADAPTIVEGRID
             OutputPtr->Vo[i] = StateGrid[i + 1][optimalstateIdx[i + 1]];
-#elif defined(BOUNDCALIBRATION)
+#elif defined(ITERATIVEDP)
+            OutputPtr->Vo[i] = SpeedGrid[i + 1][optimalstateIdx[i + 1].X];
+            OutputPtr->To[i] = TempGrid[i + 1][optimalstateIdx[i + 1].Y];
+
+//            if (optimalstateIdx[i + 1].X == BoundaryStruct.boundMemo[i][2]) {
+//                OutputPtr->Vo[i] = BoundaryStruct.boundMemo[i][0];
+//                printf("Hit!!!!\n");
+//                printf("%d\n", i);
+//            } else if (optimalstateIdx[i + 1].X == BoundaryStruct.boundMemo[i][3]) {
+//                OutputPtr->Vo[i] = BoundaryStruct.boundMemo[i][1];
+//                printf("Hit!!!!\n");
+//                printf("%d\n", i);
+//            } else {
+//                OutputPtr->Vo[i] = SpeedVec[optimalstateIdx[i + 1].X];
+//            }
+//
+//            OutputPtr->To[i] = TempVec[optimalstateIdx[i + 1].Y];
+#else
+            OutputPtr->Vo[i] = SpeedVec[optimalstateIdx[i + 1].X];
+            OutputPtr->To[i] = TempVec[optimalstateIdx[i + 1].Y];
+#endif
+
+#ifdef BOUNDCALIBRATION
             if (optimalstateIdx[i + 1].X == BoundaryStruct.boundMemo[i][2]) {
                 OutputPtr->Vo[i] = BoundaryStruct.boundMemo[i][0];
                 printf("Hit!!!!\n");
@@ -885,14 +941,7 @@ findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T Vfmin, real_
                 OutputPtr->Vo[i] = BoundaryStruct.boundMemo[i][1];
                 printf("Hit!!!!\n");
                 printf("%d\n", i);
-            } else {
-                OutputPtr->Vo[i] = SpeedVec[optimalstateIdx[i + 1].X];
             }
-
-            OutputPtr->To[i] = TempVec[optimalstateIdx[i + 1].Y];
-#else
-            OutputPtr->Vo[i] = SpeedVec[optimalstateIdx[i + 1].X];
-            OutputPtr->To[i] = TempVec[optimalstateIdx[i + 1].Y];
 #endif
             OutputPtr->Fo[i] = SolutionPtr->Un[i][optimalstateIdx[i + 1].X][optimalstateIdx[i + 1].Y].F;
             OutputPtr->Qo[i] = SolutionPtr->Un[i][optimalstateIdx[i + 1].X][optimalstateIdx[i + 1].Y].Q;
