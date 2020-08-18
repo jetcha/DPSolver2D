@@ -74,9 +74,9 @@ int main() {
     ModelParaPtr.Tamb = 30;
 
     // Tuning Parameter
-    ModelParaPtr.ds = 20;
+    ModelParaPtr.ds = 30;
     ModelParaPtr.speedPenalty = 11e4;
-    ModelParaPtr.thermalPenalty = 11e4;
+    ModelParaPtr.thermalPenalty = 10e4;
     //ModelParaPtr.thermalPenalty = 0;
 
     // Environmental Information
@@ -86,9 +86,9 @@ int main() {
 
 #ifdef SCENE1
     // Initial Speed
-    V0 = 0 / 3.6;
+    V0 = 20 / 3.6;
     // Initial Temperature
-    T0 = 26;
+    T0 = 25;
 
     real_T Vmax_GPS_1 = 50 / 3.6;
     real_T Vmin_GPS_1 = 10 / 3.6;

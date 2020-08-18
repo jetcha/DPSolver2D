@@ -431,6 +431,16 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
     real_T Vmin_end = EnvironmentalFactor->Vmin_env[N + 1];
 #endif
 
+#ifdef BOUNDCALIBRATION
+    // Besides the points on the state grid, also consider the points on the boundary
+    if (N > 0) {
+        uint16_t minIdx = (uint16_t) findMaxLEQ(Vin, BoundaryPtr->boundMemo[N - 1][0], Nv);
+        uint16_t maxIdx = (uint16_t) findMinGEQ(Vin, BoundaryPtr->boundMemo[N - 1][1], Nv);
+        Vin[minIdx] = BoundaryPtr->boundMemo[N - 1][0];
+        Vin[maxIdx] = BoundaryPtr->boundMemo[N - 1][1];
+    }
+#endif
+
     real_T Tmax_end = EnvironmentalFactor->T_required[N] + 5;
     real_T Tmin_end = EnvironmentalFactor->T_required[N] - 5;
 
