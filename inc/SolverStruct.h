@@ -14,14 +14,15 @@
 
 // Problem sizes
 // TODO: These values require to be the same as defined in MatLab
-#define NV 20
-#define NF 20
-#define NT 20
-#define NQ 20
+#define NV 21
+#define NF 21
+#define NT 21
+#define NQ 21
 #define HORIZON 150
 #define RES_THERMAL 150
 #define BLOCK 3
-#define NUM_IDP 4
+#define NUM_IDP 10
+#define GAMMA 1.3
 
 
 // Choose pre-defined scenario (SCENE1/SCENE2)
