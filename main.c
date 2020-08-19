@@ -39,7 +39,7 @@ int main() {
     SolverInputPtr.Constraint.PAmax = 6e4;
     SolverInputPtr.Constraint.PDmax = -6e4;
     SolverInputPtr.Constraint.Tmax = 30;
-    SolverInputPtr.Constraint.Tmin = 10;
+    SolverInputPtr.Constraint.Tmin = 20;
     SolverInputPtr.Constraint.Tmax_inlet = 30;
     SolverInputPtr.Constraint.Tmin_inlet = 10;
     SolverInputPtr.Constraint.Qmax = 2000;
@@ -76,7 +76,7 @@ int main() {
     // Tuning Parameter
     ModelParaPtr.ds = 30;
     ModelParaPtr.speedPenalty = 11e4;
-    ModelParaPtr.thermalPenalty = 10e4;
+    ModelParaPtr.thermalPenalty = 11e4;
     //ModelParaPtr.thermalPenalty = 0;
 
     // Environmental Information
