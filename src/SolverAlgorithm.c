@@ -145,6 +145,7 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
 
     // Obtain the Boundary Line
 #ifdef CUSTOMBOUND
+    // Calculate the boundary lines before hand
     initSpeedBoundary(&BoundaryStruct);
     customSpeedBoundary(&BoundaryStruct, SolverInputPtr, ParameterPtr, EnvFactorPtr, V0);
 #endif
@@ -206,10 +207,17 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
         solutionStruct_free(&SolutionStruct);
 
         // New step size of the state grid, shrinking by half
-        dV = (SpeedGrid[0][1] - SpeedGrid[0][0]) / 2;
-        dT = (TempGrid[0][1] - TempGrid[0][0]) / 2;
-        dF = (ForceGrid[0][1] - ForceGrid[0][0]) / 2;
-        dQ = (InletGrid[0][1] - InletGrid[0][0]) / 2;
+        dV = (SpeedGrid[0][1] - SpeedGrid[0][0]) / GAMMA;
+        dT = (TempGrid[0][1] - TempGrid[0][0]) / GAMMA;
+        dF = (ForceGrid[0][1] - ForceGrid[0][0]) / GAMMA;
+        dQ = (InletGrid[0][1] - InletGrid[0][0]) / GAMMA;
+
+        printf("\n");
+        printf("dV: %f\n", dV);
+        printf("dT: %f\n", dT);
+        printf("dF: %f\n", dF);
+        printf("dQ: %f\n", dQ);
+        printf("\n");
 
         real_T Vmax, Vmin, Tmax, Tmin, Fmax, Fmin, Qmax, Qmin;
 
@@ -242,6 +250,11 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
             createLineSpace(InletGrid[i], Qmin, Qmax, Nq);
         }
     }
+
+    free(SpeedGrid);
+    free(TempGrid);
+    free(ForceGrid);
+    free(InletGrid);
 
 #else
     // Initialize Solution Structure
@@ -727,7 +740,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
                     for (counter = 0; counter < FeasibleCounter[i][j]; counter++) {
                         // The distance from the grid point to the real point
                         vDistance = fabs((*(Xnext_real + counter)).V - SpeedVecCopy[k]);
-                        tDistance = fabs((*(Xnext_real + counter)).T - TempVec[l]);
+                        tDistance = fabs((*(Xnext_real + counter)).T - TempVecCopy[l]);
 
                         if (vDistance < dV && tDistance < dT) {
                             Distance = vDistance * vDistance + tDistance * tDistance;
@@ -743,7 +756,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
                     for (counter = 0; counter < FeasibleCounter[i][j]; counter++) {
                         // The distance from the grid point to the real point
                         vDistance = fabs((*(Xnext_real + counter)).V - SpeedVecCopy[k]);
-                        tDistance = fabs((*(Xnext_real + counter)).T - TempVec[l]);
+                        tDistance = fabs((*(Xnext_real + counter)).T - TempVecCopy[l]);
 
                         if (vDistance < dV && tDistance < dT) {
                             Distance = vDistance * vDistance + tDistance * tDistance;
@@ -761,7 +774,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
                         // The distance from the grid point to the real point
                         vDistance = fabs((*(Xnext_real + counter)).V - SpeedVecCopy[k]);
-                        tDistance = fabs((*(Xnext_real + counter)).T - TempVec[l]);
+                        tDistance = fabs((*(Xnext_real + counter)).T - TempVecCopy[l]);
 
                         if (vDistance < dV && tDistance < dT) {
                             Distance = vDistance * vDistance + tDistance * tDistance;
@@ -801,11 +814,11 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 //                                                          TempVec[l]);
 
                         *(p2pCost + k * Nv + l) = multiInterp(nearest3states, nearest3Costs, SpeedVecCopy[k],
-                                                              TempVec[l]);
+                                                              TempVecCopy[l]);
                         (*(p2pControl + k * Nv + l)).F = multiInterp(nearest3states, nearest3forces, SpeedVecCopy[k],
-                                                                     TempVec[l]);
+                                                                     TempVecCopy[l]);
                         (*(p2pControl + k * Nv + l)).Q = multiInterp(nearest3states, nearest3inlets, SpeedVecCopy[k],
-                                                                     TempVec[l]);
+                                                                     TempVecCopy[l]);
                     }
                 }
 #endif
