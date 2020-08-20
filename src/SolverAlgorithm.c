@@ -39,10 +39,15 @@ static  real_T (*InletGrid)[NQ];                    // Inlet Grid for IDP
 #endif
 
 #ifdef ADAPTIVEGRID
+#ifdef ITERATIVEDP
+static real_T (*SpeedBoxEdges)[NV + 1];             // Box Edges for adaptive speed grid [Nhrz][NV]
+static real_T (*TempBoxEdges)[NT + 1];              // Box Edges for adaptive temperature grid [Nhrz][NT]
+#else
 static real_T *SpeedBoxEdges;                       // Box Edges for adaptive speed grid
 static real_T *TempBoxEdges;                        // Box Edges for adaptive temperature grid
 static real_T (*SpeedGrid)[NV];                     // Speed grid [Nhrz + 1][NV]
 static real_T (*TempGrid)[NT];                      // Temp grid [Nhrz + 1][NT]
+#endif
 static StateTuple (*AdaptiveStateGrid)[NV][NT];     // Adaptive state grid [Nhrz + 1][NV][NT]
 #endif
 
@@ -142,10 +147,14 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     customSpeedBoundary(&BoundaryStruct, SolverInputPtr, ParameterPtr, EnvFactorPtr, V0);
 #endif
 
+
+
+#ifdef ITERATIVEDP
+
 #ifdef ADAPTIVEGRID
     // Initialize Box Edges
-    SpeedBoxEdges = malloc((Nv + 1) * sizeof(real_T));
-    TempBoxEdges = malloc((Nt + 1) * sizeof(real_T));
+    SpeedBoxEdges = malloc(sizeof(real_T[Nhrz + 1][Nv + 1]));
+    TempBoxEdges = malloc(sizeof(real_T[Nhrz + 1][Nt + 1]));
     createBoxEdges(SpeedBoxEdges, SpeedVec, Nv);
     createBoxEdges(TempBoxEdges, TempVec, Nt);
 
@@ -155,14 +164,15 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     AdaptiveStateGrid = malloc(sizeof(StateTuple[Nhrz + 1][Nv][Nt]));
 
     for (i = 0; i <= Nhrz; i++) {
+        createBoxEdges(SpeedBoxEdges[i], SpeedVec, Nv);
+        createBoxEdges(TempBoxEdges[i], TempVec, Nt);
+        // TODO
         memcpy(SpeedGrid[i], SpeedVec, Nv * sizeof(real_T));
         memcpy(TempGrid[i], TempVec, Nt * sizeof(real_T));
         createStatePlane(AdaptiveStateGrid[i], SpeedGrid[i], TempGrid[i], Nv, Nt);
     }
-
 #endif
 
-#ifdef ITERATIVEDP
     // Allocate memory to State Grid
     SpeedGrid = malloc(sizeof(real_T[Nhrz + 1][Nv]));
     TempGrid = malloc(sizeof(real_T[Nhrz + 1][Nt]));
@@ -269,6 +279,26 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     free(InletGrid);
 
 #else
+
+#ifdef ADAPTIVEGRID
+    // Initialize Box Edges
+    SpeedBoxEdges = malloc((Nv + 1) * sizeof(real_T));
+    TempBoxEdges = malloc((Nt + 1) * sizeof(real_T));
+    createBoxEdges(SpeedBoxEdges, SpeedVec, Nv);
+    createBoxEdges(TempBoxEdges, TempVec, Nt);
+
+    // Initialize the Adaptive State Grid
+    SpeedGrid = malloc(sizeof(real_T[Nhrz + 1][Nv]));
+    TempGrid = malloc(sizeof(real_T[Nhrz + 1][Nt]));
+    AdaptiveStateGrid = malloc(sizeof(StateTuple[Nhrz + 1][Nv][Nt]));
+
+    for (i = 0; i <= Nhrz; i++) {
+        memcpy(SpeedGrid[i], SpeedVec, Nv * sizeof(real_T));
+        memcpy(TempGrid[i], TempVec, Nt * sizeof(real_T));
+        createStatePlane(AdaptiveStateGrid[i], SpeedGrid[i], TempGrid[i], Nv, Nt);
+    }
+#endif
+
     // Initialize Solution Structure
     Solution SolutionStruct;
     solutionStruct_init(&SolutionStruct);

@@ -41,11 +41,11 @@
 // Choose the boundary line mode (NOBOUND/CUSTOMBOUND)
 #define CUSTOMBOUND
 
-// Turn on/off the boundary calibration
+// Turn on/off the boundary calibration (does NOT work with adaptive grid)
 //#define BOUNDCALIBRATION
 
 // Turn on/off the iterative DP
-//#define ITERATIVEDP
+#define ITERATIVEDP
 
 // Turn on/off Adaptive grid method
 #define ADAPTIVEGRID

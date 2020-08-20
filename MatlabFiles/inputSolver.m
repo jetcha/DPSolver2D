@@ -60,7 +60,7 @@ modelPara.Tamb = 30;
 
 % Penalty Parameters
 modelPara.speedPenalty = 11e4;
-modelPara.thermalPenalty = 10e4;
+modelPara.thermalPenalty = 11e4;
 %modelPara.thermalPenalty = 0;
 
 
