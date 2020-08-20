@@ -39,8 +39,11 @@ static  real_T (*InletGrid)[NQ];                    // Inlet Grid for IDP
 #endif
 
 #ifdef ADAPTIVEGRID
-static real_T *BoxEdges;                            // Box Edges for adaptive grid method
-static real_T (*StateGrid)[NV];                     // Adaptive State Grid
+static real_T *SpeedBoxEdges;                       // Box Edges for adaptive speed grid
+static real_T *TempBoxEdges;                        // Box Edges for adaptive temperature grid
+static real_T (*SpeedGrid)[NV];                     // Speed grid [Nhrz + 1][NV]
+static real_T (*TempGrid)[NT];                      // Temp grid [Nhrz + 1][NT]
+static StateTuple (*AdaptiveStateGrid)[NV][NT];     // Adaptive state grid [Nhrz + 1][NV][NT]
 #endif
 
 /*--- Private Structure ---*/
@@ -48,7 +51,7 @@ typedef struct {
     real_T (*CostToCome)[NT];                       // The most recent cost-to-come vector [NV][NT]
     Coordinate *startIdx;                           // All the possible starting indexes [NV][NT]
     uint16_t Nstart;                                // Number of possible starting points
-    Coordinate (*Xn)[NV][NT];                         // Optimal State Trajectory [Nhrz][NV][NT]
+    Coordinate (*Xn)[NV][NT];                       // Optimal State Trajectory [Nhrz][NV][NT]
     ControlTuple (*Un)[NV][NT];                     // Optimal Control Policy [Nhrz][NV][NT]
 }
         Solution;
@@ -57,7 +60,7 @@ typedef struct {
     real_T (*arcCost)[NT][NV][NT];                  // Vector with arc costs from one to another state [NV][NT][NV][NT]
     ControlTuple (*arcU)[NT][NV][NT];               // Vector with instant controls from one to another state [NV][NT][NV][NT]
 #ifdef ADAPTIVEGRID
-    real_T (*arcX)[NT][NV][NT];                     // (Used in Adaptive Grid) Vector that notes the possible state to state [NV][NT][NV][NT]
+    StateTuple (*arcX)[NT][NV][NT];                 // (Used in Adaptive Grid) Vector that notes the possible state to state [NV][NT][NV][NT]
 #endif
 }
         ArcProcess;
@@ -132,22 +135,31 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
     createLineSpace(TempVec, SolverInputPtr->Constraint.Tmin, SolverInputPtr->Constraint.Tmax, Nt);
     createLineSpace(InletVec, SolverInputPtr->Constraint.Qmin, SolverInputPtr->Constraint.Qmax, Nq);
 
-
-
-#ifdef ADAPTIVEGRID
-    // Initialize Box Edges
-    BoxEdges = malloc((Nx + 1) * sizeof(real_T));
-    createBoxEdges(BoxEdges, StateVec, Nx);
-    // Initialize the Adaptive State Grid
-    StateGrid = malloc(sizeof(real_T[Nhrz + 1][Nx]));
-    createSpeedGrid(StateGrid, StateVec, Nx, Nhrz);
-#endif
-
     // Obtain the Boundary Line
 #ifdef CUSTOMBOUND
     // Calculate the boundary lines before hand
     initSpeedBoundary(&BoundaryStruct);
     customSpeedBoundary(&BoundaryStruct, SolverInputPtr, ParameterPtr, EnvFactorPtr, V0);
+#endif
+
+#ifdef ADAPTIVEGRID
+    // Initialize Box Edges
+    SpeedBoxEdges = malloc((Nv + 1) * sizeof(real_T));
+    TempBoxEdges = malloc((Nt + 1) * sizeof(real_T));
+    createBoxEdges(SpeedBoxEdges, SpeedVec, Nv);
+    createBoxEdges(TempBoxEdges, TempVec, Nt);
+
+    // Initialize the Adaptive State Grid
+    SpeedGrid = malloc(sizeof(real_T[Nhrz + 1][Nv]));
+    TempGrid = malloc(sizeof(real_T[Nhrz + 1][Nt]));
+    AdaptiveStateGrid = malloc(sizeof(StateTuple[Nhrz + 1][Nv][Nt]));
+
+    for (i = 0; i <= Nhrz; i++) {
+        memcpy(SpeedGrid[i], SpeedVec, Nv * sizeof(real_T));
+        memcpy(TempGrid[i], TempVec, Nt * sizeof(real_T));
+        createStatePlane(AdaptiveStateGrid[i], SpeedGrid[i], TempGrid[i], Nv, Nt);
+    }
+
 #endif
 
 #ifdef ITERATIVEDP
@@ -330,8 +342,11 @@ void MagicBox(SolverInput *InputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr, S
 #endif
 
 #ifdef ADAPTIVEGRID
-    free(BoxEdges);
-    free(StateGrid);
+    free(SpeedBoxEdges);
+    free(TempBoxEdges);
+    free(SpeedGrid);
+    free(TempGrid);
+    free(AdaptiveStateGrid);
 #endif
 }
 
@@ -417,7 +432,7 @@ static void arcStruct_init(ArcProcess *ArcPtr) {
     ArcPtr->arcCost = malloc(sizeof(real_T[Nv][Nt][Nv][Nt]));
     ArcPtr->arcU = malloc(sizeof(ControlTuple[Nv][Nt][Nv][Nt]));
 #ifdef ADAPTIVEGRID
-    ArcPtr->arcX = malloc(sizeof(real_T[Nx][Nx]));
+    ArcPtr->arcX = malloc(sizeof(StateTuple[Nv][Nt][Nv][Nt]));
 #endif
 
     // Initialize the arc costs
@@ -430,7 +445,8 @@ static void arcStruct_init(ArcProcess *ArcPtr) {
                     ArcPtr->arcU[i][j][k][l].F = 0;
                     ArcPtr->arcU[i][j][k][l].Q = 0;
 #ifdef ADAPTIVEGRID
-                    ArcPtr->arcX[i][j] = 0.0;
+                    ArcPtr->arcX[i][j][k][l].V = 0.0;
+                    ArcPtr->arcX[i][j][k][l].T = 0.0;
 #endif
                 }
             }
@@ -502,7 +518,7 @@ static void calculate_costTocome(Solution *SolutionPtr, uint16_t N)        // (N
                     SolutionPtr->Un[N][i][j].Q = ArcStruct.arcU[startIdxV][startIdxT][i][j].Q;
                     CostToCome[i][j] = CostToBeComp[i][j];
 #ifdef ADAPTIVEGRID
-                    StateGrid[N + 1][j] = ArcStruct.arcX[startIdx][j];
+                    AdaptiveStateGrid[N + 1][i][j] = ArcStruct.arcX[startIdxV][startIdxT][i][j];
 #endif
                 }
             }
@@ -544,7 +560,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
     // The copy of the speed vector and temp vector
     real_T *SpeedVecCopy = (real_T *) malloc(Nv * sizeof(real_T));
-    real_T * TempVecCopy = (real_T *) malloc(Nt * sizeof(real_T));
+    real_T *TempVecCopy = (real_T *) malloc(Nt * sizeof(real_T));
 
 #ifdef ITERATIVEDP
     memcpy(SpeedVecCopy, SpeedGrid[N + 1], Nv * sizeof(real_T));
@@ -555,8 +571,7 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 #endif
 
 
-    for (i = 0; i < Nv; i++)
-    {
+    for (i = 0; i < Nv; i++) {
         for (j = 0; j < Nt; j++) {
             for (k = 0; k < Nf; k++) {
                 for (l = 0; l < Nq; l++) {
@@ -572,8 +587,12 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     }
 
 #ifdef ADAPTIVEGRID
+    // Pass the starting plane
+    passStatePlane(AdaptiveStateGrid[N], Nv, Nt);
+
     // Calculate System Dynamics
-    speedDynamics(Nx, Nu, Xnext, ArcCost, InfFlag, StateGrid[N], ControlVec, &BoundaryStruct, N, X0_index);
+    systemDynamics(Xnext, ArcCost, InfFlag, SpeedGrid[N], ForceVec, TempGrid[N], InletVec, V0_index, T0_index,
+                   &BoundaryStruct, N);
 #elif defined(ITERATIVEDP)
     // Calculate System Dynamics
     systemDynamics(Xnext, ArcCost, InfFlag, SpeedGrid[N], ForceGrid[N], TempGrid[N], InletGrid[N], V0_index, T0_index, &BoundaryStruct, N);
@@ -607,8 +626,11 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
 
 #ifdef ADAPTIVEGRID
     // Local copy of box edges (for step N)
-    real_T *BoxEdgesCopy = (real_T *) malloc((Nx + 1) * sizeof(real_T));
-    memcpy(BoxEdgesCopy, BoxEdges, (Nx + 1) * sizeof(real_T));
+    real_T *SpeedBoxEdgesCopy = (real_T *) malloc((Nv + 1) * sizeof(real_T));
+    real_T *TempBoxEdgesCopy = (real_T *) malloc((Nt + 1) * sizeof(real_T));
+
+    memcpy(SpeedBoxEdgesCopy, SpeedBoxEdges, (Nv + 1) * sizeof(real_T));
+    memcpy(TempBoxEdgesCopy, TempBoxEdges, (Nt + 1) * sizeof(real_T));
 
     // Shift the min and max Edge to be the same as Calibrated StateVecCopy
     //uint16_t minIdxEdge = findMaxLEQ(BoxEdgesCopy, StateVecCopy[minIdx], (Nx + 1));
@@ -649,30 +671,56 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
             FeasibleCounter[i][j] = counter;
 
 #ifdef ADAPTIVEGRID
-            if (FeasibleCounter[i] > 0) {
-            // Start and End indexes of the Box of interest (use findMaxLEQ to find endIdx in this case)
-            uint16_t startBox = findMaxLEQ(BoxEdgesCopy, Xnext[i][0], (Nx + 1));
-            uint16_t endBox = findMaxLEQ(BoxEdgesCopy, Xnext[i][(FeasibleCounter[i] - 1)], (Nx + 1));
+            if (FeasibleCounter[i][j] > 0) {
+                if (N == 0) {
+                    printf("Feasible Counter(#%d #%d): %d\n", i, j, FeasibleCounter[i][j]);
+                }
+                // Arc Cost (after picking the nearest-neighbor) from one state to another (point-to-point)
+                // real_T *p2pCost = ArcPtr->arcCost[i][j][0];
 
-            uint16_t k = 0;
+                // Arc Control values (after picking the nearest-neighbor) from one state to another (point-to-point)
+                // ControlTuple *p2pControl = ArcPtr->arcU[i][j][0];
 
-            for (j = startBox; j <= endBox; j++) {
-                while (k < FeasibleCounter[i]) {
-                    // Break when Xnext has entered the next Box
-                    if (Xnext[i][k] > BoxEdgesCopy[j + 1]) {
-                        break;
+                // Point to each state (head)
+                StateTuple *Xnext_real = Xnext[i][j][0];
+                ControlTuple *Control_real = Control[i][j][0];
+                real_T *ArcCost_real = ArcCost[i][j][0];
+
+                //  Find the Max & Min reachable speed and temperature starting from the index [i][j]
+                real_T maxRealSpeed = findMaxValue(Xnext_real, FeasibleCounter[i][j], 0);
+                real_T maxRealTemp = findMaxValue(Xnext_real, FeasibleCounter[i][j], 1);
+                real_T minRealSpeed = findMinValue(Xnext_real, FeasibleCounter[i][j], 0);
+                real_T minRealTemp = findMinValue(Xnext_real, FeasibleCounter[i][j], 1);
+
+                // Start and End indexes of the Box of interest (use findMaxLEQ to find endIdx in this case)
+                uint16_t startSpeedBox = findMaxLEQ(SpeedBoxEdgesCopy, minRealSpeed, (Nv + 1));
+                uint16_t endSpeedBox = findMaxLEQ(SpeedBoxEdgesCopy, maxRealSpeed, (Nv + 1));
+                uint16_t startTempBox = findMaxLEQ(TempBoxEdgesCopy, minRealTemp, (Nt + 1));
+                uint16_t endTempBox = findMaxLEQ(TempBoxEdgesCopy, maxRealTemp, (Nt + 1));
+
+                uint16_t n = 0;
+
+                for (k = startSpeedBox; k <= endSpeedBox; k++) {
+                    for (l = startTempBox; l <= endTempBox; l++) {
+                        while (n < FeasibleCounter[i][j]) {
+
+                            if ((*(Xnext_real + n)).V > SpeedBoxEdgesCopy[k + 1] ||
+                                (*(Xnext_real + n)).T > TempBoxEdgesCopy[l + 1]) {
+                                break;
+                            }
+
+                            // Pick the minimum cost among all the possible costs to the box
+                            if (*(ArcCost_real + n) < ArcPtr->arcCost[i][j][k][l]) {
+                                ArcPtr->arcCost[i][j][k][l] = *(ArcCost_real + n);
+                                ArcPtr->arcU[i][j][k][l] = *(Control_real + n);
+                                ArcPtr->arcX[i][j][k][l] = *(Xnext_real + n);
+                            }
+
+                            n++;
+                        }
                     }
-
-                    // Pick the minimum cost among all the possible costs to the box
-                    if (ArcCost[i][k] < ArcPtr->arcCost[i][j]) {
-                        ArcPtr->arcCost[i][j] = ArcCost[i][k];
-                        ArcPtr->arcU[i][j] = Control[i][k];
-                        ArcPtr->arcX[i][j] = Xnext[i][k];
-                    }
-                    k++;
                 }
             }
-        }
 #endif
         }
     }
@@ -876,7 +924,8 @@ static void calculate_arc_cost(ArcProcess *ArcPtr, uint16_t N)    // N is iterat
     free(SpeedVecCopy);
     free(TempVecCopy);
 #ifdef ADAPTIVEGRID
-    free(BoxEdgesCopy);
+    free(SpeedBoxEdgesCopy);
+    free(TempBoxEdgesCopy);
 #endif
 }
 
@@ -922,7 +971,8 @@ findSolution(SolverOutput *OutputPtr, Solution *SolutionPtr, real_T Vfmin, real_
         // Find the optimal control policy and state trajectory
         for (i = 0; i < Nhrz; i++) {
 #ifdef ADAPTIVEGRID
-            OutputPtr->Vo[i] = StateGrid[i + 1][optimalstateIdx[i + 1]];
+            OutputPtr->Vo[i] = AdaptiveStateGrid[i + 1][optimalstateIdx[i + 1].X][optimalstateIdx[i + 1].Y].V;
+            OutputPtr->To[i] = AdaptiveStateGrid[i + 1][optimalstateIdx[i + 1].X][optimalstateIdx[i + 1].Y].T;
 #elif defined(ITERATIVEDP)
             OutputPtr->Vo[i] = SpeedGrid[i + 1][optimalstateIdx[i + 1].X];
             OutputPtr->To[i] = TempGrid[i + 1][optimalstateIdx[i + 1].Y];

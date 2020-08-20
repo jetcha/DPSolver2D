@@ -169,6 +169,52 @@ uint32_t findNearest(real_T *Vector, real_T Value, uint32_t length) {
     return nearestIdx;
 }
 
+real_T findMaxValue(StateTuple *Vector, uint16_t length, uint8_t flag) {
+    real_T maxValue = 0;
+    uint16_t i;
+
+    if (flag == 0) {
+        // Find Max Speed
+        for (i = 0; i < length; i++) {
+            if (Vector[i].V > maxValue) {
+                maxValue = Vector[i].V;
+            }
+        }
+    } else {
+        // Find Max Temp
+        for (i = 0; i < length; i++) {
+            if (Vector[i].T > maxValue) {
+                maxValue = Vector[i].T;
+            }
+        }
+    }
+
+    return maxValue;
+}
+
+real_T findMinValue(StateTuple *Vector, uint16_t length, uint8_t flag){
+    real_T minValue = FLT_MAX;
+    uint16_t i;
+
+    if (flag == 0) {
+        // Find Max Speed
+        for (i = 0; i < length; i++) {
+            if (Vector[i].V< minValue) {
+                minValue = Vector[i].V;
+            }
+        }
+    } else {
+        // Find Max Temp
+        for (i = 0; i < length; i++) {
+            if (Vector[i].T < minValue) {
+                minValue = Vector[i].T;
+            }
+        }
+    }
+
+    return minValue;
+}
+
 uint32_t findMaxLEQ(real_T *Vector, real_T Value, uint32_t length) {
     real_T minError = FLT_MAX;
     real_T currentError;
@@ -185,7 +231,7 @@ uint32_t findMaxLEQ(real_T *Vector, real_T Value, uint32_t length) {
     }
 
     // If there is no answer
-    if(minError == FLT_MAX){
+    if (minError == FLT_MAX) {
         maxIdx = length;
     }
 
@@ -208,14 +254,15 @@ uint32_t findMinGEQ(real_T *Vector, real_T Value, uint32_t length) {
     }
 
     // If there is no answer
-    if(minError == FLT_MAX){
+    if (minError == FLT_MAX) {
         minIdx = length;
     }
 
     return minIdx;
 }
 
-real_T findMaxLEQ_speed(StateTuple (*Xnext)[NT][NF][NQ], real_T Value, uint16_t Nv, uint16_t Nt, uint16_t Nf, uint16_t Nq) {
+real_T
+findMaxLEQ_speed(StateTuple (*Xnext)[NT][NF][NQ], real_T Value, uint16_t Nv, uint16_t Nt, uint16_t Nf, uint16_t Nq) {
     real_T minError = FLT_MAX;
     real_T currentError;
 
@@ -241,7 +288,8 @@ real_T findMaxLEQ_speed(StateTuple (*Xnext)[NT][NF][NQ], real_T Value, uint16_t 
     return maxSpeed;
 }
 
-real_T findMinGEQ_speed(StateTuple (*Xnext)[NT][NF][NQ], real_T Value, uint16_t Nv, uint16_t Nt, uint16_t Nf, uint16_t Nq) {
+real_T
+findMinGEQ_speed(StateTuple (*Xnext)[NT][NF][NQ], real_T Value, uint16_t Nv, uint16_t Nt, uint16_t Nf, uint16_t Nq) {
     real_T minError = FLT_MAX;
     real_T currentError;
 

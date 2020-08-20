@@ -15,13 +15,13 @@
 // Problem sizes
 // TODO: These values require to be the same as defined in MatLab
 #define NV 21
-#define NF 21
+#define NF 31
 #define NT 21
-#define NQ 21
+#define NQ 31
 #define HORIZON 150
 #define RES_THERMAL 150
 #define BLOCK 3
-#define NUM_IDP 10
+#define NUM_IDP 1
 #define GAMMA 1.3
 
 
@@ -45,10 +45,10 @@
 //#define BOUNDCALIBRATION
 
 // Turn on/off the iterative DP
-#define ITERATIVEDP
+//#define ITERATIVEDP
 
 // Turn on/off Adaptive grid method
-//#define ADAPTIVEGRID
+#define ADAPTIVEGRID
 
 /*--- External Variables ---*/
 extern real_T Vinitial;

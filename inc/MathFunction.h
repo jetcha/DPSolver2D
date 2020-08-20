@@ -33,16 +33,22 @@ real_T multiInterp(StateTuple *States, real_T *Outputs, real_T Vk, real_T Tl);
 // Find the index with the nearest value in the Vector (based on the given Value)
 uint32_t findNearest(real_T *Vector, real_T Value, uint32_t length);
 
+// Find the Maximum Value in the Array (flag 0 = Speed, flag 1 = Temp)
+real_T findMaxValue(StateTuple *Vector, uint16_t length, uint8_t flag);
+
+// Find the Minimum Value in the Array (flag 0 = Speed, flag 1 = Temp)
+real_T findMinValue(StateTuple *Vector, uint16_t length, uint8_t flag);
+
 // Find the Maximum value in the Vector that is Less or Equal to the given Value
 uint32_t findMaxLEQ(real_T *Vector, real_T Value, uint32_t length);
 
 // Find the Minimum value in the Vector that is Greater or Equal to the given Value
 uint32_t findMinGEQ(real_T *Vector, real_T Value, uint32_t length);
 
-// Find the Maximum value in the Vector that is Less or Equal to the given Value
+// Find the Maximum value in the 4-D array that is Less or Equal to the given Value
 real_T findMaxLEQ_speed(StateTuple (*Xnext)[NT][NF][NQ], real_T Value, uint16_t Nv, uint16_t Nt, uint16_t Nf, uint16_t Nq);
 
-// Find the Minimum value in the Vector that is Greater or Equal to the given Value
+// Find the Minimum value in the 4-D array that is Greater or Equal to the given Value
 real_T findMinGEQ_speed(StateTuple (*Xnext)[NT][NF][NQ], real_T Value, uint16_t Nv, uint16_t Nt, uint16_t Nf, uint16_t Nq);
 
 // Find the number of unique elements (remove those duplicated elements)
