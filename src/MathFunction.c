@@ -1,9 +1,5 @@
 #include "../inc/MathFunction.h"
 
-#ifdef INTERPOCOUNTER
-uint32_t counterInterpo = 0;
-#endif // INTERPOCOUNTER
-
 /*--- Private (global) variable ---*/
 real_T *CmpArray;
 
@@ -101,9 +97,6 @@ real_T interpolation(LookupTable *TableData, real_T *Xn, real_T *Yn, uint32_t le
                     (TableData->XData[resultIdx + 1] - TableData->XData[resultIdx]) * \
                     (Xcurrent - TableData->XData[resultIdx]);
 
-#ifdef INTERPOCOUNTER
-                counterInterpo++;
-#endif // INTERPOCOUNTER
             }
         }
     }
@@ -142,9 +135,6 @@ real_T multiInterp(StateTuple *States, real_T *Outputs, real_T Vk, real_T Tl) {
     real_T b = (o1 - o2) / (n1 - n2) - ((m1 - m2) / (n1 - n2)) * c;
     real_T a = o1 - n1 * b - m1 * c;
 
-#ifdef INTERPOCOUNTER
-    counterInterpo++;
-#endif // INTERPOCOUNTER
 
     // Then we can have the output = aVk + bTk + c
     return (a * Vk + b * Tl + c);

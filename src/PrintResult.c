@@ -1,80 +1,54 @@
 #include "../inc/PrintResult.h"
 
-void printInputInfo(real_T *StateVec, real_T *ControlVec, uint16_t Nx, uint16_t Nu) {
-
+void fileOutput(SolverOutput *OutputPtr, uint16_t N){
+    FILE *fp;
     uint16_t i;
-
-    printf(" -- Successfully Initialized -- \n");
-
-    printf("State grid:\n");
-    for (i = 0; i < Nx; i++) {
-        printf("%f ", StateVec[i]);
-
-        if (i % 10 == 9) {
-            printf("\n");
-        }
-    }
-    printf("\n");
-
-    printf("Control grid:\n");
-    for (i = 0; i < Nu; i++) {
-        printf("%f ", ControlVec[i]);
-
-        if (i % 10 == 9) {
-            printf("\n");
-        }
-    }
-    printf("\n\n");
-}
-
-void printSpeedSolution(SolverInput *InputPtr, SolverOutput *OutputPtr) {
-    // Make local copies of Grid sizes
     uint16_t Nhrz = HORIZON;
-    uint16_t i;
 
-    printf(" -- Output --\n\n");
+    char *nameMain;
+    char *nameExtension = ".txt";
 
-    printf("Optimal Speed Trajectory: \n");
+    // Speed Result
+    nameMain = "../txtResult/speedResult_";
+
+    char speedResult[strlen(nameMain)+strlen(nameExtension)+4];
+    snprintf(speedResult, sizeof(speedResult), "%s%d%s", nameMain, N, nameExtension);
+    fp = fopen(speedResult, "w");
     for (i = 0; i < Nhrz; i++) {
-        printf("%f ", OutputPtr->Vo[i]);
-        if (i % 10 == 9) {
-            printf("\n");
-        }
+        fprintf(fp, "%f ", OutputPtr->Vo[i]);
     }
-    printf("\n");
+    fclose(fp);
 
-    printf("Optimal Force Trajectory: \n");
+    // Temperature Result
+    nameMain = "../txtResult/tempResult_";
+    char tempResult[strlen(nameMain)+strlen(nameExtension)+4];
+    snprintf(tempResult, sizeof(tempResult), "%s%d%s", nameMain, N, nameExtension);
+
+    fp = fopen(tempResult, "w");
     for (i = 0; i < Nhrz; i++) {
-        printf("%f ", OutputPtr->Fo[i]);
-        if (i % 10 == 9) {
-            printf("\n");
-        }
+        fprintf(fp, "%f ", OutputPtr->To[i]);
     }
-    printf("\n");
-}
+    fclose(fp);
 
-void printThermalSolution(SolverInput *InputPtr, SolverOutput *OutputPtr) {
-    // Make local copies of Grid sizes
-    uint16_t Nhrz = HORIZON;
-    uint16_t i;
+    // Force Result
+    nameMain = "../txtResult/forceResult_";
+    char forceResult[strlen(nameMain)+strlen(nameExtension)+4];
+    snprintf(forceResult, sizeof(forceResult), "%s%d%s", nameMain, N, nameExtension);
 
-    printf(" -- Output --\n\n");
-
-    printf("Optimal Temperature Trajectory: \n");
+    fp = fopen(forceResult, "w");
     for (i = 0; i < Nhrz; i++) {
-        printf("%f ", OutputPtr->To[i]);
-        if (i % 10 == 9) {
-            printf("\n");
-        }
+        fprintf(fp, "%f ", OutputPtr->Fo[i]);
     }
-    printf("\n");
+    fclose(fp);
 
-    printf("Optimal Temp Inlet Trajectory: \n");
+    // Inlet Result
+    nameMain = "../txtResult/inletResult_";
+    char inletResult[strlen(nameMain)+strlen(nameExtension)+4];
+    snprintf(inletResult, sizeof(inletResult), "%s%d%s", nameMain, N, nameExtension);
+
+    fp = fopen(inletResult, "w");
     for (i = 0; i < Nhrz; i++) {
-        printf("%f ", OutputPtr->Qo[i]);
-        if (i % 10 == 9) {
-            printf("\n");
-        }
+        fprintf(fp, "%f ", OutputPtr->Qo[i]);
     }
-    printf("\n");
+    fclose(fp);
 }

@@ -3,11 +3,6 @@
 #include "SolverStruct.h"
 
 /*--- Public Functions ---*/
-// Print out the input settings to the screen: Initial state, grids, etc.
-void printInputInfo(real_T *StateVec, real_T *ControlVec, uint16_t Nx, uint16_t Nu);
 
-// Print out the solution output to the screen: Optimal speed trajectory, control policy, cost.
-void printSpeedSolution(SolverInput *InputPtr, SolverOutput *OutputPtr);
-
-// Print out the solution output to the screen: Optimal temperature trajectory, control policy, cost.
-void printThermalSolution(SolverInput *InputPtr, SolverOutput *OutputPtr);
+// Output results to txt files
+void fileOutput(SolverOutput *OutputPtr, uint16_t N);

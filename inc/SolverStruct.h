@@ -14,57 +14,41 @@
 
 // Problem sizes
 // TODO: These values require to be the same as defined in MatLab
-#define NV 21
-#define NF 31
-#define NT 21
-#define NQ 31
-#define HORIZON 150
-#define RES_THERMAL 150
-#define BLOCK 3
-#define NUM_IDP 1
-#define GAMMA 1.3
-
+#define NV 21                    // number of discrete speed states
+#define NF 21                    // number of discrete force inputs
+#define NT 21                    // number of discrete temperature states
+#define NQ 21                    // number of discrete inlet heat inputs
+#define NUM_IDP 5                // number of iterations
+#define GAMMA 1.5                // shrinking rate
 
 // Choose pre-defined scenario (SCENE1/SCENE2)
 #define SCENE1
 
-// Turn on/off the counter of dynamics computation
-#define DYNCOUNTER
-// Turn on/off the counter of interpolation computation
-#define INTERPOCOUNTER
-// Turn on/off the counter of boundary calculations
-#define BOUNDCOUNTER
+// Parameters of SCENE1 / SCENE2
+#if defined(SCENE1)
+#define HORIZON 200
+#define RES_THERMAL 200
+#define BLOCK 8
 
-// Choose the approximation mode (NEARESTNEIGHBOR/MULTILINEAR)
-#define NEARESTNEIGHBOR
+#elif defined(SCENE2)
+#define HORIZON 200
+#define RES_THERMAL 200
+#define BLOCK 4
+#endif
 
-// Choose the boundary line mode (NOBOUND/CUSTOMBOUND)
+// Boundary line (NOBOUND/CUSTOMBOUND)
 #define CUSTOMBOUND
 
-// Turn on/off the boundary calibration (does NOT work with adaptive grid)
-//#define BOUNDCALIBRATION
-
-// Turn on/off the iterative DP
+// Iterative DP
 #define ITERATIVEDP
 
-// Turn on/off Adaptive grid method
+// Adaptive grid method
 #define ADAPTIVEGRID
 
 /*--- External Variables ---*/
 extern real_T Vinitial;
 extern real_T Tinitial;
 
-#ifdef DYNCOUNTER
-extern uint32_t counterDynamics;
-#endif // DYNCOUNTER
-
-#ifdef INTERPOCOUNTER
-extern uint32_t counterInterpo;
-#endif // INTERPOCOUNTER
-
-#ifdef BOUNDCOUNTER
-extern uint32_t counterBound;
-#endif // BOUNDCOUNTER
 
 typedef struct {
     uint16_t Nv;                // Number of state grid points (Speed)
@@ -150,19 +134,12 @@ typedef struct {
     real_T Cost;                                // Total Cost
     real_T Vo[HORIZON];                         // Optimal Speed Trajectory
     real_T Fo[HORIZON];                         // Optimal Speed Control Policy
-    real_T To[HORIZON];                     // Optimal Thermal Trajectory
-    real_T Qo[HORIZON];                     // Optimal Thermal Control Policy
+    real_T To[HORIZON];                         // Optimal Thermal Trajectory
+    real_T Qo[HORIZON];                         // Optimal Thermal Control Policy
 
 #if defined(CUSTOMBOUND)
     real_T upperSpeedBound[HORIZON + 1];        // Upper Speed Boundary Line
     real_T lowerSpeedBound[HORIZON + 1];        // Lower Speed Boundary Line
-#endif
-
-#ifdef BOUNDCALIBRATION
-    real_T upperSpeedActual[HORIZON];
-    real_T lowerSpeedActual[HORIZON];
-    real_T upperTempActual[RES_THERMAL];
-    real_T lowerTempActual[RES_THERMAL];
 #endif
 
 }

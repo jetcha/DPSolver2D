@@ -1,24 +1,29 @@
 %% Read the results calculated in C
+fileNum = 4;
 % Optimal Speed
-fileID = fopen('../txtResult/speedResult.txt','r');
+fileName = "../txtResult/speedResult_" + fileNum + ".txt";
+fileID = fopen(fileName,'r');
 formatSpec = '%f';
 A = fscanf(fileID,formatSpec);
 Vo = [V0 A'];
 
 % Optimal Temp
-fileID = fopen('../txtResult/tempResult.txt','r');
+fileName = "../txtResult/tempResult_" + fileNum + ".txt";
+fileID = fopen(fileName,'r');
 formatSpec = '%f';
 A = fscanf(fileID,formatSpec);
 To = [T0 A'];
 
 % Optimal Temp
-fileID = fopen('../txtResult/forceResult.txt','r');
+fileName = "../txtResult/forceResult_" + fileNum + ".txt";
+fileID = fopen(fileName,'r');
 formatSpec = '%f';
 A = fscanf(fileID,formatSpec);
 Fo = A';
 
 % Optimal Temp
-fileID = fopen('../txtResult/inletResult.txt','r');
+fileName = "../txtResult/inletResult_" + fileNum + ".txt";
+fileID = fopen(fileName,'r');
 formatSpec = '%f';
 A = fscanf(fileID,formatSpec);
 Qo = A';
@@ -104,17 +109,29 @@ for i = 1:Nhrz
     P_s = P_dc + P_hvac;
     P_batt = (1 - sqrt(1-4*beta0*P_s))/(2*beta0);
     
-    disp(i)
-    disp(P_dc)
-    disp(P_s)
-    disp(4*beta0*P_s)
-    disp(P_batt)
-    
-    totalCost = totalCost + (P_batt + speedPenalty)*dt + thermalPenalty * (To(i+1) - envFactor.T_required(i+1))^2;
+    totalCost = totalCost + (P_batt + speedPenalty + thermalPenalty * (To(i+1) - envFactor.T_required(i+1))^2)*dt;
 end
 
 disp('Actual Cost:')
 disp(totalCost)
+
+%% calculate Integral Distance-weighted Absolute Error (IDAE)
+IDAE_speed = 0;
+IDAE_temp = 0;
+
+for i = 1:Nhrz+1
+    % IDAE of Speed Trajectory
+    IDAE_speed = IDAE_speed + i^-1 * abs(Vactual(i) - Vo(i));
+    
+    % IDAE of Temperature Trajectory
+    IDAE_temp = IDAE_temp + i^-1 * abs(Tactual(i) - To(i));
+    
+end
+
+disp('IDAE - speed:')
+disp(IDAE_speed)
+disp('IDAE - temperature:')
+disp(IDAE_temp)
 
 %% Plot the Speed Tracjectory and Thermal Trajectory
 figure(1)
@@ -134,20 +151,22 @@ for i = 1:N
     yUpper = [Vmax_GPS(i), Vmax_GPS(i)];
     yLower = [Vmin_GPS(i), Vmin_GPS(i)];
     xIndex = [turningPoint(i), (turningPoint(i+1) - 1)];
-    line(3) = plot(xIndex*ds, yUpper*3.6, 'LineWidth',1.2, 'Color', [0.25, 0.25, 0.25]);
-    line(4) = plot(xIndex*ds, yLower*3.6, 'LineWidth',1.2, 'Color', [0.25, 0.25, 0.25]);
+    line(3) = plot(xIndex*ds, yUpper*3.6, '-', 'LineWidth',1.2, 'Color', [0.25, 0.25, 0.25]);
+    line(4) = plot(xIndex*ds, yLower*3.6, '--', 'LineWidth',1.2, 'Color', [0.25, 0.25, 0.25]);
 end
 
 title('Optimal Speed Trajectory')
 xlabel('Distance (m)');
 ylabel('Speed (km/h)');
+xlim([0 Nhrz*ds])
+ylim([0 140])
 
-legend(line([1 2 3]),  {'Solver Result', 'Model based result', 'Legal speed limits'}, 'Location','northwest')
+legend(line([1 2]),  {'Solver Result','Model-based Result', 'Legal speed upper bounds', 'Legal speed lower bounds'}, 'Location','northwest')
 
 hold off;
 
 figure(2)
-hold on
+hold on 
 
 grid on;
 % The thermal tracjectory from the solver
@@ -164,12 +183,10 @@ end
 title('Optimal Temperature Trajectory')
 xlabel('Distance (m)');
 ylabel('Cabin Temperature (celsius)');
-ylim([24 26])
+ylim([24 27])
+xlim([0 Nhrz*ds])
 
-legend(line([1 2 3]),  {'Solver Result', 'Model based result', 'Required temperature'},'Location','northwest')
+legend(line([1 2 3]),  {'Solver Result', 'Model-based Result', 'Required temperature'},'Location','northwest')
+%legend(line([1 2 3]),  {'Solver Result', 'Required temperature'},'Location','northwest')
 
 hold off;
-
-
-
-

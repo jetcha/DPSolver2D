@@ -1,41 +1,26 @@
 #include "../inc/BoundaryLine.h"
 
-#ifdef BOUNDCOUNTER
-uint32_t counterBound = 0;
-#endif // BOUNDCOUNTER
 
 #if defined(CUSTOMBOUND)
 void initSpeedBoundary(Boundary *BoundaryPtr) {
     BoundaryPtr->lowerBound = (real_T *) malloc((HORIZON + 1) * sizeof(real_T));
     BoundaryPtr->upperBound = (real_T *) malloc((HORIZON + 1) * sizeof(real_T));
-#ifdef BOUNDCALIBRATION
-    BoundaryPtr->boundMemo = malloc(sizeof(real_T[HORIZON][4]));
-#endif
 }
 
 void copySpeedBoundary(Boundary *BoundaryPtr, SolverOutput *OutputPtr) {
     memcpy(OutputPtr->lowerSpeedBound, BoundaryPtr->lowerBound, (HORIZON + 1) * sizeof(real_T));
     memcpy(OutputPtr->upperSpeedBound, BoundaryPtr->upperBound, (HORIZON + 1) * sizeof(real_T));
-#ifdef BOUNDCALIBRATION
-    for (uint16_t i = 0; i < HORIZON; i++) {
-        OutputPtr->lowerSpeedActual[i] = BoundaryPtr->boundMemo[i][0];
-        OutputPtr->upperSpeedActual[i] = BoundaryPtr->boundMemo[i][1];
-    }
-#endif
 }
 
 void freeBoundary(Boundary *BoundaryPtr) {
     free(BoundaryPtr->lowerBound);
     free(BoundaryPtr->upperBound);
-#ifdef BOUNDCALIBRATION
-    free(BoundaryPtr->boundMemo);
-#endif
 }
 
 void customSpeedBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, DynParameter *ParaPtr, EnvFactor *EnvPtr,
                          real_T V0) {
     // Iteration Index
-    uint16_t i, j, k;
+    uint16_t i, k;
 
     // Number of range blocks
     uint16_t numBlock = sizeof(EnvPtr->endBlock) / sizeof(EnvPtr->endBlock[0]);
@@ -64,13 +49,6 @@ void customSpeedBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, Dyn
     real_T crr = ParaPtr->crr;
     real_T CdA = ParaPtr->CdA;
     real_T ds = ParaPtr->ds;
-    real_T penalty = ParaPtr->speedPenalty;
-    real_T eta_trans = ParaPtr->eta_trans;
-    real_T eta_dc = ParaPtr->eta_dc;
-    real_T alpha0 = ParaPtr->alpha0;
-    real_T alpha1 = ParaPtr->alpha1;
-    real_T alpha2 = ParaPtr->alpha2;
-    real_T beta0 = ParaPtr->beta0;
 
     real_T maxForce;
     real_T minForce;
@@ -86,7 +64,6 @@ void customSpeedBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, Dyn
     // Let upper and lower bound both start from the known X0
     BoundaryPtr->upperBound[0] = V0;
     BoundaryPtr->lowerBound[0] = V0;
-
 
     // If there is only one range block
     if (numBlock == 1) {
@@ -140,7 +117,8 @@ void customSpeedBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, Dyn
             }
         }
     }
-        // If there are multiple range blocks
+
+    // If there are multiple range blocks
     else {
         // Draw boundary lines block by block
         for (k = 0; k < numBlock; k++) {
@@ -159,9 +137,6 @@ void customSpeedBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, Dyn
                                     (1 - 2 * ds * CdA / m) * BoundaryPtr->upperBound[i] * BoundaryPtr->upperBound[i] -
                                     2 * ds * g * (sin(EnvPtr->Angle_env[i]) + crr * cos(EnvPtr->Angle_env[i]));
 
-#ifdef BOUNDCOUNTER
-                    counterBound++;
-#endif
 
                     // Same thing as we did when numBlock == 1
                     if ((sqrt(upper_squared)) >= BoundaryPtr->upperBound[i + 1]) {
@@ -184,10 +159,6 @@ void customSpeedBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, Dyn
                                     (1 - 2 * ds * CdA / m) * BoundaryPtr->lowerBound[i] * BoundaryPtr->lowerBound[i] -
                                     2 * ds * g * (sin(EnvPtr->Angle_env[i]) + crr * cos(EnvPtr->Angle_env[i]));
 
-#ifdef BOUNDCOUNTER
-                    counterBound++;
-#endif
-
                     // Same thing as we did when numBlock == 1
                     if (lower_squared < 0) {
                         break;
@@ -198,7 +169,7 @@ void customSpeedBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, Dyn
                     }
                 }
             }
-                // From the #2 Block (4 conditions to consider)
+            // From the #2 Block (4 conditions to consider)
             else {
                 // If Vmax[Block_k] > Vmax[Block_k-1], draw the Left-Top upper bound forwards
                 if (EnvPtr->Vmax_env[changePoint[k]] > EnvPtr->Vmax_env[changePoint[k - 1]]) {
@@ -214,9 +185,6 @@ void customSpeedBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, Dyn
                                                                   BoundaryPtr->upperBound[i] -
                                         2 * ds * g * (sin(EnvPtr->Angle_env[i]) + crr * cos(EnvPtr->Angle_env[i]));
 
-#ifdef BOUNDCOUNTER
-                        counterBound++;
-#endif
 
                         // Again, the same exact thing we have done
                         if ((sqrt(upper_squared)) >= BoundaryPtr->upperBound[i + 1]) {
@@ -226,7 +194,7 @@ void customSpeedBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, Dyn
                         }
                     }
                 }
-                    // If Vmax[Block_k] < Vmax[Block_k-1], draw the Right-Top upper bound (backwards)
+                // If Vmax[Block_k] < Vmax[Block_k-1], draw the Right-Top upper bound (backwards)
                 else {
                     for (i = changePoint[k] - 1; i >= changePoint[k - 1]; i--) {
                         // Predictive minimum force
@@ -240,9 +208,6 @@ void customSpeedBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, Dyn
                                             (1 - 2 * ds * CdA / m);
                             minForce = minForce * 0.95;
 
-#ifdef BOUNDCOUNTER
-                            counterBound++;
-#endif
 
                         } while ((sqrt(upper_squared)) * minForce < PDmax);
 
@@ -268,9 +233,6 @@ void customSpeedBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, Dyn
                                                                   BoundaryPtr->lowerBound[i] -
                                         2 * ds * g * (sin(EnvPtr->Angle_env[i]) + crr * cos(EnvPtr->Angle_env[i]));
 
-#ifdef BOUNDCOUNTER
-                        counterBound++;
-#endif
 
                         // Again, the same exact thing
                         if (lower_squared < 0) {
@@ -282,7 +244,7 @@ void customSpeedBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, Dyn
                         }
                     }
                 }
-                    // If Vmin[Block_k] > Vmin[Block_k-1], draw the Right-Bottom lower bound (backwards)
+                // If Vmin[Block_k] > Vmin[Block_k-1], draw the Right-Bottom lower bound (backwards)
                 else {
                     for (i = changePoint[k] - 1; i >= changePoint[k - 1]; i--) {
                         // Predictive maximum force
@@ -295,10 +257,6 @@ void customSpeedBoundary(Boundary *BoundaryPtr, SolverInput *SolverInputPtr, Dyn
                                                                                    crr * cos(EnvPtr->Angle_env[i]))) /
                                             (1 - 2 * ds * CdA / m);
                             maxForce = maxForce * 0.95;
-
-#ifdef BOUNDCOUNTER
-                            counterBound++;
-#endif
 
                             if (lower_squared < 0) {
                                 break;
