@@ -39,6 +39,8 @@ AdaptiveGrid.h
 E:/Thesis_Project/DPSolver2D/inc/AdaptiveGrid.h
 PrintResult.h
 E:/Thesis_Project/DPSolver2D/inc/PrintResult.h
+time.h
+E:/Thesis_Project/DPSolver2D/inc/time.h
 
 E:/Thesis_Project/DPSolver2D/inc/SolverStruct.h
 stdlib.h

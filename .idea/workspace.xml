@@ -40,10 +40,170 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b3db8204-853c-4db9-a74f-bbcd32791450" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/MatlabFiles/IDAEplot.m" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MatlabFiles/ModelSpeedSolver.slx.autosave" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case1-N20-nSpeed31-nTemp31-ds10-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case1-N20-nSpeed31-nTemp31-ds20-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case1-N20-nSpeed31-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case1-N20-nSpeed31-nTemp31-ds40-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case1-N20-nSpeed31-nTemp31-ds50-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case2-N20-nSpeed31-nTemp31-ds10-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case2-N20-nSpeed31-nTemp31-ds20-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case2-N20-nSpeed31-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case2-N20-nSpeed31-nTemp31-ds40-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case2-N20-nSpeed31-nTemp31-ds50-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case1-N20-nSpeed31-nTemp21-ds30-lam025/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case1-N20-nSpeed31-nTemp21-ds30-lam033/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case1-N20-nSpeed31-nTemp21-ds30-lam050/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case1-N20-nSpeed31-nTemp21-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case1-N20-nSpeed31-nTemp21-ds30-lam083/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case2-N20-nSpeed31-nTemp21-ds30-lam025/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case2-N20-nSpeed31-nTemp21-ds30-lam033/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case2-N20-nSpeed31-nTemp21-ds30-lam050/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case2-N20-nSpeed31-nTemp21-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case2-N20-nSpeed31-nTemp21-ds30-lam083/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case1-N20-nSpeed11-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case1-N20-nSpeed21-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case1-N20-nSpeed31-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case1-N20-nSpeed41-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case1-N20-nSpeed51-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case2-N20-nSpeed11-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case2-N20-nSpeed21-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case2-N20-nSpeed31-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case2-N20-nSpeed41-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case2-N20-nSpeed51-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case1-N20-nSpeed31-nTemp11-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case1-N20-nSpeed31-nTemp21-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case1-N20-nSpeed31-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case1-N20-nSpeed31-nTemp41-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case1-N20-nSpeed31-nTemp51-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case2-N20-nSpeed31-nTemp11-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case2-N20-nSpeed31-nTemp21-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case2-N20-nSpeed31-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case2-N20-nSpeed31-nTemp41-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case2-N20-nSpeed31-nTemp51-ds30-lam067/resultVector.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_0.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_10.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_11.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_12.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_13.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_14.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_15.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_16.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_17.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_18.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_19.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_27.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_4.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_5.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_6.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_7.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_8.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_9.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_0.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_10.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_11.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_12.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_13.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_14.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_15.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_16.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_17.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_18.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_19.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_27.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_4.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_5.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_6.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_7.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_8.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_9.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_0.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_10.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_11.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_12.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_13.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_14.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_15.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_16.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_17.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_18.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_19.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_27.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_4.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_5.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_6.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_7.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_8.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_9.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_0.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_10.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_11.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_12.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_13.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_14.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_15.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_16.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_17.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_18.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_19.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_27.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_4.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_5.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_6.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_7.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_8.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_9.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/j9002.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/j9002.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/DynamicsCheck.m" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/DynamicsCheck.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/ModelSpeedSolver.slxc" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/ModelSpeedSolver.slxc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/Speed-Basic.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/Speed-IDP-10.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/Speed-IDP-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/Temp-Basic.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/Temp-IDP-10.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/Temp-IDP-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/createSfunc.m" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/createSfunc.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatlabFiles/inputSolver.m" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/inputSolver.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/magicSolver.c" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/magicSolver.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/magicSolver.mexw64" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/magicSolver.mexw64" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/magicSolver.tlc" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/magicSolver.tlc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/slprj/sim/varcache/ModelSpeedSolver/checksumOfCache.mat" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/slprj/sim/varcache/ModelSpeedSolver/checksumOfCache.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/slprj/sim/varcache/ModelSpeedSolver/tmwinternal/simulink_cache.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/slprj/sim/varcache/ModelSpeedSolver/tmwinternal/simulink_cache.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/slprj/sim/varcache/ModelSpeedSolver/varInfo.mat" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/slprj/sim/varcache/ModelSpeedSolver/varInfo.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/test.asv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/test.m" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/test.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/txtVerification.asv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/txtVerification.m" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/txtVerification.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSolver2D.dir/C.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSolver2D.dir/C.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inc/BoundaryLine.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/BoundaryLine.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inc/PrintResult.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/PrintResult.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inc/SolverAlgorithm.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/SolverAlgorithm.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inc/SolverStruct.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/SolverStruct.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/inc/SystemDynamic.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/SystemDynamic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BoundaryLine.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/BoundaryLine.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MathFunction.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/MathFunction.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PrintResult.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/PrintResult.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SolverAlgorithm.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/SolverAlgorithm.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SystemDynamic.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/SystemDynamic.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/txtResult/forceResult.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/txtResult/inletResult.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/txtResult/speedResult.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/txtResult/tempResult.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,11 +235,6 @@
   </component>
   <component name="RunManager">
     <configuration name="DPSolver2D" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="DPSpeedSolver" TARGET_NAME="DPSolver2D" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="DPSpeedSolver" RUN_TARGET_NAME="DPSolver2D">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -142,6 +297,17 @@
       <workItem from="1597049988307" duration="18565000" />
       <workItem from="1597091130415" duration="50857000" />
       <workItem from="1597650106557" duration="36508000" />
+      <workItem from="1597997155185" duration="8921000" />
+      <workItem from="1598256814141" duration="47685000" />
+      <workItem from="1599651309293" duration="4791000" />
+      <workItem from="1599827325481" duration="150885000" />
+      <workItem from="1601899335825" duration="6109000" />
+      <workItem from="1602421447041" duration="4735000" />
+      <workItem from="1602933156728" duration="2000" />
+      <workItem from="1602960561371" duration="876000" />
+      <workItem from="1603104898844" duration="76000" />
+      <workItem from="1603105832911" duration="4533000" />
+      <workItem from="1603661253458" duration="9783000" />
     </task>
     <servers />
   </component>
@@ -180,94 +346,98 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596721342732" />
-    <state width="1302" height="791" key="GridCell.Tab.0.bottom" timestamp="1597935786807">
+    <state x="811" y="273" key="#xdebugger.XInspectDialog" timestamp="1598358084069">
       <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="811" y="273" key="#xdebugger.XInspectDialog/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598358084069" />
+    <state width="1281" height="644" key="GridCell.Tab.0.bottom" timestamp="1603724729612">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1337" height="727" key="GridCell.Tab.0.bottom/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1596721203096" />
     <state width="1337" height="727" key="GridCell.Tab.0.bottom/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596736095784" />
-    <state width="1242" height="661" key="GridCell.Tab.0.bottom/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1593094669400" />
-    <state width="1877" height="242" key="GridCell.Tab.0.bottom/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1593703596928" />
-    <state width="1199" height="407" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1592595614306" />
-    <state width="1302" height="791" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1597935786807" />
-    <state width="1337" height="727" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1597070365766" />
+    <state width="1877" height="341" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040/3840.0.1536.824@0.0.1920.1040" timestamp="1598110870075" />
+    <state width="1561" height="254" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602785196420" />
+    <state width="1301" height="791" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1599834247936" />
     <state width="1607" height="757" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1595414555588" />
-    <state width="1337" height="727" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597677941805" />
-    <state width="1302" height="791" key="GridCell.Tab.0.center" timestamp="1597935786807">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1281" height="644" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603724729612" />
+    <state width="1301" height="791" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598428770155" />
+    <state width="1281" height="644" key="GridCell.Tab.0.center" timestamp="1603724729611">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1337" height="727" key="GridCell.Tab.0.center/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1596721203095" />
     <state width="1337" height="727" key="GridCell.Tab.0.center/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596736095784" />
-    <state width="1242" height="661" key="GridCell.Tab.0.center/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1593094669400" />
-    <state width="1877" height="242" key="GridCell.Tab.0.center/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1593703596928" />
-    <state width="1199" height="407" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1592595614306" />
-    <state width="1302" height="791" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1597935786807" />
-    <state width="1337" height="727" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1597070365765" />
+    <state width="1877" height="341" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040/3840.0.1536.824@0.0.1920.1040" timestamp="1598110870073" />
+    <state width="1561" height="254" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602785196419" />
+    <state width="1301" height="791" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1599834247936" />
     <state width="1607" height="757" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1595414555588" />
-    <state width="1337" height="727" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597677941804" />
-    <state width="1302" height="791" key="GridCell.Tab.0.left" timestamp="1597935786807">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1281" height="644" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603724729611" />
+    <state width="1301" height="791" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598428770155" />
+    <state width="1281" height="644" key="GridCell.Tab.0.left" timestamp="1603724729611">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1337" height="727" key="GridCell.Tab.0.left/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1596721203095" />
     <state width="1337" height="727" key="GridCell.Tab.0.left/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596736095784" />
-    <state width="1242" height="661" key="GridCell.Tab.0.left/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1593094669400" />
-    <state width="1877" height="242" key="GridCell.Tab.0.left/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1593703596928" />
-    <state width="1199" height="407" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1592595614306" />
-    <state width="1302" height="791" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1597935786807" />
-    <state width="1337" height="727" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1597070365765" />
+    <state width="1877" height="341" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040/3840.0.1536.824@0.0.1920.1040" timestamp="1598110870070" />
+    <state width="1561" height="254" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602785196419" />
+    <state width="1301" height="791" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1599834247936" />
     <state width="1607" height="757" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1595414555588" />
-    <state width="1337" height="727" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597677941804" />
-    <state width="1302" height="791" key="GridCell.Tab.0.right" timestamp="1597935786807">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1281" height="644" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603724729611" />
+    <state width="1301" height="791" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598428770155" />
+    <state width="1281" height="644" key="GridCell.Tab.0.right" timestamp="1603724729612">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1337" height="727" key="GridCell.Tab.0.right/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1596721203096" />
     <state width="1337" height="727" key="GridCell.Tab.0.right/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596736095784" />
-    <state width="1242" height="661" key="GridCell.Tab.0.right/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1593094669400" />
-    <state width="1877" height="242" key="GridCell.Tab.0.right/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1593703596928" />
-    <state width="1199" height="407" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1592595614306" />
-    <state width="1302" height="791" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1597935786807" />
-    <state width="1337" height="727" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1597070365766" />
+    <state width="1877" height="341" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040/3840.0.1536.824@0.0.1920.1040" timestamp="1598110870074" />
+    <state width="1561" height="254" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602785196420" />
+    <state width="1301" height="791" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1599834247936" />
     <state width="1607" height="757" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1595414555588" />
-    <state width="1337" height="727" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597677941804" />
-    <state width="1877" height="341" key="GridCell.Tab.1.bottom" timestamp="1597935105615">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1281" height="644" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603724729612" />
+    <state width="1301" height="791" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598428770155" />
+    <state width="1877" height="226" key="GridCell.Tab.1.bottom" timestamp="1603724390246">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1493" height="177" key="GridCell.Tab.1.bottom/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1596709674172" />
     <state width="1877" height="238" key="GridCell.Tab.1.bottom/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596728561988" />
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1593074616594" />
-    <state width="1877" height="242" key="GridCell.Tab.1.bottom/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1593703596928" />
-    <state width="1877" height="341" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1597935105615" />
+    <state width="1877" height="341" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.0.1920.1040/3840.0.1536.824@0.0.1920.1040" timestamp="1598110870079" />
+    <state width="1561" height="254" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602785196422" />
+    <state width="1877" height="341" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1599833142964" />
     <state width="1877" height="242" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1595414555577" />
-    <state width="1877" height="295" key="GridCell.Tab.1.bottom/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597669129938" />
-    <state width="1877" height="341" key="GridCell.Tab.1.center" timestamp="1597935105615">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1877" height="226" key="GridCell.Tab.1.bottom/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603724390246" />
+    <state width="1877" height="341" key="GridCell.Tab.1.bottom/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598363114961" />
+    <state width="1877" height="226" key="GridCell.Tab.1.center" timestamp="1603724390246">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1493" height="177" key="GridCell.Tab.1.center/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1596709674172" />
     <state width="1877" height="238" key="GridCell.Tab.1.center/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596728561988" />
-    <state width="1877" height="348" key="GridCell.Tab.1.center/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1593074616594" />
-    <state width="1877" height="242" key="GridCell.Tab.1.center/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1593703596928" />
-    <state width="1877" height="341" key="GridCell.Tab.1.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1597935105615" />
+    <state width="1877" height="341" key="GridCell.Tab.1.center/0.0.1920.1040/1920.0.1920.1040/3840.0.1536.824@0.0.1920.1040" timestamp="1598110870077" />
+    <state width="1561" height="254" key="GridCell.Tab.1.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602785196421" />
+    <state width="1877" height="341" key="GridCell.Tab.1.center/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1599833142964" />
     <state width="1877" height="242" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1595414555577" />
-    <state width="1877" height="295" key="GridCell.Tab.1.center/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597669129938" />
-    <state width="1877" height="341" key="GridCell.Tab.1.left" timestamp="1597935105615">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1877" height="226" key="GridCell.Tab.1.center/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603724390246" />
+    <state width="1877" height="341" key="GridCell.Tab.1.center/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598363114961" />
+    <state width="1877" height="226" key="GridCell.Tab.1.left" timestamp="1603724390246">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1493" height="177" key="GridCell.Tab.1.left/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1596709674172" />
     <state width="1877" height="238" key="GridCell.Tab.1.left/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596728561988" />
-    <state width="1877" height="348" key="GridCell.Tab.1.left/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1593074616594" />
-    <state width="1877" height="242" key="GridCell.Tab.1.left/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1593703596928" />
-    <state width="1877" height="341" key="GridCell.Tab.1.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1597935105615" />
+    <state width="1877" height="341" key="GridCell.Tab.1.left/0.0.1920.1040/1920.0.1920.1040/3840.0.1536.824@0.0.1920.1040" timestamp="1598110870076" />
+    <state width="1561" height="254" key="GridCell.Tab.1.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602785196420" />
+    <state width="1877" height="341" key="GridCell.Tab.1.left/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1599833142964" />
     <state width="1877" height="242" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1595414555577" />
-    <state width="1877" height="295" key="GridCell.Tab.1.left/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597669129938" />
-    <state width="1877" height="341" key="GridCell.Tab.1.right" timestamp="1597935105615">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1877" height="226" key="GridCell.Tab.1.left/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603724390246" />
+    <state width="1877" height="341" key="GridCell.Tab.1.left/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598363114961" />
+    <state width="1877" height="226" key="GridCell.Tab.1.right" timestamp="1603724390246">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1493" height="177" key="GridCell.Tab.1.right/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1596709674172" />
     <state width="1877" height="238" key="GridCell.Tab.1.right/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596728561988" />
-    <state width="1877" height="348" key="GridCell.Tab.1.right/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1593074616594" />
-    <state width="1877" height="242" key="GridCell.Tab.1.right/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1593703596928" />
-    <state width="1877" height="341" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1597935105615" />
+    <state width="1877" height="341" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040/3840.0.1536.824@0.0.1920.1040" timestamp="1598110870078" />
+    <state width="1561" height="254" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602785196422" />
+    <state width="1877" height="341" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1599833142964" />
     <state width="1877" height="242" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1595414555577" />
-    <state width="1877" height="295" key="GridCell.Tab.1.right/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597669129938" />
+    <state width="1877" height="226" key="GridCell.Tab.1.right/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603724390246" />
+    <state width="1877" height="341" key="GridCell.Tab.1.right/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598363114961" />
     <state x="577" y="196" key="SettingsEditor" timestamp="1597050217298">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -277,13 +447,15 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="552" y="253" key="Vcs.Push.Dialog.v2/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1595856541933" />
-    <state x="2025" y="-15" width="1933" height="1036" maximized="true" key="dock-window-1" timestamp="1597910005572">
-      <screen x="1920" y="0" width="1920" height="1040" />
+    <state x="691" y="137" width="1549" height="829" key="dock-window-1" timestamp="1599664977947">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="-2249" y="-25" width="1736" height="856" maximized="true" key="dock-window-1/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596625989080" />
-    <state x="2025" y="-15" width="1933" height="1036" maximized="true" key="dock-window-1/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1597910005572" />
+    <state x="691" y="137" width="1549" height="829" key="dock-window-1/0.0.1536.824@0.0.1536.824" timestamp="1599664977947" />
+    <state x="1572" y="-8" width="1933" height="1036" maximized="true" key="dock-window-1/0.0.1920.1040/1920.0.1920.1040/3840.0.1536.824@0.0.1920.1040" timestamp="1598008025190" />
+    <state x="1572" y="-8" width="1933" height="1036" key="dock-window-1/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1598115252900" />
     <state x="0" y="0" width="1535" height="908" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1596481881819" />
-    <state x="1981" y="-14" width="1893" height="1027" maximized="true" key="dock-window-1/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597669378692" />
+    <state x="1944" y="-8" width="1936" height="1046" maximized="true" key="dock-window-1/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598434999428" />
     <state x="667" y="253" width="585" height="534" key="find.popup" timestamp="1597756016885">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -293,15 +465,12 @@
     </state>
     <state x="616" y="240" key="run.anything.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1597050036671" />
     <state x="616" y="240" key="run.anything.popup/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597668876219" />
-    <state x="858" y="315" width="840" height="857" key="search.everywhere.popup" timestamp="1597938691999">
+    <state x="539" y="183" width="840" height="856" key="search.everywhere.popup" timestamp="1598358197924">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="-1234" y="252" width="672" height="685" key="search.everywhere.popup/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1596721200731" />
     <state x="858" y="315" width="840" height="856" key="search.everywhere.popup/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1596711119460" />
-    <state x="539" y="183" width="840" height="856" key="search.everywhere.popup/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1593697180763" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1592575037321" />
     <state x="858" y="315" width="840" height="857" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1597938691999" />
-    <state x="539" y="183" width="840" height="856" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1593186240502" />
-    <state x="539" y="183" width="840" height="856" key="search.everywhere.popup/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1597675380015" />
+    <state x="539" y="183" width="840" height="856" key="search.everywhere.popup/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598358197924" />
   </component>
 </project>
