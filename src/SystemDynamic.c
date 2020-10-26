@@ -12,9 +12,6 @@ real_T (*AdaptiveSpeedPlane)[NT];               // Adaptive Grid, Used to store 
 real_T (*AdaptiveTempPlane)[NT];
 #endif
 
-#ifdef DYNCOUNTER
-uint32_t counterDynamics = 0;
-#endif // DYNCOUNTER
 
 /*--- Public Function Definition ---*/
 void PassParameters(SolverInput *InputPtr, DynParameter *ModelParaPtr, EnvFactor *EnvFactorPtr) {
@@ -33,11 +30,11 @@ void createLineSpace(real_T *Vector, real_T min, real_T max, uint32_t N) {
     }
 }
 
-void createStatePlane(StateTuple (*Plane)[NT], const real_T *VectorV, const real_T *VectorT, uint16_t Nv, uint16_t Nt){
+void createStatePlane(StateTuple (*Plane)[NT], const real_T *VectorV, const real_T *VectorT, uint16_t Nv, uint16_t Nt) {
     uint16_t i, j;
 
-    for(i = 0; i < Nv; i++){
-        for(j = 0; j < Nt; j++){
+    for (i = 0; i < Nv; i++) {
+        for (j = 0; j < Nt; j++) {
             Plane[i][j].V = VectorV[i];
             Plane[i][j].T = VectorT[j];
         }
@@ -45,23 +42,25 @@ void createStatePlane(StateTuple (*Plane)[NT], const real_T *VectorV, const real
 }
 
 #ifdef ADAPTIVEGRID
-void passStatePlane(StateTuple (*Plane)[NT], uint16_t Nv, uint16_t Nt){
+
+void passStatePlane(StateTuple (*Plane)[NT], uint16_t Nv, uint16_t Nt) {
     uint16_t i, j;
 
     AdaptiveSpeedPlane = malloc(sizeof(real_T[Nv][Nt]));
     AdaptiveTempPlane = malloc(sizeof(real_T[Nv][Nt]));
 
-    for(i = 0; i < Nv; i++){
-        for(j = 0; j < Nt; j++) {
+    for (i = 0; i < Nv; i++) {
+        for (j = 0; j < Nt; j++) {
             AdaptiveSpeedPlane[i][j] = Plane[i][j].V;
             AdaptiveTempPlane[i][j] = Plane[i][j].T;
         }
     }
 }
+
 #endif
 
 void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][NQ], uint8_t (*InfFlag)[NT][NF][NQ],
-                    real_T const *SpeedVec, real_T const *ForceVec, real_T const *TempVec, real_T const *InletVec,
+                    real_T *SpeedVec, real_T const *ForceVec, real_T const *TempVec, real_T const *InletVec,
                     uint16_t V0_index, uint16_t T0_index, Boundary *BoundaryPtr, uint16_t N) {
 
     // Grid sizes
@@ -101,19 +100,6 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
     real_T Vmax_end = EnvironmentalFactor->Vmax_env[N + 1];
     real_T Vmin_end = EnvironmentalFactor->Vmin_env[N + 1];
 #endif
-
-#ifdef BOUNDCALIBRATION
-    // Besides the points on the state grid, also consider the points on the boundary
-    if (N > 0) {
-        uint16_t minIdx = (uint16_t) findMaxLEQ(Vin, BoundaryPtr->boundMemo[N - 1][0], Nv);
-        uint16_t maxIdx = (uint16_t) findMinGEQ(Vin, BoundaryPtr->boundMemo[N - 1][1], Nv);
-        Vin[minIdx] = BoundaryPtr->boundMemo[N - 1][0];
-        Vin[maxIdx] = BoundaryPtr->boundMemo[N - 1][1];
-    }
-#endif
-
-    real_T Tmax_end = EnvironmentalFactor->T_required[N] + 5;
-    real_T Tmin_end = EnvironmentalFactor->T_required[N] - 5;
 
     real_T angle = EnvironmentalFactor->Angle_env[N + 1];
 
@@ -186,8 +172,8 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
 
 #if defined(CUSTOMBOUND)
         // Only start from the given initial state
-        if(N == 0){
-            if(i != V0_index) continue;
+        if (N == 0) {
+            if (i != V0_index) continue;
         }
 #endif
 
@@ -196,8 +182,8 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
 
 #if defined(CUSTOMBOUND)
             // Only start from the given initial state
-            if(N == 0){
-                if(j != T0_index) continue;
+            if (N == 0) {
+                if (j != T0_index) continue;
             }
 #endif
 
@@ -228,9 +214,6 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
                 Pwh = Vin[i] * Fin[k];
 #endif
 
-#ifdef DYNCOUNTER
-                counterDynamics++;
-#endif // DYNCOUNTER
 
                 // First determine if the Pwh has already exceeded the limit
                 // Acceleration
@@ -294,10 +277,6 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
                         Phvac = Qin[l] / CoP_neg;
                     }
 
-#ifdef DYNCOUNTER
-                    counterDynamics++;
-#endif // DYNCOUNTER
-
                     // Check if Phvac exceeds the limits
                     if (Phvac > PACmax) {
                         continue;
@@ -337,16 +316,10 @@ void systemDynamics(StateTuple (*Xnext)[NT][NF][NQ], real_T (*ArcCost)[NT][NF][N
 #endif
 
 
-                    // Check if it stays in the cabin temperature limit
-                    if (Xnext[i][j][k][l].T > Tmax_end || Xnext[i][j][k][l].T < Tmin_end) {
-                        continue;
-                    }
-
                     /// Arc Cost ///
                     // ArcCost - added a L2 norm as the penalization
-                    ArcCost[i][j][k][l] = (0*Pbatt + speedPenalty) * dt +
-                                          thermalPenalty * (Xnext[i][j][k][l].T - T_required) *
-                                          (Xnext[i][j][k][l].T - T_required);
+                    ArcCost[i][j][k][l] = (Pbatt + speedPenalty + thermalPenalty * (Xnext[i][j][k][l].T - T_required) *
+                                                                  (Xnext[i][j][k][l].T - T_required)) * dt;
 
                     // When all the constraints are required, mark it as feasible
                     InfFlag[i][j][k][l] = 0;
