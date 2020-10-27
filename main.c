@@ -20,7 +20,6 @@ int main() {
     SolverInputPtr.GridSize.Nt = NT;
     SolverInputPtr.GridSize.Nq = NQ;
     SolverInputPtr.GridSize.Nhrz = HORIZON;
-    SolverInputPtr.GridSize.ResThermal = RES_THERMAL;
 
     SolverInputPtr.Constraint.Vmax = 130 / 3.6;        // Physical Speed limits
     SolverInputPtr.Constraint.Vmin = 0.0;

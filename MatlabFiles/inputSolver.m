@@ -5,7 +5,6 @@ solverinput.GridSize.Nf = 21;
 solverinput.GridSize.Nt = 21;
 solverinput.GridSize.Nq = 21;
 solverinput.GridSize.Nhrz = 200;
-solverinput.GridSize.ResThermal = 200;
 
 %% Limit Settings
 solverinput.Constraint.Vmax = 130/3.6;
@@ -144,69 +143,5 @@ for i = 1:(solverinput.GridSize.Nhrz+1)
         envFactor.T_required(i) = T_required(7);
     else
         envFactor.T_required(i) = T_required(8);
-    end 
-end
-
-%% Scenario 2 - Speed
-% Initial Speed
- V0 = 0/3.6;
- 
-% Horizon
-solverinput.GridSize.Nhrz = 200;
-
-% Block length
-blockLength1 = 300;
-blockLength2 = 2700;
-blockLength3 = 3300;
-
-% GPS info
-envFactor = struct;
-envFactor.Vmax_env = zeros((solverinput.GridSize.Nhrz+1), 1);
-envFactor.Vmin_env = zeros((solverinput.GridSize.Nhrz+1), 1);
-envFactor.Angle_env = zeros((solverinput.GridSize.Nhrz+1), 1);
-
-Vmax_GPS = [100/3.6 100/3.6 50/3.6 100/3.6];
-Vmin_GPS = [0/3.6 50/3.6 0/3.6 50/3.6];
-Angle_GPS = [0.0 0.0 0.0 0.0];
-changePoint = [blockLength1/modelPara.ds blockLength2/modelPara.ds blockLength3/modelPara.ds];
-
-envFactor.endBlock = [changePoint solverinput.GridSize.Nhrz];
-
-for i = 1:(solverinput.GridSize.Nhrz+1)
-    if i<=changePoint(1)
-        envFactor.Vmax_env(i) = Vmax_GPS(1);
-        envFactor.Vmin_env(i) = Vmin_GPS(1);
-        envFactor.Angle_env(i) = Angle_GPS(1);
-    elseif i<=changePoint(2)
-        envFactor.Vmax_env(i) = Vmax_GPS(2);
-        envFactor.Vmin_env(i) = Vmin_GPS(2);
-        envFactor.Angle_env(i) = Angle_GPS(2);
-    elseif i<=changePoint(3)
-        envFactor.Vmax_env(i) = Vmax_GPS(3);
-        envFactor.Vmin_env(i) = Vmin_GPS(3);
-        envFactor.Angle_env(i) = Angle_GPS(3);
-    else
-        envFactor.Vmax_env(i) = Vmax_GPS(4);
-        envFactor.Vmin_env(i) = Vmin_GPS(4);
-        envFactor.Angle_env(i) = Angle_GPS(4);
-    end
-end
-
-% --- Thermal ---
-T0 = 26;
-
-envFactor.T_required = zeros((solverinput.GridSize.Nhrz+1), 1);
-
-T_required = [25, 25, 25, 25];
-
-for i = 1:(solverinput.GridSize.Nhrz+1)
-    if i<=changePoint(1)
-        envFactor.T_required(i) = T_required(1);
-    elseif i<=changePoint(2)
-        envFactor.T_required(i) = T_required(2);
-    elseif i<=changePoint(3)
-        envFactor.T_required(i) = T_required(3);
-    else
-        envFactor.T_required(i) = T_required(4);
     end 
 end

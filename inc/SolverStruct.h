@@ -13,13 +13,10 @@
 #define STRUCT
 
 // Problem sizes
-// TODO: These values require to be the same as defined in MatLab
 #define NV 21                    // number of discrete speed states
 #define NF 21                    // number of discrete force inputs
 #define NT 21                    // number of discrete temperature states
 #define NQ 21                    // number of discrete inlet heat inputs
-#define NUM_IDP 5                // number of iterations
-#define GAMMA 1.5                // shrinking rate
 
 // Choose pre-defined scenario (SCENE1/SCENE2)
 #define SCENE1
@@ -27,14 +24,16 @@
 // Parameters of SCENE1 / SCENE2
 #if defined(SCENE1)
 #define HORIZON 200
-#define RES_THERMAL 200
 #define BLOCK 8
 
 #elif defined(SCENE2)
 #define HORIZON 200
-#define RES_THERMAL 200
 #define BLOCK 4
 #endif
+
+// Parameter settings
+#define NUM_IDP 5                // number of iterations
+#define GAMMA 1.5                // shrinking rate
 
 // Boundary line (NOBOUND/CUSTOMBOUND)
 #define CUSTOMBOUND
@@ -56,7 +55,6 @@ typedef struct {
     uint16_t Nt;                // Number of state grid points (Thermal)
     uint16_t Nq;                // Number of control grid points (Thermal)
     uint16_t Nhrz;              // Length of the horizon
-    uint16_t ResThermal;        // Resolution of the thermal solver
 }
         GridSetting;
 

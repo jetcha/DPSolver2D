@@ -40,170 +40,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b3db8204-853c-4db9-a74f-bbcd32791450" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/MatlabFiles/IDAEplot.m" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MatlabFiles/ModelSpeedSolver.slx.autosave" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case1-N20-nSpeed31-nTemp31-ds10-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case1-N20-nSpeed31-nTemp31-ds20-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case1-N20-nSpeed31-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case1-N20-nSpeed31-nTemp31-ds40-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case1-N20-nSpeed31-nTemp31-ds50-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case2-N20-nSpeed31-nTemp31-ds10-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case2-N20-nSpeed31-nTemp31-ds20-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case2-N20-nSpeed31-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case2-N20-nSpeed31-nTemp31-ds40-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/dsEvaluation/Case2-N20-nSpeed31-nTemp31-ds50-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case1-N20-nSpeed31-nTemp21-ds30-lam025/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case1-N20-nSpeed31-nTemp21-ds30-lam033/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case1-N20-nSpeed31-nTemp21-ds30-lam050/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case1-N20-nSpeed31-nTemp21-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case1-N20-nSpeed31-nTemp21-ds30-lam083/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case2-N20-nSpeed31-nTemp21-ds30-lam025/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case2-N20-nSpeed31-nTemp21-ds30-lam033/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case2-N20-nSpeed31-nTemp21-ds30-lam050/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case2-N20-nSpeed31-nTemp21-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/shrinkinEvaluation/Case2-N20-nSpeed31-nTemp21-ds30-lam083/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case1-N20-nSpeed11-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case1-N20-nSpeed21-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case1-N20-nSpeed31-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case1-N20-nSpeed41-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case1-N20-nSpeed51-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case2-N20-nSpeed11-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case2-N20-nSpeed21-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case2-N20-nSpeed31-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case2-N20-nSpeed41-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/speedEvaluation/Case2-N20-nSpeed51-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case1-N20-nSpeed31-nTemp11-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case1-N20-nSpeed31-nTemp21-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case1-N20-nSpeed31-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case1-N20-nSpeed31-nTemp41-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case1-N20-nSpeed31-nTemp51-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case2-N20-nSpeed31-nTemp11-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case2-N20-nSpeed31-nTemp21-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case2-N20-nSpeed31-nTemp31-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case2-N20-nSpeed31-nTemp41-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resultRecord/tempEvaluation/Case2-N20-nSpeed31-nTemp51-ds30-lam067/resultVector.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_0.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_10.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_11.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_12.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_13.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_14.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_15.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_16.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_17.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_18.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_19.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_27.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_6.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_7.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_8.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/forceResult_9.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_0.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_10.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_11.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_12.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_13.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_14.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_15.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_16.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_17.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_18.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_19.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_27.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_6.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_7.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_8.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/inletResult_9.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_0.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_10.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_11.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_12.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_13.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_14.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_15.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_16.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_17.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_18.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_19.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_27.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_6.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_7.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_8.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/speedResult_9.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_0.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_10.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_11.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_12.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_13.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_14.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_15.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_16.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_17.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_18.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_19.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_27.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_4.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_5.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_6.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_7.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_8.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txtResult/tempResult_9.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/j9002.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/j9002.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MatlabFiles/txtVerification.asv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/DynamicsCheck.m" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/DynamicsCheck.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/ModelSpeedSolver.slxc" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/ModelSpeedSolver.slxc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/Speed-Basic.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/Speed-IDP-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/Speed-IDP-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/Temp-Basic.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/Temp-IDP-10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/Temp-IDP-3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/createSfunc.m" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/createSfunc.m" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatlabFiles/ModelSpeedSolver.slx.autosave" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/ModelSpeedSolver.slx.autosave" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatlabFiles/inputSolver.m" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/inputSolver.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatlabFiles/magicSolver.c" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/magicSolver.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatlabFiles/magicSolver.mexw64" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/magicSolver.mexw64" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatlabFiles/magicSolver.tlc" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/magicSolver.tlc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/slprj/sim/varcache/ModelSpeedSolver/checksumOfCache.mat" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/slprj/sim/varcache/ModelSpeedSolver/checksumOfCache.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/slprj/sim/varcache/ModelSpeedSolver/tmwinternal/simulink_cache.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/slprj/sim/varcache/ModelSpeedSolver/tmwinternal/simulink_cache.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/slprj/sim/varcache/ModelSpeedSolver/varInfo.mat" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/slprj/sim/varcache/ModelSpeedSolver/varInfo.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/test.asv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/test.m" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/test.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatlabFiles/txtVerification.asv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/MatlabFiles/txtVerification.m" beforeDir="false" afterPath="$PROJECT_DIR$/MatlabFiles/txtVerification.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSolver2D.dir/C.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/DPSolver2D.dir/C.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/BoundaryLine.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/BoundaryLine.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/PrintResult.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/PrintResult.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/SolverAlgorithm.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/SolverAlgorithm.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inc/SolverStruct.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/SolverStruct.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/SystemDynamic.h" beforeDir="false" afterPath="$PROJECT_DIR$/inc/SystemDynamic.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BoundaryLine.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/BoundaryLine.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MathFunction.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/MathFunction.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PrintResult.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/PrintResult.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SolverAlgorithm.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/SolverAlgorithm.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SystemDynamic.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/SystemDynamic.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/txtResult/forceResult.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/txtResult/inletResult.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/txtResult/speedResult.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/txtResult/tempResult.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -350,7 +196,7 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="811" y="273" key="#xdebugger.XInspectDialog/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598358084069" />
-    <state width="1281" height="644" key="GridCell.Tab.0.bottom" timestamp="1603724729612">
+    <state width="1281" height="644" key="GridCell.Tab.0.bottom" timestamp="1603820295381">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1337" height="727" key="GridCell.Tab.0.bottom/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1596721203096" />
@@ -359,9 +205,9 @@
     <state width="1561" height="254" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602785196420" />
     <state width="1301" height="791" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1599834247936" />
     <state width="1607" height="757" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1595414555588" />
-    <state width="1281" height="644" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603724729612" />
+    <state width="1281" height="644" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603820295381" />
     <state width="1301" height="791" key="GridCell.Tab.0.bottom/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598428770155" />
-    <state width="1281" height="644" key="GridCell.Tab.0.center" timestamp="1603724729611">
+    <state width="1281" height="644" key="GridCell.Tab.0.center" timestamp="1603820295381">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1337" height="727" key="GridCell.Tab.0.center/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1596721203095" />
@@ -370,9 +216,9 @@
     <state width="1561" height="254" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602785196419" />
     <state width="1301" height="791" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1599834247936" />
     <state width="1607" height="757" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1595414555588" />
-    <state width="1281" height="644" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603724729611" />
+    <state width="1281" height="644" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603820295381" />
     <state width="1301" height="791" key="GridCell.Tab.0.center/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598428770155" />
-    <state width="1281" height="644" key="GridCell.Tab.0.left" timestamp="1603724729611">
+    <state width="1281" height="644" key="GridCell.Tab.0.left" timestamp="1603820295381">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1337" height="727" key="GridCell.Tab.0.left/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1596721203095" />
@@ -381,9 +227,9 @@
     <state width="1561" height="254" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602785196419" />
     <state width="1301" height="791" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1599834247936" />
     <state width="1607" height="757" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1595414555588" />
-    <state width="1281" height="644" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603724729611" />
+    <state width="1281" height="644" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603820295381" />
     <state width="1301" height="791" key="GridCell.Tab.0.left/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598428770155" />
-    <state width="1281" height="644" key="GridCell.Tab.0.right" timestamp="1603724729612">
+    <state width="1281" height="644" key="GridCell.Tab.0.right" timestamp="1603820295381">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1337" height="727" key="GridCell.Tab.0.right/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1596721203096" />
@@ -392,7 +238,7 @@
     <state width="1561" height="254" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602785196420" />
     <state width="1301" height="791" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1599834247936" />
     <state width="1607" height="757" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1595414555588" />
-    <state width="1281" height="644" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603724729612" />
+    <state width="1281" height="644" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1603820295381" />
     <state width="1301" height="791" key="GridCell.Tab.0.right/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1598428770155" />
     <state width="1877" height="226" key="GridCell.Tab.1.bottom" timestamp="1603724390246">
       <screen x="0" y="0" width="1920" height="1080" />
