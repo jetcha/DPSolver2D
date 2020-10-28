@@ -12,17 +12,3 @@ void createBoxEdges(real_T *BoxEdgesVector, real_T const *StateVector, uint32_t 
         BoxEdgesVector[i] = (StateVector[i - 1] + StateVector[i]) / 2;
     }
 }
-
-void createSpeedGrid(real_T (*StateGrid)[NV], real_T *StateVec, uint16_t Nx, uint16_t Nhrz) {
-    uint16_t i;
-    for (i = 0; i <= Nhrz; i++) {
-        memcpy(StateGrid[i], StateVec, Nx * sizeof(real_T));
-    }
-}
-
-void createThermalGrid(real_T (*StateGrid)[NT], real_T *StateVec, uint16_t Nx, uint16_t Nhrz) {
-    uint16_t i;
-    for (i = 0; i <= Nhrz; i++) {
-        memcpy(StateGrid[i], StateVec, Nx * sizeof(real_T));
-    }
-}

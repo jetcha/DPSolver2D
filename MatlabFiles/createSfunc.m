@@ -17,4 +17,4 @@ def.OutputFcnSpec = 'void MagicBox(SolverInput u1[1], DynParameter u2[1], EnvFac
 legacy_code('GENERATE_FOR_SIM', def)
 
 %% Input settings
-inputSolver
+%inputSolver

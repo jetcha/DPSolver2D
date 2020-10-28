@@ -52,7 +52,7 @@ modelPara.CoP_neg = -2.1379;
 modelPara.Tamb = 30;
 
 % Penalty Parameters
-modelPara.speedPenalty = 14e4;
+modelPara.speedPenalty = 13e4;
 modelPara.thermalPenalty = 4e4;
 
 

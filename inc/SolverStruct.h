@@ -32,7 +32,7 @@
 #endif
 
 // Parameter settings
-#define NUM_IDP 5                // number of iterations
+#define NUM_IDP 8                // number of iterations
 #define GAMMA 1.5                // shrinking rate
 
 // Boundary line (NOBOUND/CUSTOMBOUND)
