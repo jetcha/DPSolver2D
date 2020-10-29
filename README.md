@@ -39,11 +39,11 @@
 
 ## Important Notes:
 
-- The S-function HAS TO BE RECOMPILED when the following parameter(s) is(are) changed:
+- The S-function <b>has to be recompiled</b> when the following parameter(s) is(are) changed:
   - Grid sizes: Nv, Nf, Nt, Nq (in inputSolver.m) / NV, NF, NT, NQ (in SolverStruct.c).
   - Length of horizon: Nhrz (in inputSolver.m)/ HORIZON (in SolverStruct.c)
   - Number of iterations: NUM_IDP (in SolverStruct.c)
   - Shrinking rate: GAMMA (in SolverStruct.c)
-- The parameters of the Grid sizes and the Length of horizon need to be kept the SAME in inputSolver.m and SolverStruct.c.
+- The parameters of the Grid sizes and the Length of horizon need to be kept the <b>same</b> in inputSolver.m and SolverStruct.c.
 - The boundary line calculation highly depends on the model equations, so it may not be easy to modify this part when the models are very different. It can be turned off by using '#define NOBOUND' in SolverStruct.c.
-- To the best of my knowledge, the C codes DOES NOT work with Visual Studio compiler due to the use of Variable Length Array (VLA).
+- To the best of my knowledge, the C codes <b>does not</b> work with Visual Studio compiler due to the use of Variable Length Array (VLA).
