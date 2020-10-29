@@ -1,6 +1,6 @@
 # DPSolver2D
 
-## Softweare Information:
+## Software Information:
 
 - Matlab version: 2019b
 - C codes IDE: JetBrains CLion v2020.3 (https://www.jetbrains.com/clion/)
